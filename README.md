@@ -16,9 +16,9 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 <table>
 <tr>
-<td>![WhatsApp Image 2023-03-02 at 9 54 55 PM (2)](https://user-images.githubusercontent.com/59218650/222498107-42ca3c8e-4081-4966-844e-f0cf7328f906.jpeg)</td>
-<td>![WhatsApp Image 2023-03-02 at 9 54 55 PM (1)](https://user-images.githubusercontent.com/59218650/222498196-cc02d1de-7184-4e0b-b6f8-151da2335a18.jpeg)</td>
-<td>![WhatsApp Image 2023-03-02 at 9 54 54 PM (2)](https://user-images.githubusercontent.com/59218650/222498266-723a22fe-bee7-4dca-a52e-abdd40eac677.jpeg)</td>
+<td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222498107-42ca3c8e-4081-4966-844e-f0cf7328f906.jpeg"></td>
+<td><img width="200" alt="Login" src="https://user-images.githubusercontent.com/59218650/222498196-cc02d1de-7184-4e0b-b6f8-151da2335a18.jpeg"></td>
+<td><img width="200" alt="Signup" src="https://user-images.githubusercontent.com/59218650/222498266-723a22fe-bee7-4dca-a52e-abdd40eac677.jpeg"></td>
 </tr>
 <tr>
 <td>![WhatsApp Image 2023-03-02 at 9 54 55 PM](https://user-images.githubusercontent.com/59218650/222498478-e39e2284-9713-40fc-9581-e664758ca262.jpeg)</td>
