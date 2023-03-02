@@ -17,9 +17,7 @@ class DengueProject extends StatelessWidget {
         primaryColor: btnColor,
       ),
       debugShowCheckedModeBanner: false,
-
       home: const SplashScreen(),
-      //home: const Expandable_Table_Screen(),
     );
   }
 }
