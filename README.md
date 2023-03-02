@@ -21,18 +21,18 @@ samples, guidance on mobile development, and a full API reference.
 <td><img width="200" alt="Signup" src="https://user-images.githubusercontent.com/59218650/222498266-723a22fe-bee7-4dca-a52e-abdd40eac677.jpeg"></td>
 </tr>
 <tr>
-<td>![WhatsApp Image 2023-03-02 at 9 54 55 PM](https://user-images.githubusercontent.com/59218650/222498478-e39e2284-9713-40fc-9581-e664758ca262.jpeg)</td>
-<td>![WhatsApp Image 2023-03-02 at 9 54 54 PM (1)](https://user-images.githubusercontent.com/59218650/222498506-6ca39d00-cf17-473e-8dbf-1607fed56718.jpeg)</td>
-<td>![WhatsApp Image 2023-03-02 at 9 54 54 PM](https://user-images.githubusercontent.com/59218650/222498532-4c49861b-69a6-4fdb-ac7a-c2c6bc07cb74.jpeg)</td>
+<td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222498478-e39e2284-9713-40fc-9581-e664758ca262.jpeg"></td>
+<td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222498506-6ca39d00-cf17-473e-8dbf-1607fed56718.jpeg"></td>
+<td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222498532-4c49861b-69a6-4fdb-ac7a-c2c6bc07cb74.jpeg"></td>
 </tr>
 <tr>
- <td> ![WhatsApp Image 2023-03-02 at 9 58 07 PM](https://user-images.githubusercontent.com/59218650/222498748-5d5879d8-f50b-4ad6-83f2-07386142d71c.jpeg)</td>
- <td> ![WhatsApp Image 2023-03-02 at 9 54 53 PM (2)](https://user-images.githubusercontent.com/59218650/222498799-9174603e-d9b7-4a67-ab96-387f446ac2ec.jpeg)</td>
-  <td>![WhatsApp Image 2023-03-02 at 9 54 53 PM (1)](https://user-images.githubusercontent.com/59218650/222499038-979c32b7-6aee-4520-9639-2b1150dce1f7.jpeg)</td>
+ <td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222498748-5d5879d8-f50b-4ad6-83f2-07386142d71c.jpeg"></td>
+ <td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222498799-9174603e-d9b7-4a67-ab96-387f446ac2ec.jpeg"></td>
+  <td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222499038-979c32b7-6aee-4520-9639-2b1150dce1f7.jpeg"></td>
 
 </tr>
 <tr>
-  <td>![WhatsApp Image 2023-03-02 at 9 54 53 PM](https://user-images.githubusercontent.com/59218650/222499145-68b7f771-a4e9-4a26-9a1a-a6221ffdd3e7.jpeg)</td>
- <td> ![WhatsApp Image 2023-03-02 at 9 54 52 PM](https://user-images.githubusercontent.com/59218650/222499180-28514b6b-425c-4789-b150-f09ccaf69ae8.jpeg)</td>
+  <td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222499145-68b7f771-a4e9-4a26-9a1a-a6221ffdd3e7.jpeg"></td>
+ <td><img width="200" alt="Splash" src="https://user-images.githubusercontent.com/59218650/222499180-28514b6b-425c-4789-b150-f09ccaf69ae8.jpeg"></td>
 </tr>
   </table>
