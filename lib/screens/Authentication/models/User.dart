@@ -17,7 +17,7 @@ login(email, password, context) async {
     //log(response.data);
     if (response.data != 'false') {
       loggedInUser = User.fromMap(response.data);
-
+      //loggedInUsercopy = loggedInUser;
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const DashBoard(),

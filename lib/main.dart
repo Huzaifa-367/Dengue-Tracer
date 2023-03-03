@@ -14,7 +14,7 @@ class DengueProject extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        primaryColor: btnColor,
+        primaryColor: btnColor,  
       ),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),

@@ -8,9 +8,10 @@ Color ScfColor = const Color.fromARGB(255, 255, 249, 249);
 Color tbtnColor = const Color.fromARGB(255, 245, 130, 130);
 Color greenColor = Colors.green.shade200;
 
-String ip = 'http://192.168.118.204/FYP_Api/API/SERVER/';
+String ip = 'http://192.168.118.204/FYP_Api/API/SERVER';
 String imgpath = 'http://192.168.118.204/FYP_Api/Images/';
 User? loggedInUser;
+//User? loggedInUsercopy;
 String mapapikey = "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw";
 String? otp;
 // class Constants {

@@ -67,7 +67,7 @@ class User {
     var request = http.MultipartRequest('POST', uri);
     request.fields["user_id"] = user_id.toString();
     http.MultipartFile newfile =
-        await http.MultipartFile.fromPath('photo', f.path);
+        await http.MultipartFile.fromPath('image', f.path);
     request.files.add(newfile);
     var response = await request.send();
     if (response.statusCode == 200) {

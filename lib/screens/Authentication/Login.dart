@@ -22,6 +22,17 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordcont = TextEditingController();
   //TextEditingController text = TextEditingController();
   bool? isVisible = true;
+
+  // Timer? timer;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   timer = Timer.periodic(
+  //       const Duration(seconds: 2),
+  //       (Timer t) => login(
+  //           loggedInUsercopy!.email, loggedInUsercopy!.password, context));
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(

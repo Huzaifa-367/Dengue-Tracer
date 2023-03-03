@@ -182,6 +182,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                   }
 
                                                   Navigator.of(context).pop();
+                                                  setState(() {});
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
@@ -216,6 +217,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                   }
 
                                                   Navigator.of(context).pop();
+                                                  
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
