@@ -65,7 +65,7 @@ class User {
     String url = '$ip/UpdateuserImage';
     Uri uri = Uri.parse(url);
     var request = http.MultipartRequest('POST', uri);
-    request.fields["id"] = user_id.toString();
+    request.fields["user_id"] = user_id.toString();
     http.MultipartFile newfile =
         await http.MultipartFile.fromPath('photo', f.path);
     request.files.add(newfile);

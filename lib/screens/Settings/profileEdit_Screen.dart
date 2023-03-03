@@ -5,6 +5,7 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../Authentication/Login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -108,26 +109,27 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ),
                           Stack(
                             children: [
-                              const CircleAvatar(
-                                radius: 50,
-                                // backgroundImage: u!.image == null
-                                //     ? null
-                                //     : NetworkImage(imgpath + u!.image!),
-                                // backgroundImage: u!.image == null
-                                //     ? const NetworkImage(
-                                //         "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png")
-                                //     : NetworkImage(imgpath + u!.image!),
-                              ),
-                              // imageFile == null
-                              //     ? const CircleAvatar(
-                              //         radius: 50,
-                              //         backgroundImage:
-                              //             AssetImage(Images.dpImage),
-                              //       )
-                              //     : CircleAvatar(
-                              //         radius: 50,
-                              //         backgroundImage: FileImage(imageFile!),
-                              //       ),
+                              // const CircleAvatar(
+                              //   radius: 50,
+                              // backgroundImage: u!.image == null
+                              //     ? null
+                              //     : NetworkImage(imgpath + u!.image!),
+                              // backgroundImage: u!.image == null
+                              //     ? const NetworkImage(
+                              //         "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png")
+                              //     : NetworkImage(imgpath + u!.image!),
+                              //),
+                              imageFile == null
+                                  ? CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage: NetworkImage(
+                                          imgpath + loggedInUser!.image!),
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage:
+                                          AssetImage(Images.dpImage),
+                                    ),
                               Positioned(
                                 bottom: 0.2,
                                 right: 0.2,
@@ -167,16 +169,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                             children: [
                                               TextButton(
                                                 onPressed: () async {
-                                                  // XFile? file =
-                                                  //     await ImagePicker()
-                                                  //         .pickImage(
-                                                  //             source:
-                                                  //                 ImageSource
-                                                  //                     .camera);
-                                                  // if (file != null) {
-                                                  //   imageFile = File(file.path);
-                                                  //   u?.uploadPic(imageFile!);
-                                                  // }
+                                                  XFile? file =
+                                                      await ImagePicker()
+                                                          .pickImage(
+                                                              source:
+                                                                  ImageSource
+                                                                      .gallery);
+                                                  if (file != null) {
+                                                    imageFile = File(file.path);
+                                                    loggedInUser!
+                                                        .uploadPic(imageFile!);
+                                                  }
 
                                                   Navigator.of(context).pop();
                                                 },
@@ -201,15 +204,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                               ),
                                               TextButton(
                                                 onPressed: () async {
-                                                  // XFile? file =
-                                                  //     await ImagePicker()
-                                                  //         .pickImage(
-                                                  //   source: ImageSource.gallery,
-                                                  // );
-                                                  // if (file != null) {
-                                                  //   imageFile = File(file.path);
-                                                  //   u?.uploadPic(imageFile!);
-                                                  // }
+                                                  XFile? file =
+                                                      await ImagePicker()
+                                                          .pickImage(
+                                                    source: ImageSource.camera,
+                                                  );
+                                                  if (file != null) {
+                                                    imageFile = File(file.path);
+                                                    loggedInUser
+                                                        ?.uploadPic(imageFile!);
+                                                  }
 
                                                   Navigator.of(context).pop();
                                                 },

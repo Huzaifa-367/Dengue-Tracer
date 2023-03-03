@@ -129,7 +129,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   }
 
   //Shared Preference End
-
+  //User? u = loggedInUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,8 +147,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               backgroundMotifColor: Colors.white,
               //settingColor: Colors.amber,
               userName: loggedInUser!.name,
-              userProfilePic: const AssetImage(
-                "assets/images/avatar-1.png",
+              userProfilePic: NetworkImage(
+                imgpath + loggedInUser!.image!,
               ),
               userMoreInfo: TextWidget(
                 title: loggedInUser!.email,
