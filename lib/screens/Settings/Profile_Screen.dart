@@ -135,7 +135,11 @@ class _Profile_ScreenState extends State<Profile_Screen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 249, 242, 242),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(
+          top: 10,
+          left: 10,
+          right: 10,
+        ),
         child: ListView(
           children: [
             const SizedBox(
@@ -150,6 +154,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               userProfilePic: NetworkImage(
                 imgpath + loggedInUser!.image!,
               ),
+
               userMoreInfo: TextWidget(
                 title: loggedInUser!.email,
                 txtSize: 10,
@@ -163,7 +168,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                   child: TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: loggedInUser!.role == "admin"
-                          ? btnColor
+                          ? tbtnColor
                           : loggedInUser!.role == "Officer"
                               ? greenColor
                               : loggedInUser!.role == "user"
@@ -243,9 +248,10 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                                 left: 15,
                               ),
                               child: TextWidget(
-                                  title: "Area Range",
-                                  txtSize: 20,
-                                  txtColor: bkColor),
+                                title: "Area Range",
+                                txtSize: 20,
+                                txtColor: bkColor,
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -275,12 +281,15 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                             children: [
                               TextButton(
                                 onPressed: () {
+                                  Navigator.of(context).pop();
+
                                   // Navigator.push(
                                   //     context,
                                   //     MaterialPageRoute(
                                   //       builder: (context) =>
                                   //           const OfficersListScreen(),
-                                  //     ));
+                                  //     ),
+                                  // );
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -299,6 +308,10 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                               ),
                               TextButton(
                                 onPressed: () {
+                                  setState(() {
+                                    range = null;
+                                    // _currentSliderValue=null;
+                                  });
                                   Navigator.of(context).pop();
                                 },
                                 child: Container(
@@ -416,6 +429,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               items: [
                 SettingsItem(
                   onTap: () {
+                    loggedInUser = null;
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const LoginScreen(),
@@ -426,7 +440,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                   iconStyle: IconStyle(
                     backgroundColor: Colors.deepOrangeAccent,
                   ),
-                  title: "Sign Out",
+                  title: "Log Out",
                   subtitle: "You will be logged out.",
                 ),
 

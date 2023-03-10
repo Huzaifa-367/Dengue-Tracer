@@ -68,9 +68,11 @@ class User {
     request.fields["user_id"] = user_id.toString();
     http.MultipartFile newfile =
         await http.MultipartFile.fromPath('image', f.path);
+    //loggedInUser!.image = newfile.toString();
     request.files.add(newfile);
     var response = await request.send();
     if (response.statusCode == 200) {
+      //loggedInUser!.image = ;
       return 'Uploaded';
     }
 

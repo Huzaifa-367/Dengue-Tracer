@@ -14,16 +14,19 @@ class _RangeSlidrState extends State<RangeSlidr> {
   Widget build(BuildContext context) {
     return //Dialog
         Slider(
-            activeColor: btnColor,
-            value: _currentSliderValue,
-            min: 1,
-            max: 10,
-            divisions: 10,
-            label: _currentSliderValue.round().toString(),
-            onChanged: (double value) {
-              setState(() {
-                _currentSliderValue = value;
-              });
-            });
+      activeColor: btnColor,
+      value: _currentSliderValue,
+      min: 1,
+      max: 10,
+      divisions: 10,
+      label: _currentSliderValue.round().toString(),
+      onChanged: (double value) {
+        setState(
+          () {
+            _currentSliderValue = value;
+          },
+        );
+      },
+    );
   }
 }

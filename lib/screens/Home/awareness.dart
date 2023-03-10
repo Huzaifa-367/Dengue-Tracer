@@ -156,7 +156,11 @@ class _AwarenessState extends State<Awareness> {
             ],
           ),
           body: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+            ),
             child: TabBarView(
               // clipBehavior: Clip.antiAlias,
               children: [
