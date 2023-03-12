@@ -1,6 +1,7 @@
 import 'package:dengue_tracing_application/screens/Authentication/models/usermodel.dart';
 import 'package:flutter/material.dart';
 
+Color tnColor = const Color.fromARGB(255, 255, 0, 17);
 Color btnColor = const Color(0XFFf85f6a);
 Color bkColor = const Color.fromARGB(255, 247, 214, 216);
 Color txtColor = const Color.fromARGB(255, 0, 0, 0);
@@ -11,6 +12,7 @@ Color greenColor = Colors.green.shade200;
 String ip = 'http://192.168.9.7/FYP_Api/API/SERVER';
 String imgpath = 'http://192.168.9.7/FYP_Api/Images/';
 User? loggedInUser;
+bool? isRemember = false;
 //User? loggedInUsercopy;
 String mapapikey = "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw";
 String? otp;

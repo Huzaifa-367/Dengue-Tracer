@@ -8,6 +8,8 @@ import 'package:dengue_tracing_application/screens/Authentication/models/User.da
 
 import 'package:flutter/material.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -22,16 +24,30 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordcont = TextEditingController();
   //TextEditingController text = TextEditingController();
   bool? isVisible = true;
+//Shared Preference start
 
-  // Timer? timer;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   timer = Timer.periodic(
-  //       const Duration(seconds: 2),
-  //       (Timer t) => login(
-  //           loggedInUsercopy!.email, loggedInUsercopy!.password, context));
-  // }
+  //bool isRemember = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _Remember();
+  }
+
+  void _Remember() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isRemember = prefs.getBool('save') ?? false;
+    });
+  }
+
+  // ignore: non_constant_identifier_names
+  void _savestatus(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('save', value);
+  }
+
+  //Shared Preference End
 
   @override
   Widget build(BuildContext context) {
@@ -119,8 +135,49 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 18.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Switch.adaptive(
+                          thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                              (Set<MaterialState> states) {
+                            return isRemember == true
+                                ? const Icon(
+                                    Icons.check_circle_outline_rounded,
+                                    size: 25,
+                                  )
+                                : const Icon(
+                                    Icons.close_rounded,
+                                    size: 25,
+                                  );
+                          }),
+                          inactiveTrackColor:
+                              const Color.fromARGB(255, 255, 255, 255),
+                          inactiveThumbColor:
+                              const Color.fromARGB(255, 246, 195, 195),
+                          //enableFeedback: true,
+
+                          activeColor: btnColor,
+                          value: isRemember!,
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                isRemember = value;
+                                _savestatus(value);
+                              },
+                            );
+                          },
+                        ),
+                        const Text(
+                          "Remember me",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromARGB(255, 226, 99, 99),
+                            fontSize: 13,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
                         TextButton(
                           onPressed: (() {
                             Navigator.of(context).push(

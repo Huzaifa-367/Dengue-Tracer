@@ -925,6 +925,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  widget_and_text_animator:
+    dependency: "direct main"
+    description:
+      name: widget_and_text_animator
+      sha256: "7d0b81569a8deacf55cb2a098ee4b4acfdf713baaa82ca8a31b7893b50bf7b89"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.9"
   win32:
     dependency: transitive
     description:

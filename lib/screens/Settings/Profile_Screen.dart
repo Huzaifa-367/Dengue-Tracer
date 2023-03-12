@@ -48,54 +48,6 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   }
 
   bool get feedbackAvailable => feedback != null && feedback!.rating != null;
-  // Widget get rating {
-  //   return Column(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: !feedbackAvailable
-  //         ? [const SizedBox()]
-  //         : [
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 20),
-  //               child: Row(
-  //                 children: [
-  //                   const Text(
-  //                     "Rating:",
-  //                     style:
-  //                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-  //                   ),
-  //                   Text(
-  //                     "${feedback!.rating}",
-  //                     style: const TextStyle(fontSize: 18),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //             if (feedback!.review!.isNotEmpty)
-  //               Padding(
-  //                 padding: const EdgeInsets.symmetric(horizontal: 20),
-  //                 child: Row(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     const Text(
-  //                       "Review:",
-  //                       style: TextStyle(
-  //                           fontSize: 18, fontWeight: FontWeight.bold),
-  //                     ),
-  //                     Expanded(
-  //                       child: Text(
-  //                         "${feedback!.review}",
-  //                         style: const TextStyle(fontSize: 18),
-  //                       ),
-  //                     )
-  //                   ],
-  //                 ),
-  //               )
-  //           ],
-  //   );
-  // }
-
-  //
-  //FeedBack Code Ends
 
   //
   //Shared Preference start

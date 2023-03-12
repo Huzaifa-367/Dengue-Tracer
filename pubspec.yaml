@@ -59,6 +59,7 @@ dependencies:
   url_launcher: ^6.1.10
   app_feedback: ^0.0.2
   email_otp: ^1.0.4
+  widget_and_text_animator: ^1.0.9
   #pull_to_refresh: ^2.0.0
  
 
