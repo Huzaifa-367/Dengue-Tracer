@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/screens/Authentication/New_Pass_Screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 
@@ -44,23 +44,23 @@ class _Otp_ScreenState extends State<Otp_Screen> {
     super.dispose();
   }
 
-  // snackBar Widget
-  snackBar(String? message) {
-    return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: btnColor,
-        content: Text(
-          message!,
-          style: GoogleFonts.gemunuLibre(
-            fontWeight: FontWeight.w800,
-            color: ScfColor,
-            fontSize: 15,
-          ),
-        ),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
+  // // snackBar Widget
+  // snackBar(String? message) {
+  //   return ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       backgroundColor: btnColor,
+  //       content: Text(
+  //         message!,
+  //         style: GoogleFonts.gemunuLibre(
+  //           fontWeight: FontWeight.w800,
+  //           color: ScfColor,
+  //           fontSize: 15,
+  //         ),
+  //       ),
+  //       duration: const Duration(seconds: 2),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +228,7 @@ class _Otp_ScreenState extends State<Otp_Screen> {
                       ),
                       TextButton(
                         onPressed: (() {
-                          snackBar("OTP resend!!");
+                          snackBar(context, "OTP resend!");
                           reset(widget.email, context);
                         }),
                         child: const Text(
@@ -273,7 +273,7 @@ class _Otp_ScreenState extends State<Otp_Screen> {
                             setState(() => hasError = true);
                           } else {
                             hasError = false;
-                            snackBar("OTP Verified!!");
+                            snackBar(context, "OTP Verified!!");
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => NewPasswordScreen(
@@ -299,29 +299,7 @@ class _Otp_ScreenState extends State<Otp_Screen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: TextButton(
-                          child: const Text("Clear"),
-                          onPressed: () {
-                            otpcontroller.clear();
-                          },
-                        ),
-                      ),
-                      Flexible(
-                        child: TextButton(
-                          child: const Text("Set Text"),
-                          onPressed: () {
-                            setState(() {
-                              otpcontroller.text = "123456";
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  )
+                  
                 ],
               ),
             ),

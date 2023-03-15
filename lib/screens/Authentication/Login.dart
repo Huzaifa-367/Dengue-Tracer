@@ -34,8 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
     loadUserEmailPassword();
   }
 
+  //bool? isRemember;
+//handle remember me function
   void handleRemeberme(bool value) {
-    print("Handle Rember Me");
     isRemember = value;
     SharedPreferences.getInstance().then(
       (prefs) {
@@ -49,8 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+//load email and password
   void loadUserEmailPassword() async {
-    print("Load Email");
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var email = prefs.getString("email") ?? "";
@@ -58,14 +59,16 @@ class _LoginScreenState extends State<LoginScreen> {
       var remeberMe = prefs.getBool("remember_me") ?? false;
 
       if (remeberMe) {
-        setState(() {
-          isRemember = true;
-        });
-        emailcont.text = email ?? "";
-        passwordcont.text = password ?? "";
+        setState(
+          () {
+            isRemember = true;
+          },
+        );
+        emailcont.text = email;
+        passwordcont.text = password;
       }
     } catch (e) {
-      // print(e);
+      print(e);
     }
   }
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/screens/Home/dashboard.dart';
-import 'package:dengue_tracing_application/testings/Permissions.dart';
+import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
 import 'package:flutter/material.dart';
 //import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -30,18 +29,11 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer(
       const Duration(seconds: 3),
-      isRemember != false && loggedInUser != null
-          ? () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const DashBoard(),
-                ),
-              )
-          : () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      const PermissionHandlerScreen(),
-                ),
-              ),
+      () => Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (BuildContext context) => const LoginScreen(),
+        ),
+      ),
     );
   }
 
@@ -61,46 +53,21 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
             Center(
-                child: AnimatedTextKit(
-              animatedTexts: [
-                TypewriterAnimatedText(
-                  'Welcome',
-                  textStyle: TextStyle(
-                    color: txtColor,
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.w900,
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Welcome',
+                    textStyle: TextStyle(
+                      color: txtColor,
+                      fontSize: 50.0,
+                      fontWeight: FontWeight.w900,
+                    ),
+                    speed: const Duration(milliseconds: 100),
                   ),
-                  speed: const Duration(milliseconds: 100),
-                ),
-              ],
-              totalRepeatCount: 1,
-              //pause: const Duration(milliseconds: 1000),
-              // displayFullTextOnTap: true,
-              // stopPauseOnTap: true,
-            )),
-            // TextAnimator(
-            //   //'Welcome To Dengue Tracing Application',
-            //   "Welcome",
-            //   style: const TextStyle(
-            //     fontSize: 45,
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.white,
-            //   ),
-            //   incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(
-            //       curve: Curves.linearToEaseOut,
-            //       duration: const Duration(milliseconds: 1500)),
-            //   atRestEffect: WidgetRestingEffects.dangle(),
-            //   outgoingEffect: WidgetTransitionEffects.outgoingSlideOutToRight(),
-            // ),
-            // const Text(
-            //   "Welcome To Dengue Tracing Application",
-            //   textAlign: TextAlign.center,
-            //   style: TextStyle(
-            //     fontSize: 35,
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.white,
-            //   ),
-            // ),
+                ],
+                totalRepeatCount: 1,
+              ),
+            ),
           ],
         ),
       ),

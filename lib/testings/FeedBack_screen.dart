@@ -40,9 +40,11 @@ class _FeedBack_ScreenState extends State<FeedBack_Screen> {
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      "${feedback!.rating}",
-                      style: const TextStyle(fontSize: 18),
+                    Center(
+                      child: Text(
+                        "${feedback!.rating}",
+                        style: const TextStyle(fontSize: 18),
+                      ),
                     ),
                   ],
                 ),
@@ -126,7 +128,7 @@ class _FeedBack_ScreenState extends State<FeedBack_Screen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const SizedBox(height: 20),
-              rating,
+              Center(child: rating),
               const SizedBox(height: 20),
               MaterialButton(
                 colorBrightness: Brightness.light,

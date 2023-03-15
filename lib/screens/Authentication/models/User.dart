@@ -25,7 +25,7 @@ login(email, password, context) async {
         ),
       );
     } else {
-      snackBar(context, response.data);
+      snackBar(context, "Incorrect Email or Password.");
     }
   } else {
     return null;
@@ -41,9 +41,9 @@ signUp(User u, context) async {
       }));
   if (response.statusCode == 200) {
     if (response.data == "Exsist") {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(response.data)));
+      snackBar(context, "Account already exsists.");
     } else {
+      snackBar(context, "Your account is created successfully.");
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) {
           return const LoginScreen();

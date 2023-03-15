@@ -1,3 +1,4 @@
+import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
@@ -20,8 +21,11 @@ class NewPasswordScreen extends StatefulWidget {
   State<NewPasswordScreen> createState() => _NewPasswordScreenState();
 }
 
+bool? isSame;
+
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   TextEditingController passcontr = TextEditingController();
+  TextEditingController passcontr2 = TextEditingController();
 
   bool isVisible = true;
 
@@ -60,9 +64,6 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
                   Text(
                     "Enter Your New Password?",
                     style: TextStyle(
@@ -93,25 +94,25 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  // MyTextField(
-                  //   maxlines: 1,
-                  //   //siconn: Icons.email,
-                  //   controller: emailcontr,
-                  //   hintText: "Repeat Password",
-                  //   obscureText: isVisible,
+                  MyTextField(
+                    maxlines: 1,
+                    //siconn: Icons.email,
+                    controller: passcontr2,
+                    hintText: "Repeat Password",
+                    obscureText: isVisible,
 
-                  //   prefixIcon: const Icon(Icons.password),
-                  //   sufixIconPress: () {
-                  //     setState(() {
-                  //       isVisible = !isVisible;
-                  //     });
-                  //   },
-                  //   sufixIcon:
-                  //       isVisible ? Icons.visibility : Icons.visibility_off,
-                  // ),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
+                    prefixIcon: const Icon(Icons.password),
+                    sufixIconPress: () {
+                      setState(() {
+                        isVisible = !isVisible;
+                      });
+                    },
+                    sufixIcon:
+                        isVisible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: SizedBox(
@@ -119,17 +120,23 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       width: 3000,
                       child: ButtonWidget(
                         btnText: "Save",
-                        onPress: (() async {
-                          User u = User();
-                          u.email = "${widget.email}";
-                          u.password = passcontr.text;
-                          newpassword(u, context);
+                        onPress: () async {
+                          if (passcontr.text == passcontr2.text) {
+                            User u = User();
+                            u.email = "${widget.email}";
+                            u.password = passcontr.text;
+                            newpassword(u, context);
+                          } else {
+                            snackBar(
+                                context, "Please fill all fields correctly");
+                          }
+
                           // Navigator.of(context).push(
                           //   MaterialPageRoute(
                           //     builder: (context) => const LoginScreen(),
                           //   ),
                           // );
-                        }),
+                        },
                       ),
                     ),
                   ),

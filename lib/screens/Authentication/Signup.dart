@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
@@ -40,6 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController phonecont = TextEditingController();
   TextEditingController emailcont = TextEditingController();
   TextEditingController passwordcont = TextEditingController();
+  TextEditingController passwordcont2 = TextEditingController();
   TextEditingController home_loccont = TextEditingController();
   // TextEditingController office_loccont = TextEditingController();
   @override
@@ -60,28 +62,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     backgroundColor: Colors.transparent,
                     child: Image.asset("assets/dengu.png"),
                   ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Text(
-                  //   "Dengue Tracing",
-                  //   style: TextStyle(
-                  //     fontWeight: FontWeight.w800,
-                  //     color: btnColor,
-                  //     fontSize: 35,
-                  //   ),
-                  // ),
-                  // Text(
-                  //   "Application",
-                  //   style: TextStyle(
-                  //     fontWeight: FontWeight.w800,
-                  //     color: btnColor,
-                  //     fontSize: 30,
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
                   Text(
                     "Sign Up",
                     style: TextStyle(
@@ -143,29 +123,26 @@ class _SignupScreenState extends State<SignupScreen> {
                     sufixIcon:
                         isVisible ? Icons.visibility : Icons.visibility_off,
                   ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //   child: MyTextField(
-                  //     maxlines: 1,
-                  //     //siconn: Icons.email,
-                  //     controller: textController,
-                  //     hintText: "Repeat Password",
-                  //     obscureText: isVisible,
-                  //     keytype: TextInputType.text,
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  MyTextField(
+                    maxlines: 1,
+                    //siconn: Icons.email,
+                    controller: passwordcont2,
+                    hintText: "Repeat Password",
+                    obscureText: isVisible,
+                    keytype: TextInputType.text,
 
-                  //     prefixIcon: const Icon(Icons.password),
-                  //     sufixIconPress: () {
-                  //       setState(() {
-                  //         isVisible = !isVisible;
-                  //       });
-                  //     },
-                  //     sufixIcon:
-                  //         isVisible ? Icons.visibility : Icons.visibility_off,
-                  //   ),
-                  // ),
+                    prefixIcon: const Icon(Icons.password),
+                    sufixIconPress: () {
+                      setState(() {
+                        isVisible = !isVisible;
+                      });
+                    },
+                    sufixIcon:
+                        isVisible ? Icons.visibility : Icons.visibility_off,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -197,14 +174,22 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: ButtonWidget(
                         btnText: "Sign Up",
                         onPress: (() async {
-                          User u = User();
-                          u.role = role;
-                          u.name = namecont.text;
-                          u.email = emailcont.text;
-                          u.phone_number = phonecont.text;
-                          u.password = passwordcont.text;
-                          u.home_location = home_loccont.text;
-                          await signUp(u, context);
+                          if (passwordcont.text == passwordcont2.text &&
+                              namecont.text != "" &&
+                              emailcont.text != "") {
+                            User u = User();
+                            u.role = role;
+                            u.name = namecont.text;
+                            u.email = emailcont.text;
+                            u.phone_number = phonecont.text;
+                            u.password = passwordcont.text;
+                            u.home_location = home_loccont.text;
+                            await signUp(u, context);
+                          } else {
+                            snackBar(
+                                context, "Please fill all fields correctly");
+                          }
+
                           // response = await u.signupMutliPart();
                           // if (response == null) {
                           //   response = 'Error..';
@@ -266,147 +251,3 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
-
-
-
-// GestureDetector(
-                  //   onTap: () {
-                  //     //Some Code
-                  //     getDialogue(context);
-                  //   },
-                  //   child: DecoratedBox(
-                  //     decoration: BoxDecoration(
-                  //       color: bkColor,
-                  //       borderRadius: BorderRadius.circular(30),
-                  //     ),
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //       child: SizedBox(
-                  //         height: 50,
-                  //         width: 260,
-                  //         child: Row(
-                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //           children: [
-                  //             MyTextField_ReadOnly(
-                  //               maxlines: 2,
-                  //               readonly: true,
-                  //               controller: textController,
-                  //               hintText: "Location",
-
-                  //               sufixIconPress: () {
-                  //                 textController.text =
-                  //                     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
-                  //               },
-                  //               //prefixIcon: const Icon(Icons.map),
-                  //               sufixIcon: Icons.arrow_forward_rounded,
-                  //             ),
-                  //             IconButton(
-                  //               onPressed: () {
-                  //                 //getDialogue(context);
-                  //                 Navigator.of(context).push(MaterialPageRoute(
-                  //                     builder: (context) =>
-                  //                         const PickLocation()));
-                  //               },
-                  //               icon: Icon(
-                  //                 Icons.pin_drop,
-                  //                 color: btnColor,
-                  //                 size: 25,
-                  //               ),
-                  //             )
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //   child: MyTextField(
-                  //     controller: home_loccont,
-                  //     hintText: selectedPlace == null
-                  //         ? "Location"
-                  //         : selectedPlace!.formattedAddress ?? "Location",
-                  //     keytype: TextInputType.text,
-                  //     obscureText: false,
-                  //     prefixIcon: const Icon(Icons.map),
-                  //     sufixIconPress: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) {
-                  //             return FlutterPlacePicker(
-                  //               apiKey:
-                  //                   "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw", // Needed to display google maps and
-                  //               initialPosition: kInitialPosition,
-                  //               useCurrentLocation: true,
-                  //               selectInitialPosition: true,
-                  //               usePlaceDetailSearch: true,
-                  //               autocompleteRadius: 300,
-                  //               enableMapTypeButton: true,
-                  //               //initialMapType: MapType.satellite,
-                  //               region: 'pak',
-                  //               strictBounds: true,
-
-                  //               onPlacePicked: (result) {
-                  //                 selectedPlace = result;
-
-                  //                 Navigator.of(context).pop();
-                  //                 setState(() {});
-                  //               },
-                  //             );
-                  //           },
-                  //         ),
-                  //       );
-                  //     },
-                  //     sufixIcon: Icons.pin_drop,
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 10,
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //   child: MyTextField(
-                  //     controller: home_loccont,
-                  //     hintText: selectedPlace == null
-                  //         ? "Location"
-                  //         : "Geocoded Address: $address Autocomplete Address: $autocompletePlace",
-                  //     keytype: TextInputType.text,
-                  //     obscureText: false,
-                  //     prefixIcon: const Icon(Icons.map),
-                  //     sufixIconPress: () {
-                  //       // Navigator.push(
-                  //       //   context,
-                  //       //   MaterialPageRoute(
-                  //       //     builder: (context) {
-                  //       //       return MapLocationPicker(
-                  //       //         apiKey: "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw",
-                  //       //         canPopOnNextButtonTaped: true,
-                  //       //         currentLatLng: const LatLng(29.121599, 76.396698),
-                  //       //         onNext: (GeocodingResult? result) {
-                  //       //           if (result != null) {
-                  //       //             setState(() {
-                  //       //               address = result.formattedAddress ?? "";
-                  //       //             });
-                  //       //           }
-                  //       //         },
-                  //       //         onSuggestionSelected:
-                  //       //             (PlacesDetailsResponse? result) {
-                  //       //           if (result != null) {
-                  //       //             setState(() {
-                  //       //               autocompletePlace =
-                  //       //                   result.result.formattedAddress ?? "";
-                  //       //             });
-                  //       //           }
-                  //       //         },
-                  //       //       );
-                  //       //     },
-                  //       //   ),
-                  //       // );
-                  //     },
-                  //     sufixIcon: Icons.pin_drop,
-                  //   ),
-                  // ),

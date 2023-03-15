@@ -1,4 +1,6 @@
 import 'package:app_feedback/app_feedback.dart';
+import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+//import 'package:dengue_tracing_application/Global/BigUserCard.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/rangeslider.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
@@ -8,7 +10,6 @@ import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/office
 import 'package:dengue_tracing_application/screens/Settings/profileEdit_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,22 +30,28 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   UserFeedback? feedback;
 
   void launchAppFeedback() {
-    feedbackForm.display(context,
-        option: Option(
-          hideRatingBottomText: true,
-          maxRating: 10,
-          ratingButtonTheme: RatingButtonThemeData.outlinedBorder(),
-        ), onSubmit: (feedback) {
-      this.feedback = feedback;
-      setState(() {
-        SendfeedBack;
-      });
-    });
+    feedbackForm.display(
+      context,
+      option: Option(
+        //shape: const StarBorder.polygon(),
+        hideRatingBottomText: true,
+        maxRating: 5,
+        ratingButtonTheme: RatingButtonThemeData.outlinedBorder(),
+      ),
+      onSubmit: (feedback) {
+        this.feedback = feedback;
+        setState(
+          () {
+            SendfeedBack;
+          },
+        );
+      },
+    );
   }
 
   Future<bool> get SendfeedBack {
     return UrlLauncher.launch(
-        'https://wa.me/923203608044?text=Name:  ${loggedInUser!.name} \n Rating: ${feedback!.rating} \n Review: ${feedback!.review}');
+        'https://wa.me/923203608044?text=Name:  ${loggedInUser!.name} \nRating: ${feedback!.rating}/5 \nReview: ${feedback!.review}');
   }
 
   bool get feedbackAvailable => feedback != null && feedback!.rating != null;
@@ -103,12 +110,13 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               backgroundMotifColor: const Color.fromRGBO(255, 255, 255, 1),
               //settingColor: Colors.amber,
               userName: loggedInUser!.name,
-              userProfilePic: NetworkImage(
-                imgpath + loggedInUser!.image!,
-              ),
+              userProfilePic: null,
+              // userProfilePic: NetworkImage(
+              //   imgpath + loggedInUser!.image!,
+              // ),
 
               userMoreInfo: TextWidget(
-                title: loggedInUser!.email!,
+                title: loggedInUser!.email,
                 txtSize: 10,
                 txtColor: txtColor,
               ),
@@ -131,7 +139,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                     ),
                     onPressed: (() {}),
                     child: Text(
-                      loggedInUser!.role!,
+                      loggedInUser!.role,
                       style: GoogleFonts.gemunuLibre(
                         fontWeight: FontWeight.w900,
                         color: Colors.white,
