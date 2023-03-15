@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dengue_tracing_application/Global/button_widget.dart';
+import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Location_Picker.dart';
@@ -59,8 +60,38 @@ class _SignupScreenState extends State<SignupScreen> {
                     backgroundColor: Colors.transparent,
                     child: Image.asset("assets/dengu.png"),
                   ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // Text(
+                  //   "Dengue Tracing",
+                  //   style: TextStyle(
+                  //     fontWeight: FontWeight.w800,
+                  //     color: btnColor,
+                  //     fontSize: 35,
+                  //   ),
+                  // ),
+                  // Text(
+                  //   "Application",
+                  //   style: TextStyle(
+                  //     fontWeight: FontWeight.w800,
+                  //     color: btnColor,
+                  //     fontSize: 30,
+                  //   ),
+                  // ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: txtColor,
+                      fontSize: 25,
+                    ),
+                  ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   MyTextField(
                     controller: namecont,

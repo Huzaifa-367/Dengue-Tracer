@@ -25,7 +25,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   @override
   void initState() {
+    // namecont.text = loggedInUser!.name;
+    // emailcont.text = loggedInUser!.email;
+    // phonecont.text = loggedInUser!.phone_number;
+    // passwordcont.text = loggedInUser!.password;
+    // home_loccont.text = loggedInUser!.home_location;
     super.initState();
+
     _loadDarkModeSetting();
   }
 
@@ -44,11 +50,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   //Shared Preference End
 
-  TextEditingController namecont = TextEditingController();
-  TextEditingController phonecont = TextEditingController();
-  TextEditingController emailcont = TextEditingController();
-  TextEditingController passwordcont = TextEditingController();
-  TextEditingController home_loccont = TextEditingController();
+  final TextEditingController namecont = TextEditingController();
+  final TextEditingController phonecont = TextEditingController();
+  final TextEditingController emailcont = TextEditingController();
+  final TextEditingController passwordcont = TextEditingController();
+  final TextEditingController home_loccont = TextEditingController();
   // TextEditingController office_loccont = TextEditingController();
 
   // /// Get from gallery
@@ -119,12 +125,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               //         "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png")
                               //     : NetworkImage(imgpath + u!.image!),
                               //),
-                              imageFile == null
-                                  ? CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: NetworkImage(
-                                          imgpath + loggedInUser!.image!),
-                                    )
+                              loggedInUser!.image != null
+                                  ? imageFile == null
+                                      ? CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: NetworkImage(
+                                              imgpath + loggedInUser!.image!),
+                                        )
+                                      : CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage:
+                                              FileImage(imageFile!),
+                                        )
                                   : const CircleAvatar(
                                       radius: 50,
                                       backgroundImage:
@@ -182,6 +194,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                   }
 
                                                   Navigator.of(context).pop();
+                                                  setState(() {});
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
@@ -618,6 +631,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       child: ButtonWidget(
                         btnText: "Save",
                         onPress: (() {
+                          // loggedInUser!.name = namecont.text;
+                          // loggedInUser!.email = emailcont.text;
+                          // loggedInUser!.phone_number = phonecont.text;
+                          // loggedInUser!.password = passwordcont.text;
+                          // loggedInUser!.home_location = home_loccont.text;
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const LoginScreen()));
                         }),

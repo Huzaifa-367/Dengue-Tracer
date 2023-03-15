@@ -31,20 +31,42 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _Remember();
+    loadUserEmailPassword();
   }
 
-  void _Remember() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  void handleRemeberme(bool value) {
+    print("Handle Rember Me");
+    isRemember = value;
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('email', emailcont.text);
+        prefs.setString('password', passwordcont.text);
+      },
+    );
     setState(() {
-      isRemember = prefs.getBool('save') ?? false;
+      isRemember = value;
     });
   }
 
-  // ignore: non_constant_identifier_names
-  void _savestatus(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('save', value);
+  void loadUserEmailPassword() async {
+    print("Load Email");
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var email = prefs.getString("email") ?? "";
+      var password = prefs.getString("password") ?? "";
+      var remeberMe = prefs.getBool("remember_me") ?? false;
+
+      if (remeberMe) {
+        setState(() {
+          isRemember = true;
+        });
+        emailcont.text = email ?? "";
+        passwordcont.text = password ?? "";
+      }
+    } catch (e) {
+      // print(e);
+    }
   }
 
   //Shared Preference End
@@ -73,7 +95,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 20,
                   ),
                   Text(
-                    "Dengue Tracing Application",
+                    "Dengue Tracing",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      color: btnColor,
+                      fontSize: 35,
+                    ),
+                  ),
+                  Text(
+                    "Application",
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       color: btnColor,
@@ -88,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       color: txtColor,
-                      fontSize: 20,
+                      fontSize: 25,
                     ),
                   ),
                   const SizedBox(
@@ -162,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(
                               () {
                                 isRemember = value;
-                                _savestatus(value);
+                                handleRemeberme(value);
                               },
                             );
                           },

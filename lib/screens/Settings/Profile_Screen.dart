@@ -44,7 +44,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
 
   Future<bool> get SendfeedBack {
     return UrlLauncher.launch(
-        'https://wa.me/923203608044?text=Rating: ${feedback!.rating} \n Review: ${feedback!.review}');
+        'https://wa.me/923203608044?text=Name:  ${loggedInUser!.name} \n Rating: ${feedback!.rating} \n Review: ${feedback!.review}');
   }
 
   bool get feedbackAvailable => feedback != null && feedback!.rating != null;
@@ -100,7 +100,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
             // user card
             BigUserCard(
               cardRadius: 20,
-              backgroundMotifColor: Colors.white,
+              backgroundMotifColor: const Color.fromRGBO(255, 255, 255, 1),
               //settingColor: Colors.amber,
               userName: loggedInUser!.name,
               userProfilePic: NetworkImage(
@@ -108,7 +108,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               ),
 
               userMoreInfo: TextWidget(
-                title: loggedInUser!.email,
+                title: loggedInUser!.email!,
                 txtSize: 10,
                 txtColor: txtColor,
               ),
@@ -131,7 +131,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                     ),
                     onPressed: (() {}),
                     child: Text(
-                      loggedInUser!.role,
+                      loggedInUser!.role!,
                       style: GoogleFonts.gemunuLibre(
                         fontWeight: FontWeight.w900,
                         color: Colors.white,
