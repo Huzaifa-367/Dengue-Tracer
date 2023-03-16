@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
@@ -11,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:map_picker/map_picker.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+
+import 'package:http/http.dart' as http;
 
 class CasesMap extends StatefulWidget {
   const CasesMap({Key? key}) : super(key: key);
@@ -27,6 +31,12 @@ void dispose() {
 }
 
 class _CasesMapState extends State<CasesMap> {
+  @override
+  void initState() {
+    super.initState();
+    loadDengueCases();
+  }
+
   final _controller = Completer<GoogleMapController>();
   GoogleMapController? _control;
   double _currentSliderValue = 30.0;
@@ -61,6 +71,84 @@ class _CasesMapState extends State<CasesMap> {
 
   var textController = TextEditingController();
 
+  final LatLng _center = const LatLng(1.3521, 103.8198);
+  List<Marker> _markers = [
+    Marker(
+      markerId: const MarkerId('Marker1'),
+      position: const LatLng(33.636711, 73.076044),
+      infoWindow: const InfoWindow(title: 'Business 1'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    ),
+    Marker(
+      markerId: const MarkerId('Marker2'),
+      position: const LatLng(33.635895, 73.075096),
+      infoWindow: const InfoWindow(title: 'Business 2'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    ),
+    Marker(
+      markerId: const MarkerId('Marker1'),
+      position: const LatLng(33.637289, 73.073201),
+      infoWindow: const InfoWindow(title: 'Business 1'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    ),
+    Marker(
+      markerId: const MarkerId('Marker2'),
+      position: const LatLng(33.638078, 73.074275),
+      infoWindow: const InfoWindow(title: 'Business 2'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    ),
+    Marker(
+      markerId: const MarkerId('Marker1'),
+      position: const LatLng(33.637263, 73.074559),
+      infoWindow: const InfoWindow(title: 'Business 1'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    ),
+    Marker(
+      markerId: const MarkerId('Marker2'),
+      position: const LatLng(33.637921, 73.076487),
+      infoWindow: const InfoWindow(title: 'Business 2'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    ),
+    Marker(
+      markerId: const MarkerId('Marker1'),
+      position: const LatLng(33.638894, 73.076455),
+      infoWindow: const InfoWindow(title: 'Business 1'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    ),
+    Marker(
+      markerId: const MarkerId('Marker2'),
+      position: const LatLng(33.638946, 73.075096),
+      infoWindow: const InfoWindow(title: 'Business 2'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    ),
+  ];
+
+  Future<void> loadDengueCases() async {
+    final response =
+        await http.get(Uri.parse('https://api.example.com/dengue-cases'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      setState(() {
+        _markers = List.generate(data.length, (index) {
+          final caseData = data[index];
+          return Marker(
+            markerId: MarkerId(caseData['id']),
+            position: LatLng(caseData['latitude'], caseData['longitude']),
+            infoWindow: InfoWindow(
+              title: 'Dengue Case',
+              snippet:
+                  'Date: ${caseData['date']}\nLocation: ${caseData['location']}',
+            ),
+            icon:
+                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          );
+        });
+      });
+    } else {
+      throw Exception('Failed to load Dengue cases data');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -88,6 +176,8 @@ class _CasesMapState extends State<CasesMap> {
                   zoomControlsEnabled: false,
                   // hide location button
                   myLocationButtonEnabled: true,
+                  // mapToolbarEnabled: true,
+                  trafficEnabled: true,
                   mapType: MapType.normal,
                   //  camera position
                   initialCameraPosition: cameraPosition,
@@ -97,6 +187,7 @@ class _CasesMapState extends State<CasesMap> {
                     _customInfoWindowController.googleMapController =
                         controller;
                   },
+                  markers: Set<Marker>.of(_markers),
 
                   onCameraMoveStarted: () {
                     // notify map is moving

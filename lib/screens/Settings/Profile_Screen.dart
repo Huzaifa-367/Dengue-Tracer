@@ -110,10 +110,10 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               backgroundMotifColor: const Color.fromRGBO(255, 255, 255, 1),
               //settingColor: Colors.amber,
               userName: loggedInUser!.name,
-              userProfilePic: null,
-              // userProfilePic: NetworkImage(
-              //   imgpath + loggedInUser!.image!,
-              // ),
+              // userProfilePic: null,
+              userProfilePic: NetworkImage(
+                imgpath + loggedInUser!.image!,
+              ),
 
               userMoreInfo: TextWidget(
                 title: loggedInUser!.email,
@@ -389,7 +389,12 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               items: [
                 SettingsItem(
                   onTap: () {
-                    loggedInUser = null;
+                    // setState(() {
+                    //   emailsaved = "";
+                    //   passwordsaved = "";
+                    //   //loggedInUser = null;
+                    // });
+
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const LoginScreen(),

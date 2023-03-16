@@ -22,8 +22,13 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this);
-    animation = CurvedAnimation(parent: controller!, curve: Curves.easeIn);
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    animation = CurvedAnimation(
+      parent: controller!,
+      curve: Curves.easeIn,
+    );
 
     controller?.forward();
 
