@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    
    <application
         android:label="Dengue Tracer"
         android:name="${applicationName}"
@@ -18,6 +19,8 @@
         >
          <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw"/>
+        <meta-data  android:name="com.google.android.gms.version"
+		       android:value="@integer/google_play_services_version" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

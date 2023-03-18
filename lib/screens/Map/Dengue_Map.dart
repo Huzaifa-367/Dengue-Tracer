@@ -102,6 +102,53 @@ class _CasesMapState extends State<CasesMap> {
     }
   }
 
+  final Set<Polygon> _polygons = {
+    Polygon(
+      onTap: () {
+        SnackBar(
+          elevation: 5,
+          backgroundColor: btnColor,
+          content: Text(
+            "Rehmanabad",
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              color: ScfColor,
+              fontSize: 15,
+            ),
+          ),
+          duration: const Duration(seconds: 2),
+        );
+        // TextWidget(title: "Rehmanabad", txtSize: 12, txtColor: txtColor);
+        // getDialogue(context, "Rehmanabad");
+      },
+      polygonId: const PolygonId('polygon1'),
+      points: const <LatLng>[
+        LatLng(33.644217, 73.074658),
+        LatLng(33.644065, 73.080516),
+        LatLng(33.642175, 73.082333),
+        LatLng(33.640020, 73.080607),
+        LatLng(33.637373, 73.077156),
+        LatLng(33.638243, 73.071434),
+      ],
+      strokeWidth: 2,
+      strokeColor: Colors.red,
+      fillColor: Colors.red.withOpacity(0.2),
+    ),
+    Polygon(
+      polygonId: const PolygonId('polygon2'),
+      points: const <LatLng>[
+        LatLng(33.637612, 73.076807),
+        LatLng(33.638170, 73.071442),
+        LatLng(33.635490, 73.070011),
+        LatLng(33.633368, 73.070592),
+        LatLng(33.632140, 73.074303),
+        LatLng(33.633815, 73.076986),
+      ],
+      strokeWidth: 2,
+      strokeColor: Colors.blue,
+      fillColor: Colors.blue.withOpacity(0.2),
+    ),
+  };
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -141,6 +188,7 @@ class _CasesMapState extends State<CasesMap> {
                         controller;
                   },
                   markers: _markers,
+                  polygons: _polygons,
 
                   onCameraMoveStarted: () {
                     // notify map is moving

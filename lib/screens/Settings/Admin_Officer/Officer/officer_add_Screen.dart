@@ -7,6 +7,7 @@ import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';
+import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Sectors/SectorsDropDown.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -62,7 +63,7 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
             //backgroundColor: btnColor,
             title: TextWidget(
                 title: "Add New Health Inspector",
-                txtSize: 25,
+                txtSize: 20,
                 txtColor: txtColor),
           ),
           //backgroundColor: Colors.amber,
@@ -286,13 +287,13 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                   sufixIcon:
                       isVisible ? Icons.visibility : Icons.visibility_off,
                 ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // const Padding(
-                //   padding: EdgeInsets.symmetric(horizontal: 10),
-                //   child: SectorsDrop(),
-                // ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: SectorsDrop(),
+                ),
                 const SizedBox(
                   height: 20,
                 ),

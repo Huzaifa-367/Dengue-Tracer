@@ -310,6 +310,26 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                   title: 'Prefrences',
                   subtitle: "Tap here to set area radius",
                 ),
+                SettingsItem(
+                  backgroundColor: btnColor,
+                  onTap: () {
+                    getDialogue(context, "No sectors created yet in API!");
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const Add_Sector_Screen(),
+                    //   ),
+                    // );
+                  },
+                  icons: Icons.admin_panel_settings_rounded,
+                  iconStyle: IconStyle(
+                    iconsColor: Colors.white,
+                    withBackground: true,
+                    backgroundColor: Colors.red,
+                  ),
+                  title: 'Sectors',
+                  subtitle: "Edit Sectors data",
+                ),
                 loggedInUser!.role == "admin"
                     ? SettingsItem(
                         backgroundColor: btnColor,
