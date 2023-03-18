@@ -1,4 +1,5 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
+import 'package:dengue_tracing_application/model/STATS/weeklystats.dart';
 import 'package:dengue_tracing_application/screens/Home/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,6 @@ import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/model/STATS/monthlystats.dart';
-import 'package:dengue_tracing_application/model/STATS/weeklystats.dart';
 import 'package:dengue_tracing_application/model/STATS/yearlystats.dart';
 
 class StatsScreen extends StatefulWidget {
@@ -167,6 +167,7 @@ class _StatsScreenState extends State<StatsScreen> {
                       height: 600,
                       width: 500,
                       child: TabBarView(children: [
+                        //chart_screen(),
                         WeeklyData(),
                         MonthlyData(),
                         YearlyData(),

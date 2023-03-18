@@ -1,9 +1,9 @@
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
-//import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class WeeklyData extends StatefulWidget {
   const WeeklyData({Key? key}) : super(key: key);
@@ -13,33 +13,39 @@ class WeeklyData extends StatefulWidget {
 }
 
 class _ChartData {
-  _ChartData(this.x, this.y);
+  _ChartData(this.date, this.cases);
 
-  final String x;
-  final double y;
+  final DateTime date;
+  final int cases;
 }
 
 class _WeeklyDataState extends State<WeeklyData> {
-  //Line Chart Graph Data
   late List<_ChartData> data;
   late TooltipBehavior _tooltip;
+  final List<_ChartData> _chartData = [];
 
   @override
   void initState() {
-    data = [
-      _ChartData('MON', 1112),
-      _ChartData('TUE', 1500),
-      _ChartData('WED', 3000),
-      _ChartData('THR', 236),
-      _ChartData('FRI', 1467),
-      _ChartData('SAT', 3678),
-      _ChartData('SUN', 1208),
-    ];
-    _tooltip = TooltipBehavior(enable: true);
     super.initState();
+    _tooltip = TooltipBehavior(enable: true);
+    _getChartData();
   }
 
-//Line Chart Graph End
+  void _getChartData() async {
+    var response = await http.get(Uri.parse('$ip/GetDengueCasesByDate'));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      for (var item in data) {
+        // Trimming the time part from the date
+        var trimmedDate = item['Date'].toString().split(' ')[0];
+        // Creating a DateTime object
+        var parsedDate = DateTime.parse(trimmedDate);
+        _chartData.add(_ChartData(parsedDate, item['Count']));
+      }
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,17 +60,14 @@ class _WeeklyDataState extends State<WeeklyData> {
           ],
         ),
         SfCartesianChart(
-          //borderColor: btnColor,
-          //borderWidth: 1,
-          //backgroundColor: bkColor,
           primaryXAxis: CategoryAxis(),
-          primaryYAxis: NumericAxis(minimum: 0, maximum: 4000, interval: 200),
+          primaryYAxis: NumericAxis(minimum: 0, maximum: 20, interval: 1),
           tooltipBehavior: _tooltip,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(
-                dataSource: data,
-                xValueMapper: (_ChartData data, _) => data.x,
-                yValueMapper: (_ChartData data, _) => data.y,
+                dataSource: _chartData,
+                xValueMapper: (_ChartData data, _) => data.date.toString(),
+                yValueMapper: (_ChartData data, _) => data.cases,
                 name: 'Dengue Cases',
                 color: btnColor,
                 borderRadius: const BorderRadius.only(
