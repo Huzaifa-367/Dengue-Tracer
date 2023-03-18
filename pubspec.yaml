@@ -61,6 +61,8 @@ dependencies:
   email_otp: ^1.0.4
   #widget_and_text_animator: ^1.0.9
   animated_text_kit: ^4.2.2
+  pluto_grid: ^6.0.4
+
   #pull_to_refresh: ^2.0.0
  
 

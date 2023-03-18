@@ -5,7 +5,7 @@ import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
-import 'package:dengue_tracing_application/screens/Map/Models/map_style.dart';
+import 'package:dengue_tracing_application/model/MAP/map_style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,7 +34,9 @@ class _CasesMapState extends State<CasesMap> {
   @override
   void initState() {
     super.initState();
-    loadDengueCases();
+    _getDengueUsers();
+
+    // loadDengueCases();
   }
 
   final _controller = Completer<GoogleMapController>();
@@ -72,80 +74,31 @@ class _CasesMapState extends State<CasesMap> {
   var textController = TextEditingController();
 
   final LatLng _center = const LatLng(1.3521, 103.8198);
-  List<Marker> _markers = [
-    Marker(
-      markerId: const MarkerId('Marker1'),
-      position: const LatLng(33.636711, 73.076044),
-      infoWindow: const InfoWindow(title: 'Business 1'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-    ),
-    Marker(
-      markerId: const MarkerId('Marker2'),
-      position: const LatLng(33.635895, 73.075096),
-      infoWindow: const InfoWindow(title: 'Business 2'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    ),
-    Marker(
-      markerId: const MarkerId('Marker1'),
-      position: const LatLng(33.637289, 73.073201),
-      infoWindow: const InfoWindow(title: 'Business 1'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-    ),
-    Marker(
-      markerId: const MarkerId('Marker2'),
-      position: const LatLng(33.638078, 73.074275),
-      infoWindow: const InfoWindow(title: 'Business 2'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    ),
-    Marker(
-      markerId: const MarkerId('Marker1'),
-      position: const LatLng(33.637263, 73.074559),
-      infoWindow: const InfoWindow(title: 'Business 1'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-    ),
-    Marker(
-      markerId: const MarkerId('Marker2'),
-      position: const LatLng(33.637921, 73.076487),
-      infoWindow: const InfoWindow(title: 'Business 2'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    ),
-    Marker(
-      markerId: const MarkerId('Marker1'),
-      position: const LatLng(33.638894, 73.076455),
-      infoWindow: const InfoWindow(title: 'Business 1'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-    ),
-    Marker(
-      markerId: const MarkerId('Marker2'),
-      position: const LatLng(33.638946, 73.075096),
-      infoWindow: const InfoWindow(title: 'Business 2'),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    ),
-  ];
 
-  Future<void> loadDengueCases() async {
-    final response =
-        await http.get(Uri.parse('https://api.example.com/dengue-cases'));
+  List<dynamic> _users = [];
+  Set<Marker> _markers = {};
+
+  //Api to get all dengue users
+  Future<void> _getDengueUsers() async {
+    final String apiUrl = '$ip/GetDengueUsers';
+    final response = await http.get(Uri.parse(apiUrl));
+
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
       setState(() {
-        _markers = List.generate(data.length, (index) {
-          final caseData = data[index];
-          return Marker(
-            markerId: MarkerId(caseData['id']),
-            position: LatLng(caseData['latitude'], caseData['longitude']),
-            infoWindow: InfoWindow(
-              title: 'Dengue Case',
-              snippet:
-                  'Date: ${caseData['date']}\nLocation: ${caseData['location']}',
-            ),
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          );
-        });
+        _users = json.decode(response.body);
+        _markers = Set<Marker>.from(_users.map((user) => Marker(
+              markerId: MarkerId(user['name']),
+              position: LatLng(
+                double.parse(user['home_location'].split(',')[0]),
+                double.parse(user['home_location'].split(',')[1]),
+              ),
+              infoWindow: InfoWindow(title: user['name']),
+              // icon: BitmapDescriptor.defaultMarkerWithHue(
+              //     BitmapDescriptor.hueRed),
+            )));
       });
     } else {
-      throw Exception('Failed to load Dengue cases data');
+      throw Exception('Failed to fetch dengue users.');
     }
   }
 
@@ -187,7 +140,7 @@ class _CasesMapState extends State<CasesMap> {
                     _customInfoWindowController.googleMapController =
                         controller;
                   },
-                  markers: Set<Marker>.of(_markers),
+                  markers: _markers,
 
                   onCameraMoveStarted: () {
                     // notify map is moving

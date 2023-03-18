@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../Authentication/Login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Authentication/models/usermodel.dart';
+import '../../model/USER/usermodel.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({Key? key}) : super(key: key);
@@ -57,29 +57,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final TextEditingController home_loccont = TextEditingController();
   // TextEditingController office_loccont = TextEditingController();
 
-  // /// Get from gallery
-  // _getFromGallery() async {
-  //   PickedFile? pickedFile = await ImagePicker().getImage(
-  //     source: ImageSource.gallery,
-  //     maxWidth: 1800,
-  //     maxHeight: 1800,
-  //   );
-  //   setState(() {
-  //     imageFile = File(pickedFile!.path);
-  //   });
-  // }
-
-  // /// Get from Camera
-  // _getFromCamera() async {
-  //   XFile? pickedFile =
-  //       await ImagePicker().pickImage(source: ImageSource.camera);
-
-  //   setState(() {
-  //     imageFile = File(pickedFile!.path);
-  //     imageFile = File(pickedFile.path);
-  //     u.uploadPic(imageFile!);
-  //   });
-  // }
   /// Variables
   User? u;
   File? imageFile;
@@ -90,355 +67,324 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          //backgroundColor: ScfColor,
-          body: Padding(
-            padding: const EdgeInsets.only(
-              //left: 10.0,
-              //right: 10,
-              top: 15,
+          appBar: AppBar(
+            title: TextWidget(
+              title: "Edit your profile",
+              txtSize: 20,
+              txtColor: txtColor,
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 15,
+          ),
+          //backgroundColor: ScfColor,
+          body: SingleChildScrollView(
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 8.0,
+                    right: 8.0,
+                    bottom: 8.0,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 120,
-                          ),
-                          Stack(
-                            children: [
-                              // const CircleAvatar(
-                              //   radius: 50,
-                              // backgroundImage: u!.image == null
-                              //     ? null
-                              //     : NetworkImage(imgpath + u!.image!),
-                              // backgroundImage: u!.image == null
-                              //     ? const NetworkImage(
-                              //         "https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png")
-                              //     : NetworkImage(imgpath + u!.image!),
-                              //),
-                              loggedInUser!.image != null
-                                  ? imageFile == null
-                                      ? CircleAvatar(
-                                          radius: 50,
-                                          backgroundImage: NetworkImage(
-                                              imgpath + loggedInUser!.image!),
-                                        )
-                                      : CircleAvatar(
-                                          radius: 50,
-                                          backgroundImage:
-                                              FileImage(imageFile!),
-                                        )
-                                  : const CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage:
-                                          AssetImage(Images.dpImage),
-                                    ),
-                              Positioned(
-                                bottom: 0.2,
-                                right: 0.2,
-                                //left: 50,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        actions: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              IconButton(
-                                                onPressed: (() {
-                                                  Navigator.of(context).pop();
-                                                }),
-                                                icon: const Icon(Icons.cancel),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              TextWidget(
-                                                  title: "Pick Image From?",
-                                                  txtSize: 20,
-                                                  txtColor: btnColor),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              TextButton(
-                                                onPressed: () async {
-                                                  XFile? file =
-                                                      await ImagePicker()
-                                                          .pickImage(
-                                                              source:
-                                                                  ImageSource
-                                                                      .gallery);
-                                                  if (file != null) {
-                                                    imageFile = File(file.path);
-                                                    loggedInUser!
-                                                        .uploadPic(imageFile!);
-                                                  }
-
-                                                  Navigator.of(context).pop();
-                                                  setState(() {});
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: btnColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            25),
-                                                  ),
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10,
-                                                          right: 8,
-                                                          bottom: 10,
-                                                          left: 8),
-                                                  child: const TextWidget(
-                                                      title: "Gallery",
-                                                      txtSize: 15,
-                                                      txtColor: Colors.white),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () async {
-                                                  XFile? file =
-                                                      await ImagePicker()
-                                                          .pickImage(
-                                                    source: ImageSource.camera,
-                                                  );
-                                                  if (file != null) {
-                                                    imageFile = File(file.path);
-                                                    loggedInUser
-                                                        ?.uploadPic(imageFile!);
-                                                  }
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: btnColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            25),
-                                                  ),
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10,
-                                                          right: 8,
-                                                          bottom: 10,
-                                                          left: 8),
-                                                  child: const TextWidget(
-                                                      title: "  Camera  ",
-                                                      txtSize: 15,
-                                                      txtColor: Colors.white),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  child: Icon(
-                                    //size: 35,
-                                    Icons.camera_alt,
-                                    size: 35,
-                                    color: btnColor,
+                  child: Divider(
+                    thickness: 2,
+                    color: btnColor,
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 120,
+                        ),
+                        Stack(
+                          children: [
+                            //),
+                            loggedInUser!.image != null
+                                ? imageFile == null
+                                    ? CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage: NetworkImage(
+                                            imgpath + loggedInUser!.image!),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage: FileImage(imageFile!),
+                                      )
+                                : const CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: NetworkImage(
+                                        "https://e7.pngegg.com/pngimages/771/79/png-clipart-avatar-bootstrapcdn-graphic-designer-angularjs-avatar-child-face.png"),
                                   ),
+                            Positioned(
+                              bottom: 0.2,
+                              right: 0.2,
+                              //left: 50,
+                              child: GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      actions: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            IconButton(
+                                              onPressed: (() {
+                                                Navigator.of(context).pop();
+                                              }),
+                                              icon: const Icon(Icons.cancel),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TextWidget(
+                                                title: "Pick Image From?",
+                                                txtSize: 20,
+                                                txtColor: btnColor),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () async {
+                                                XFile? file =
+                                                    await ImagePicker()
+                                                        .pickImage(
+                                                            source: ImageSource
+                                                                .gallery);
+                                                if (file != null) {
+                                                  imageFile = File(file.path);
+                                                  loggedInUser!
+                                                      .uploadPic(imageFile!);
+                                                }
+
+                                                Navigator.of(context).pop();
+                                                setState(() {});
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: btnColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                ),
+                                                padding: const EdgeInsets.only(
+                                                    top: 10,
+                                                    right: 8,
+                                                    bottom: 10,
+                                                    left: 8),
+                                                child: const TextWidget(
+                                                    title: "Gallery",
+                                                    txtSize: 15,
+                                                    txtColor: Colors.white),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                XFile? file =
+                                                    await ImagePicker()
+                                                        .pickImage(
+                                                  source: ImageSource.camera,
+                                                );
+                                                if (file != null) {
+                                                  imageFile = File(file.path);
+                                                  loggedInUser
+                                                      ?.uploadPic(imageFile!);
+                                                }
+
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: btnColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                ),
+                                                padding: const EdgeInsets.only(
+                                                    top: 10,
+                                                    right: 8,
+                                                    bottom: 10,
+                                                    left: 8),
+                                                child: const TextWidget(
+                                                    title: "  Camera  ",
+                                                    txtSize: 15,
+                                                    txtColor: Colors.white),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                child: Icon(
+                                  //size: 35,
+                                  Icons.camera_alt,
+                                  size: 35,
+                                  color: btnColor,
                                 ),
                               ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 60,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                      ),
-                      Text(
-                        loggedInUser!.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                          fontSize: 25,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      SizedBox(
-                        height: 35,
-                        width: 60,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: loggedInUser!.role == "admin"
-                                ? btnColor
-                                : loggedInUser!.role == "Officer"
-                                    ? greenColor
-                                    : loggedInUser!.role == "user"
-                                        ? txtColor
-                                        : ScfColor,
-                            shadowColor:
-                                const Color.fromARGB(255, 196, 120, 115),
-                            //elevation: 4,
-                          ),
-                          onPressed: (() {}),
-                          child: Text(
-                            loggedInUser!.role,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontSize: 14,
                             ),
-                          ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    loggedInUser!.email,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                      fontSize: 18,
+                        const SizedBox(
+                          width: 60,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: MyTextField(
-                      controller: namecont,
-                      hintText: "Name",
-                      keytype: TextInputType.text,
-                      obscureText: false,
-                      prefixIcon: const Icon(Icons.person),
-                      //sufixIcon: Icons.remove_red_eye,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: MyTextField(
-                      controller: emailcont,
-                      hintText: "Email",
-                      keytype: TextInputType.text,
-                      obscureText: false,
-                      prefixIcon: const Icon(Icons.email),
-                      //sufixIcon: Icons.remove_red_eye,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: MyTextField(
-                      controller: phonecont,
-                      hintText: "Phone Number",
-                      keytype: TextInputType.text,
-                      obscureText: false,
-                      prefixIcon: const Icon(Icons.call),
-                      // sufixIcon: Icons.remove_red_eye,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: MyTextField(
-                      controller: passwordcont,
-                      hintText: "Password",
-                      keytype: TextInputType.text,
-                      obscureText: false,
-                      prefixIcon: const Icon(Icons.password),
-                      sufixIcon: Icons.remove_red_eye,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: MyTextField(
-                      controller: passwordcont,
-                      hintText: "Repeat Password",
-                      keytype: TextInputType.text,
-                      obscureText: false,
-                      prefixIcon: const Icon(Icons.password),
-                      sufixIcon: Icons.remove_red_eye,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: MyTextField(
-                      controller: home_loccont,
-                      hintText: "Location",
-                      keytype: TextInputType.text,
-                      obscureText: false,
-                      prefixIcon: const Icon(Icons.map),
-                      sufixIcon: Icons.pin_drop,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      height: 50,
-                      width: 300,
-                      child: ButtonWidget(
-                        btnText: "Save",
-                        onPress: (() {
-                          // loggedInUser!.name = namecont.text;
-                          // loggedInUser!.email = emailcont.text;
-                          // loggedInUser!.phone_number = phonecont.text;
-                          // loggedInUser!.password = passwordcont.text;
-                          // loggedInUser!.home_location = home_loccont.text;
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const LoginScreen()));
-                        }),
+                    Text(
+                      loggedInUser!.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                        fontSize: 25,
                       ),
                     ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                  ],
+                ),
+                Text(
+                  loggedInUser!.email,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                    fontSize: 18,
                   ),
-                  const SizedBox(
-                    height: 30,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: MyTextField(
+                    controller: namecont,
+                    hintText: "Name",
+                    keytype: TextInputType.text,
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.person),
+                    //sufixIcon: Icons.remove_red_eye,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: MyTextField(
+                    controller: emailcont,
+                    hintText: "Email",
+                    keytype: TextInputType.text,
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.email),
+                    //sufixIcon: Icons.remove_red_eye,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: MyTextField(
+                    controller: phonecont,
+                    hintText: "Phone Number",
+                    keytype: TextInputType.text,
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.call),
+                    // sufixIcon: Icons.remove_red_eye,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: MyTextField(
+                    controller: passwordcont,
+                    hintText: "Password",
+                    keytype: TextInputType.text,
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.password),
+                    sufixIcon: Icons.remove_red_eye,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: MyTextField(
+                    controller: passwordcont,
+                    hintText: "Repeat Password",
+                    keytype: TextInputType.text,
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.password),
+                    sufixIcon: Icons.remove_red_eye,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: MyTextField(
+                    controller: home_loccont,
+                    hintText: "Location",
+                    keytype: TextInputType.text,
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.map),
+                    sufixIcon: Icons.pin_drop,
+                  ),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SizedBox(
+                    height: 50,
+                    width: 300,
+                    child: ButtonWidget(
+                      btnText: "Save",
+                      onPress: (() {
+                        // loggedInUser!.name = namecont.text;
+                        // loggedInUser!.email = emailcont.text;
+                        // loggedInUser!.phone_number = phonecont.text;
+                        // loggedInUser!.password = passwordcont.text;
+                        // loggedInUser!.home_location = home_loccont.text;
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
+                      }),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+              ],
             ),
           ),
         ),

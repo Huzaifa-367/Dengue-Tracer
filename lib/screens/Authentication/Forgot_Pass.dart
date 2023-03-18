@@ -5,7 +5,7 @@ import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:flutter/material.dart';
 
 import 'Login.dart';
-import 'models/User.dart';
+import '../../model/USER/User_API.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);

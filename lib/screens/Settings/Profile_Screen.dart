@@ -3,10 +3,11 @@ import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 //import 'package:dengue_tracing_application/Global/BigUserCard.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/rangeslider.dart';
+import 'package:dengue_tracing_application/Global/tester.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
+import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
 import 'package:dengue_tracing_application/screens/Settings/AboutUs_Screen.dart';
-import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/officer_view.dart';
 import 'package:dengue_tracing_application/screens/Settings/profileEdit_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+
+import 'Admin_Officer/Officer/officer_view.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -82,9 +85,12 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   }
 
   // ignore: non_constant_identifier_names
-  void _DengueStatussetting(bool value) async {
+  void _DengueStatussetting(bool value, context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('Has_Dengue', value);
+    if (value == true) {
+      updateUserStatus(context, loggedInUser!.user_id, _hasDengue);
+    }
   }
 
   //Shared Preference End
@@ -112,7 +118,9 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               userName: loggedInUser!.name,
               // userProfilePic: null,
               userProfilePic: NetworkImage(
-                imgpath + loggedInUser!.image!,
+                loggedInUser!.image != null
+                    ? imgpath + loggedInUser!.image!
+                    : "https://e7.pngegg.com/pngimages/771/79/png-clipart-avatar-bootstrapcdn-graphic-designer-angularjs-avatar-child-face.png",
               ),
 
               userMoreInfo: TextWidget(
@@ -129,7 +137,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                     style: TextButton.styleFrom(
                       backgroundColor: loggedInUser!.role == "admin"
                           ? tbtnColor
-                          : loggedInUser!.role == "Officer"
+                          : loggedInUser!.role == "officer"
                               ? greenColor
                               : loggedInUser!.role == "user"
                                   ? txtColor
@@ -302,25 +310,55 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                   title: 'Prefrences',
                   subtitle: "Tap here to set area radius",
                 ),
-                SettingsItem(
-                  backgroundColor: btnColor,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const OfficersListScreen(),
-                      ),
-                    );
-                  },
-                  icons: Icons.admin_panel_settings_rounded,
-                  iconStyle: IconStyle(
-                    iconsColor: Colors.white,
-                    withBackground: true,
-                    backgroundColor: Colors.red,
-                  ),
-                  title: 'Officers',
-                  subtitle: "Edit Sectors & Officers data",
-                ),
+                loggedInUser!.role == "admin"
+                    ? SettingsItem(
+                        backgroundColor: btnColor,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const OfficersListScreen(),
+                            ),
+                          );
+                        },
+                        icons: Icons.admin_panel_settings_rounded,
+                        iconStyle: IconStyle(
+                          iconsColor: Colors.white,
+                          withBackground: true,
+                          backgroundColor: Colors.red,
+                        ),
+                        title: 'Officers',
+                        subtitle: "Edit Sectors & Officers data",
+                      )
+                    : loggedInUser!.role == "officer"
+                        ? SettingsItem(
+                            backgroundColor: btnColor,
+                            onTap: () {
+                              getDialogue(context, "No sectors assigned!");
+                            },
+                            icons: Icons.area_chart_rounded,
+                            iconStyle: IconStyle(
+                              iconsColor: Colors.white,
+                              withBackground: true,
+                              backgroundColor: Colors.red,
+                            ),
+                            title: 'Sectors',
+                            subtitle: "View your assigned Sectors",
+                          )
+                        : SettingsItem(
+                            backgroundColor: btnColor,
+                            onTap: () {
+                              getDialogue(context, "Your are not authorized!");
+                            },
+                            icons: Icons.area_chart_rounded,
+                            iconStyle: IconStyle(
+                              iconsColor: Colors.white,
+                              withBackground: true,
+                              backgroundColor: Colors.red,
+                            ),
+                            title: 'Sectors',
+                            subtitle: "Edit Sectors & Officers data",
+                          ),
                 SettingsItem(
                   onTap: () {},
                   icons: _hasDengue
@@ -345,7 +383,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                       setState(
                         () {
                           _hasDengue = value;
-                          _DengueStatussetting(value);
+                          _DengueStatussetting(value, context);
                         },
                       );
                     },

@@ -10,7 +10,7 @@ import 'package:expandable_datatable/expandable_datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../Utils/SectorsDropDown.dart';
+import '../screens/Settings/Admin_Officer/Sectors/SectorsDropDown.dart';
 
 class Expandable_Table_Screen extends StatefulWidget {
   const Expandable_Table_Screen({Key? key}) : super(key: key);

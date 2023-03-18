@@ -1,8 +1,8 @@
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
-import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Utils/SectorsDropDown.dart';
-import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/officer_view.dart';
+import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/officer_view.dart';
+import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Sectors/SectorsDropDown.dart';
 import 'package:flutter/material.dart';
 
 getOfficerEditDialogue(emailcontr, context) {

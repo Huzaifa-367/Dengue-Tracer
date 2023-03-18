@@ -1,5 +1,5 @@
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/screens/Home/Models_Notification/notifmodel.dart';
+import 'package:dengue_tracing_application/model/NOTIFICATION/notifmodel.dart';
 import 'package:flutter/material.dart';
 
 class NotifScreen extends StatefulWidget {

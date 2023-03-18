@@ -1,6 +1,4 @@
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/officer_view.dart';
-import 'package:dengue_tracing_application/testings/Tables/expandable_datatable.dart';
 import 'package:flutter/material.dart';
 
 class OfficersList_Screen extends StatefulWidget {
@@ -52,8 +50,8 @@ class _OfficersList_ScreenState extends State<OfficersList_Screen> {
             child: TabBarView(
               // clipBehavior: Clip.antiAlias,
               children: [
-                OfficersListScreen(),
-                Expandable_Table_Screen(),
+                // OfficersListScreen(),
+                // Expandable_Table_Screen(),
               ],
             ),
           ),

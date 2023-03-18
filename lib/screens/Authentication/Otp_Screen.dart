@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 
-import 'models/User.dart';
+import '../../model/USER/User_API.dart';
 
 class Otp_Screen extends StatefulWidget {
   const Otp_Screen({

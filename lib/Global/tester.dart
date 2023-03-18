@@ -2,7 +2,7 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:flutter/material.dart';
 
-getDialogue(context) {
+getDialogue(context, String? message) {
   showDialog(
     barrierDismissible: false,
     context: context,
@@ -21,7 +21,7 @@ getDialogue(context) {
         ),
         Center(
           child: TextWidget(
-            title: "Working",
+            title: "$message",
             txtSize: 30,
             txtColor: btnColor,
           ),

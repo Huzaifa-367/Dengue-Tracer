@@ -117,10 +117,10 @@ packages:
     dependency: "direct main"
     description:
       name: custom_date_range_picker
-      sha256: "69b803e285e27cdf018ed4a81edb53c9db3542e8853a9c086421260f943d7b16"
+      sha256: e2814b22af6fd72909f23a86400eec0454417e6955314e2bfb2ffd88019ac345
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.10"
   custom_info_window:
     dependency: "direct main"
     description:
@@ -428,10 +428,10 @@ packages:
     dependency: transitive
     description:
       name: intl
-      sha256: "910f85bce16fb5c6f614e117efa303e85a1731bb0081edf3604a2ae6e9a3cc91"
+      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.0"
+    version: "0.18.0"
   js:
     dependency: transitive
     description:
@@ -648,6 +648,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.3"
+  pluto_grid:
+    dependency: "direct main"
+    description:
+      name: pluto_grid
+      sha256: "250da7c2cf5d0224d5cee9f2aa7509bbf8b9c3a73681b8cf31629f297ffd8529"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.4"
   process:
     dependency: transitive
     description:
@@ -664,6 +672,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.27.7"
   scrollable_table_view:
     dependency: "direct main"
     description:

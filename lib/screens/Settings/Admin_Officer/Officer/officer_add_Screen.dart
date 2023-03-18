@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
-import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Utils/SectorsDropDown.dart';
+import 'package:dengue_tracing_application/model/USER/usermodel.dart';
+import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';
 
-import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/officer_view.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -18,7 +19,13 @@ class OfficerAddScreen extends StatefulWidget {
 }
 
 class _OfficerAddScreenState extends State<OfficerAddScreen> {
-  TextEditingController emailcontr = TextEditingController();
+  TextEditingController namecont = TextEditingController();
+  TextEditingController phonecont = TextEditingController();
+  TextEditingController emailcont = TextEditingController();
+  TextEditingController passwordcont = TextEditingController();
+  TextEditingController passwordcont2 = TextEditingController();
+  bool isVisible = true;
+  String role = 'officer';
 
   /// Variables
   File? imageFile;
@@ -74,15 +81,20 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                     ),
                     Stack(
                       children: [
-                        imageFile == null
-                            ? const CircleAvatar(
+                        loggedInUser!.image != null
+                            ? imageFile == null
+                                ? CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: NetworkImage(
+                                        imgpath + loggedInUser!.image!),
+                                  )
+                                : CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: FileImage(imageFile!),
+                                  )
+                            : const CircleAvatar(
                                 radius: 50,
-                                backgroundImage:
-                                    AssetImage("assets/avatar-3.png"),
-                              )
-                            : CircleAvatar(
-                                radius: 50,
-                                backgroundImage: FileImage(imageFile!),
+                                backgroundImage: AssetImage(Images.dpImage),
                               ),
                         Positioned(
                           bottom: 0.2,
@@ -121,9 +133,19 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                                           MainAxisAlignment.center,
                                       children: [
                                         TextButton(
-                                          onPressed: () {
-                                            _getFromGallery();
+                                          onPressed: () async {
+                                            XFile? file = await ImagePicker()
+                                                .pickImage(
+                                                    source:
+                                                        ImageSource.gallery);
+                                            if (file != null) {
+                                              imageFile = File(file.path);
+                                              loggedInUser!
+                                                  .uploadPic(imageFile!);
+                                            }
+
                                             Navigator.of(context).pop();
+                                            setState(() {});
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(
@@ -137,14 +159,23 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                                                 bottom: 10,
                                                 left: 8),
                                             child: const TextWidget(
-                                                title: "  Gallery  ",
+                                                title: "Gallery",
                                                 txtSize: 15,
                                                 txtColor: Colors.white),
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () {
-                                            _getFromCamera();
+                                          onPressed: () async {
+                                            XFile? file =
+                                                await ImagePicker().pickImage(
+                                              source: ImageSource.camera,
+                                            );
+                                            if (file != null) {
+                                              imageFile = File(file.path);
+                                              loggedInUser
+                                                  ?.uploadPic(imageFile!);
+                                            }
+
                                             Navigator.of(context).pop();
                                           },
                                           child: Container(
@@ -166,9 +197,6 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                                         ),
                                       ],
                                     ),
-                                    // const SizedBox(
-                                    //   height: 10,
-                                    // ),
                                   ],
                                 ),
                               );
@@ -188,81 +216,83 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: MyTextField(
-                    controller: emailcontr,
-                    hintText: "Name",
-                    keytype: TextInputType.text,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.person),
-                    //sufixIcon: Icons.remove_red_eye,
-                  ),
+                MyTextField(
+                  controller: namecont,
+                  hintText: "Name",
+                  keytype: TextInputType.text,
+                  obscureText: false,
+                  prefixIcon: const Icon(Icons.person),
+                  //sufixIcon: Icons.remove_red_eye,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: MyTextField(
-                    controller: emailcontr,
-                    hintText: "Email",
-                    keytype: TextInputType.text,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.email),
-                    //sufixIcon: Icons.remove_red_eye,
-                  ),
+                MyTextField(
+                  controller: emailcont,
+                  hintText: "Email",
+                  keytype: TextInputType.emailAddress,
+                  obscureText: false,
+                  prefixIcon: const Icon(Icons.email),
+                  //sufixIcon: Icons.remove_red_eye,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: MyTextField(
-                    controller: emailcontr,
-                    hintText: "Phone Number",
-                    keytype: TextInputType.text,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.call),
-                    // sufixIcon: Icons.remove_red_eye,
-                  ),
+                MyTextField(
+                  controller: phonecont,
+                  hintText: "Phone Number",
+                  keytype: TextInputType.phone,
+                  obscureText: false,
+                  prefixIcon: const Icon(Icons.call),
+                  // sufixIcon: Icons.remove_red_eye,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: MyTextField(
-                    controller: emailcontr,
-                    hintText: "Password",
-                    keytype: TextInputType.text,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.remove_red_eye),
-                    sufixIcon: Icons.remove_red_eye,
-                  ),
+                MyTextField(
+                  maxlines: 1,
+                  //siconn: Icons.email,
+                  controller: passwordcont,
+                  hintText: "Password",
+                  obscureText: isVisible,
+                  keytype: TextInputType.text,
+
+                  prefixIcon: const Icon(Icons.password),
+                  sufixIconPress: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  sufixIcon:
+                      isVisible ? Icons.visibility : Icons.visibility_off,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: MyTextField(
-                    controller: emailcontr,
-                    hintText: "Repeat Password",
-                    keytype: TextInputType.text,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.remove_red_eye),
-                    sufixIcon: Icons.remove_red_eye,
-                  ),
+                MyTextField(
+                  maxlines: 1,
+                  //siconn: Icons.email,
+                  controller: passwordcont2,
+                  hintText: "Repeat Password",
+                  obscureText: isVisible,
+                  keytype: TextInputType.text,
+
+                  prefixIcon: const Icon(Icons.password),
+                  sufixIconPress: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  sufixIcon:
+                      isVisible ? Icons.visibility : Icons.visibility_off,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: SectorsDrop(),
-                ),
-                //
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 10),
+                //   child: SectorsDrop(),
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -273,9 +303,24 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                     width: 300,
                     child: ButtonWidget(
                       btnText: "Save",
-                      onPress: (() {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const OfficersListScreen()));
+                      onPress: (() async {
+                        if (passwordcont.text == passwordcont2.text &&
+                            namecont.text != "" &&
+                            emailcont.text != "") {
+                          User u = User();
+                          u.role = role;
+                          u.name = namecont.text;
+                          u.email = emailcont.text;
+                          u.phone_number = phonecont.text;
+                          u.password = passwordcont.text;
+                          u.home_location = "";
+                          await AddOfficer(
+                            u,
+                            context,
+                          );
+                        } else {
+                          snackBar(context, "Please fill all fields correctly");
+                        }
                       }),
                     ),
                   ),

@@ -4,7 +4,7 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
-import 'package:dengue_tracing_application/screens/Map/Models/map_style.dart';
+import 'package:dengue_tracing_application/model/MAP/map_style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -141,8 +141,8 @@ class _PickLocationState extends State<PickLocation> {
                   hintText: "Location",
 
                   sufixIconPress: () {
-                    //Navigator.pop(context, latLong);
-                    Navigator.pop(context, readableAdress);
+                    Navigator.pop(context, latLong);
+                    //Navigator.pop(context, readableAdress);
                     // textController.text =
                     //     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
                   },

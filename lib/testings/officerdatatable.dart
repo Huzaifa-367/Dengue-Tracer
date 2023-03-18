@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../screens/Settings/Admin_Officer/Utils/EditOfficerPopUp.dart';
+import '../screens/Settings/Admin_Officer/Officer/EditOfficerPopUp.dart';
 
 /// The home page of the application which hosts the datagrid.
 class OfficerTable extends StatefulWidget {

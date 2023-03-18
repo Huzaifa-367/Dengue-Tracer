@@ -1,5 +1,6 @@
-import 'package:dengue_tracing_application/screens/Authentication/models/usermodel.dart';
+import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 Color tnColor = const Color.fromARGB(255, 255, 0, 17);
 Color btnColor = const Color(0XFFf85f6a);
@@ -17,6 +18,8 @@ bool? isRemember = false;
 String mapapikey = "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw";
 String? otp;
 int? range;
+
+ List<Marker> markers = [];
 // class Constants {
 //   static const Color primaryColor = Color(0xffFBFBFB);
 //   static const String otpGifImage = "assets/otp.gif";

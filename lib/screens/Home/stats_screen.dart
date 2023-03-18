@@ -6,9 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
-import 'package:dengue_tracing_application/screens/Home/Models_Stats/monthlystats.dart';
-import 'package:dengue_tracing_application/screens/Home/Models_Stats/weeklystats.dart';
-import 'package:dengue_tracing_application/screens/Home/Models_Stats/yearlystats.dart';
+import 'package:dengue_tracing_application/model/STATS/monthlystats.dart';
+import 'package:dengue_tracing_application/model/STATS/weeklystats.dart';
+import 'package:dengue_tracing_application/model/STATS/yearlystats.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({Key? key}) : super(key: key);
@@ -79,6 +79,8 @@ class _StatsScreenState extends State<StatsScreen> {
                         onPress: () {
                           showCustomDateRangePicker(
                             context,
+                            backgroundColor: Colors.transparent,
+                            primaryColor: Colors.transparent,
                             dismissible: true,
                             minimumDate: DateTime.now()
                                 .subtract(const Duration(days: 60)),

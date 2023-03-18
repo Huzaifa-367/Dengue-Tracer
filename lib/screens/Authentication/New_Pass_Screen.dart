@@ -2,8 +2,8 @@ import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
-import 'package:dengue_tracing_application/screens/Authentication/models/User.dart';
-import 'package:dengue_tracing_application/screens/Authentication/models/usermodel.dart';
+import 'package:dengue_tracing_application/model/USER/User_API.dart';
+import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 
 import 'package:flutter/material.dart';
 

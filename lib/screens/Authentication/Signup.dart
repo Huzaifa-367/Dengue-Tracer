@@ -6,8 +6,8 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Location_Picker.dart';
-import 'package:dengue_tracing_application/screens/Authentication/models/User.dart';
-import 'package:dengue_tracing_application/screens/Authentication/models/usermodel.dart';
+import 'package:dengue_tracing_application/model/USER/User_API.dart';
+import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -184,27 +184,14 @@ class _SignupScreenState extends State<SignupScreen> {
                             u.phone_number = phonecont.text;
                             u.password = passwordcont.text;
                             u.home_location = home_loccont.text;
-                            await signUp(u, context);
+                            await signUp(
+                              u,
+                              context,
+                            );
                           } else {
                             snackBar(
                                 context, "Please fill all fields correctly");
                           }
-
-                          // response = await u.signupMutliPart();
-                          // if (response == null) {
-                          //   response = 'Error..';
-                          // } else if (response == "\"Exsist\"") {
-                          //   response = 'Account already exsist';
-                          // } else {
-                          //   response = 'Account created';
-                          // }
-                          // setState(() {});
-                          //snackBar(context, "$response");
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const LoginScreen(),
-                          //   ),
-                          // );
                         }),
                       ),
                     ),
