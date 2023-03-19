@@ -7,7 +7,6 @@ import 'package:custom_info_window/custom_info_window.dart';
 
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +90,7 @@ class _CasesMapState extends State<CasesMap> {
         _markers = Set<Marker>.from(
           _users.map(
             (user) => Marker(
-              markerId: MarkerId(user['user_id']),
+              markerId: MarkerId(user['name']),
               position: LatLng(
                 double.parse(user['home_location'].split(',')[0]),
                 double.parse(user['home_location'].split(',')[1]),
@@ -191,10 +190,10 @@ class _CasesMapState extends State<CasesMap> {
             children: [
               MapPicker(
                 // pass icon widget
-                iconWidget: SvgPicture.asset(
-                  "assets/icons/Location point.svg",
-                  height: 25,
-                  //width: 10,
+                iconWidget: Image.asset(
+                  "assets/images/pin.png",
+                  height: 52,
+                  width: 42,
                 ),
                 //add map picker controller
                 mapPickerController: mapPickerController,
@@ -277,8 +276,8 @@ class _CasesMapState extends State<CasesMap> {
 
               //Theme Selection Button
               Positioned(
-                bottom: 40,
-                right: 15,
+                bottom: 80,
+                right: 30,
                 child: Container(
                   width: 35,
                   height: 50,
@@ -295,16 +294,16 @@ class _CasesMapState extends State<CasesMap> {
                             context: context,
                             builder: (context) => Container(
                                 padding: const EdgeInsets.all(20),
-                                color: bkColor,
+                                color: ScfColor,
                                 height:
                                     MediaQuery.of(context).size.height * 0.3,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                    Text(
                                       "Select Theme",
                                       style: TextStyle(
-                                          color: Colors.black,
+                                          color: txtColor,
                                           fontWeight: FontWeight.w600,
                                           fontSize: 18),
                                     ),
@@ -351,7 +350,11 @@ class _CasesMapState extends State<CasesMap> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.layers_rounded, size: 25),
+                        child: Icon(
+                          Icons.layers_rounded,
+                          size: 25,
+                          color: ScfColor,
+                        ),
                       ),
                     ],
                   ),
@@ -360,7 +363,7 @@ class _CasesMapState extends State<CasesMap> {
 
               //Zoom Selection Button
               Positioned(
-                bottom: 40,
+                bottom: 30,
                 left: 15,
                 child: Container(
                     width: 35,
@@ -380,7 +383,11 @@ class _CasesMapState extends State<CasesMap> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(Icons.add, size: 25),
+                          child: Icon(
+                            Icons.add,
+                            size: 25,
+                            color: ScfColor,
+                          ),
                         ),
                         const Divider(height: 5),
                         MaterialButton(
@@ -391,7 +398,11 @@ class _CasesMapState extends State<CasesMap> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(Icons.remove, size: 25),
+                          child: Icon(
+                            Icons.remove,
+                            size: 25,
+                            color: ScfColor,
+                          ),
                         )
                       ],
                     )),
@@ -399,8 +410,8 @@ class _CasesMapState extends State<CasesMap> {
 
               //Slider
               Positioned(
-                bottom: 8,
-                left: 40,
+                bottom: -5,
+                left: 60,
                 child: Row(
                   //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -420,7 +431,7 @@ class _CasesMapState extends State<CasesMap> {
                                 child: TextWidget(
                                     title: "DAY 1",
                                     txtSize: 10,
-                                    txtColor: txtColor),
+                                    txtColor: ScfColor),
                               ),
                             ),
                             const SizedBox(
@@ -440,7 +451,7 @@ class _CasesMapState extends State<CasesMap> {
                                         ? "$selectedDate"
                                         : "Select A Day",
                                     txtSize: 10,
-                                    txtColor: txtColor),
+                                    txtColor: ScfColor),
                               ),
                             ),
                             const SizedBox(
@@ -458,13 +469,13 @@ class _CasesMapState extends State<CasesMap> {
                                 child: TextWidget(
                                     title: "DAY 30",
                                     txtSize: 10,
-                                    txtColor: txtColor),
+                                    txtColor: ScfColor),
                               ),
                             ),
                           ],
                         ),
                         SizedBox(
-                          width: 280,
+                          width: 305,
                           child: Slider(
                             activeColor: btnColor,
                             value: _currentSliderValue,

@@ -5,7 +5,6 @@ import 'package:custom_info_window/custom_info_window.dart';
 
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
@@ -70,20 +69,22 @@ class _PickLocationState extends State<PickLocation> {
             alignment: Alignment.topCenter,
             children: [
               MapPicker(
+                //showDot: true,
                 // pass icon widget
-                iconWidget: SvgPicture.asset(
-                  "assets/icons/Location point.svg",
-                  height: 25,
-                  //width: 10,
+                iconWidget: Image.asset(
+                  "assets/images/pin.png",
+                  height: 52,
+                  width: 42,
                 ),
                 //add map picker controller
                 mapPickerController: mapPickerController,
                 child: GoogleMap(
-                  indoorViewEnabled: true,
+                  //indoorViewEnabled: true,
                   //liteModeEnabled: true,
                   buildingsEnabled: true,
                   //zoomGesturesEnabled: true,
                   myLocationEnabled: true,
+
                   zoomControlsEnabled: false,
                   // hide location button
                   myLocationButtonEnabled: true,
