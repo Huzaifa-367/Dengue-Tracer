@@ -1,5 +1,4 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
-import 'package:dengue_tracing_application/model/STATS/weeklystats.dart';
 import 'package:dengue_tracing_application/screens/Home/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +9,10 @@ import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/model/STATS/monthlystats.dart';
 import 'package:dengue_tracing_application/model/STATS/yearlystats.dart';
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_charts/charts.dart';
+
 class StatsScreen extends StatefulWidget {
   const StatsScreen({Key? key}) : super(key: key);
 
@@ -17,9 +20,65 @@ class StatsScreen extends StatefulWidget {
   State<StatsScreen> createState() => _StatsScreenState();
 }
 
+class _ChartData {
+  _ChartData(this.date, this.cases);
+
+  final String date;
+  final int cases;
+}
+
 class _StatsScreenState extends State<StatsScreen> {
-  DateTime? startDate;
-  DateTime? endDate;
+  late List<_ChartData> data;
+  late TooltipBehavior _tooltip;
+  final List<_ChartData> _chartData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _tooltip = TooltipBehavior(enable: true);
+    _getChartData();
+  }
+
+  void _getChartData() async {
+    var response = await http.get(Uri.parse('$ip/GetDengueCasesByDate'));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      for (var item in data) {
+        // Trimming the time part from the date
+        var trimmedDate = item['Date'].toString().split('T')[0];
+
+        _chartData.add(_ChartData(trimmedDate, item['Count']));
+      }
+      setState(() {});
+    }
+  }
+
+  void getChartDatabyrange(
+    DateTime? From,
+    DateTime? To,
+  ) async {
+    if (FromDate == null || ToDate == null) {
+      return;
+    }
+
+    var from = FromDate!.toIso8601String().split('T')[0];
+    var to = ToDate!.toIso8601String().split('T')[0];
+    var response = await http
+        .get(Uri.parse('$ip/GetDengueCasesByDateRange?from=$from&to=$to'));
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      _chartData.clear();
+      for (var item in data) {
+        // Trimming the time part from the date
+        var trimmedDate = item['Date'].toString().split('T')[0];
+
+        _chartData.add(_ChartData(trimmedDate, item['Count']));
+      }
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -74,39 +133,55 @@ class _StatsScreenState extends State<StatsScreen> {
                   ),
                   Column(
                     children: [
-                      ButtonWidget(
-                        btnText: "Pick Date",
-                        onPress: () {
-                          showCustomDateRangePicker(
-                            context,
-                            backgroundColor: Colors.transparent,
-                            primaryColor: Colors.transparent,
-                            dismissible: true,
-                            minimumDate: DateTime.now()
-                                .subtract(const Duration(days: 60)),
-                            maximumDate: DateTime.now(),
-                            endDate: endDate,
-                            startDate: startDate,
-                            onApplyClick: (start, end) {
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ButtonWidget(
+                            btnText: "Pick Date",
+                            onPress: () {
+                              showCustomDateRangePicker(
+                                context,
+                                backgroundColor: Colors.white,
+                                primaryColor: btnColor,
+                                dismissible: true,
+                                minimumDate: DateTime.now()
+                                    .subtract(const Duration(days: 60)),
+                                maximumDate: DateTime.now(),
+                                endDate: ToDate,
+                                startDate: FromDate,
+                                onApplyClick: (start, end) {
+                                  setState(() {
+                                    ToDate = end;
+                                    FromDate = start;
+                                    getChartDatabyrange(FromDate, ToDate);
+                                  });
+                                },
+                                onCancelClick: () {
+                                  setState(() {
+                                    ToDate = null;
+                                    FromDate = null;
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                          ButtonWidget(
+                            btnText: "Reset",
+                            onPress: () {
+                              ToDate = null;
+                              FromDate = null;
                               setState(() {
-                                endDate = end;
-                                startDate = start;
+                                _getChartData();
                               });
                             },
-                            onCancelClick: () {
-                              setState(() {
-                                endDate = null;
-                                startDate = null;
-                              });
-                            },
-                          );
-                        },
+                          ),
+                        ],
                       ),
                       const SizedBox(
                         height: 15,
                       ),
                       Text(
-                        '${startDate != null ? DateFormat("dd, MMM,yyyy").format(startDate!) : '-'}  To  ${endDate != null ? DateFormat("dd, MMM,yyyy").format(endDate!) : '-'}',
+                        '${FromDate != null ? DateFormat('yyyy-MMM-dd').format(FromDate!) : '-'}  To  ${ToDate != null ? DateFormat('yyyy-MMM-dd').format(ToDate!) : '-'}',
                         style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 18,
@@ -144,7 +219,7 @@ class _StatsScreenState extends State<StatsScreen> {
                       // ignore: prefer_const_literals_to_create_immutables
                       tabs: [
                         const Tab(
-                          text: "Weekly",
+                          text: "Daily",
                         ),
                         const Tab(
                           text: "Monthly",
@@ -158,8 +233,8 @@ class _StatsScreenState extends State<StatsScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                       left: 7.0,
                       right: 5,
                     ),
@@ -167,10 +242,43 @@ class _StatsScreenState extends State<StatsScreen> {
                       height: 600,
                       width: 500,
                       child: TabBarView(children: [
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                TextWidget(
+                                  title: "No. Of Cases",
+                                  txtSize: 15,
+                                  txtColor: txtColor,
+                                )
+                              ],
+                            ),
+                            SfCartesianChart(
+                              primaryXAxis: CategoryAxis(),
+                              primaryYAxis: NumericAxis(
+                                  minimum: 0, maximum: 20, interval: 1),
+                              tooltipBehavior: _tooltip,
+                              series: <ChartSeries<_ChartData, String>>[
+                                ColumnSeries<_ChartData, String>(
+                                    dataSource: _chartData,
+                                    xValueMapper: (_ChartData data, _) =>
+                                        data.date.toString(),
+                                    yValueMapper: (_ChartData data, _) =>
+                                        data.cases,
+                                    name: 'Dengue Cases',
+                                    color: btnColor,
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(5.0),
+                                        topRight: Radius.circular(5.0))),
+                              ],
+                            ),
+                          ],
+                        ),
+
                         //chart_screen(),
-                        WeeklyData(),
-                        MonthlyData(),
-                        YearlyData(),
+                        //DailyData(),
+                        const MonthlyData(),
+                        const YearlyData(),
                       ]),
                     ),
                   ),

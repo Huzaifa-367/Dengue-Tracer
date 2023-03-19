@@ -19,7 +19,10 @@ String mapapikey = "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw";
 String? otp;
 int? range;
 
- List<Marker> markers = [];
+DateTime? FromDate;
+DateTime? ToDate;
+
+List<Marker> markers = [];
 // class Constants {
 //   static const Color primaryColor = Color(0xffFBFBFB);
 //   static const String otpGifImage = "assets/otp.gif";

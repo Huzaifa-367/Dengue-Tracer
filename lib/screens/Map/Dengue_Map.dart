@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:dengue_tracing_application/Global/tester.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
@@ -16,6 +17,8 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'package:intl/intl.dart';
+
 class CasesMap extends StatefulWidget {
   const CasesMap({Key? key}) : super(key: key);
 
@@ -27,7 +30,6 @@ final CustomInfoWindowController _customInfoWindowController =
     CustomInfoWindowController();
 void dispose() {
   _customInfoWindowController.dispose();
-  //super.dispose();
 }
 
 class _CasesMapState extends State<CasesMap> {
@@ -35,13 +37,12 @@ class _CasesMapState extends State<CasesMap> {
   void initState() {
     super.initState();
     _getDengueUsers();
-
     // loadDengueCases();
   }
 
   final _controller = Completer<GoogleMapController>();
   GoogleMapController? _control;
-  double _currentSliderValue = 30.0;
+
   final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
   final List<dynamic> _mapThemes = [
     {
@@ -77,11 +78,45 @@ class _CasesMapState extends State<CasesMap> {
 
   List<dynamic> _users = [];
   Set<Marker> _markers = {};
-
+  var iconBase =
+      'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png';
   //Api to get all dengue users
   Future<void> _getDengueUsers() async {
     final String apiUrl = '$ip/GetDengueUsers';
     final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _users = json.decode(response.body);
+        _markers = Set<Marker>.from(
+          _users.map(
+            (user) => Marker(
+              markerId: MarkerId(user['user_id']),
+              position: LatLng(
+                double.parse(user['home_location'].split(',')[0]),
+                double.parse(user['home_location'].split(',')[1]),
+              ),
+              infoWindow: InfoWindow(title: user['name']),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueRed),
+            ),
+          ),
+        );
+      });
+    } else {
+      throw Exception('Failed to fetch dengue users.');
+    }
+  }
+
+  double _currentSliderValue = 1.0;
+  String? selectedDate;
+  Future<void> _getDengueCasesByDate(int daysToSubtract) async {
+    final apiUrl = '$ip/GetDengueUsersByDate?daysToSubtract=$daysToSubtract';
+    final response = await http.get(Uri.parse(apiUrl));
+
+    final now = DateTime.now();
+    final date = now.subtract(Duration(days: daysToSubtract));
+    selectedDate = DateFormat('yyyy-MM-dd').format(date);
 
     if (response.statusCode == 200) {
       setState(() {
@@ -98,57 +133,53 @@ class _CasesMapState extends State<CasesMap> {
             )));
       });
     } else {
-      throw Exception('Failed to fetch dengue users.');
+      throw Exception('Failed to fetch dengue cases.');
     }
   }
 
-  final Set<Polygon> _polygons = {
-    Polygon(
-      onTap: () {
-        SnackBar(
-          elevation: 5,
-          backgroundColor: btnColor,
-          content: Text(
-            "Rehmanabad",
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-              color: ScfColor,
-              fontSize: 15,
-            ),
-          ),
-          duration: const Duration(seconds: 2),
-        );
-        // TextWidget(title: "Rehmanabad", txtSize: 12, txtColor: txtColor);
-        // getDialogue(context, "Rehmanabad");
-      },
-      polygonId: const PolygonId('polygon1'),
-      points: const <LatLng>[
-        LatLng(33.644217, 73.074658),
-        LatLng(33.644065, 73.080516),
-        LatLng(33.642175, 73.082333),
-        LatLng(33.640020, 73.080607),
-        LatLng(33.637373, 73.077156),
-        LatLng(33.638243, 73.071434),
-      ],
-      strokeWidth: 2,
-      strokeColor: Colors.red,
-      fillColor: Colors.red.withOpacity(0.2),
-    ),
-    Polygon(
-      polygonId: const PolygonId('polygon2'),
-      points: const <LatLng>[
-        LatLng(33.637612, 73.076807),
-        LatLng(33.638170, 73.071442),
-        LatLng(33.635490, 73.070011),
-        LatLng(33.633368, 73.070592),
-        LatLng(33.632140, 73.074303),
-        LatLng(33.633815, 73.076986),
-      ],
-      strokeWidth: 2,
-      strokeColor: Colors.blue,
-      fillColor: Colors.blue.withOpacity(0.2),
-    ),
-  };
+  getPolygons(context) {
+    Set<Polygon> polygons = {
+      Polygon(
+        visible: true,
+        consumeTapEvents: true,
+        onTap: () {
+          getDialogue(context, "Rehman Abad");
+          //snackBar(context, "Rehman Abad");
+        },
+        polygonId: const PolygonId('polygon1'),
+        points: const <LatLng>[
+          LatLng(33.644217, 73.074658),
+          LatLng(33.644065, 73.080516),
+          LatLng(33.642175, 73.082333),
+          LatLng(33.640020, 73.080607),
+          LatLng(33.637373, 73.077156),
+          LatLng(33.638243, 73.071434),
+        ],
+        strokeWidth: 2,
+        strokeColor: Colors.red,
+        fillColor: Colors.red.withOpacity(0.2),
+      ),
+      Polygon(
+          consumeTapEvents: true,
+          polygonId: const PolygonId('polygon2'),
+          points: const <LatLng>[
+            LatLng(33.637612, 73.076807),
+            LatLng(33.638170, 73.071442),
+            LatLng(33.635490, 73.070011),
+            LatLng(33.633368, 73.070592),
+            LatLng(33.632140, 73.074303),
+            LatLng(33.633815, 73.076986),
+          ],
+          strokeWidth: 2,
+          strokeColor: Colors.blue,
+          fillColor: Colors.blue.withOpacity(0.2),
+          onTap: () {
+            getDialogue(context, "Satellite Town");
+          }),
+    };
+    return polygons;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -168,7 +199,7 @@ class _CasesMapState extends State<CasesMap> {
                 //add map picker controller
                 mapPickerController: mapPickerController,
                 child: GoogleMap(
-                  indoorViewEnabled: true,
+                  //indoorViewEnabled: true,
                   //liteModeEnabled: true,
                   buildingsEnabled: true,
                   //zoomGesturesEnabled: true,
@@ -177,7 +208,7 @@ class _CasesMapState extends State<CasesMap> {
                   // hide location button
                   myLocationButtonEnabled: true,
                   // mapToolbarEnabled: true,
-                  trafficEnabled: true,
+                  //trafficEnabled: true,
                   mapType: MapType.normal,
                   //  camera position
                   initialCameraPosition: cameraPosition,
@@ -188,7 +219,7 @@ class _CasesMapState extends State<CasesMap> {
                         controller;
                   },
                   markers: _markers,
-                  polygons: _polygons,
+                  polygons: getPolygons(context),
 
                   onCameraMoveStarted: () {
                     // notify map is moving
@@ -387,13 +418,33 @@ class _CasesMapState extends State<CasesMap> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextWidget(
-                                    title: "DAY 0",
+                                    title: "DAY 1",
                                     txtSize: 10,
                                     txtColor: txtColor),
                               ),
                             ),
                             const SizedBox(
-                              width: 130,
+                              width: 30,
+                            ),
+                            Container(
+                              height: 30,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                color: btnColor,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextWidget(
+                                    title: selectedDate != null
+                                        ? "$selectedDate"
+                                        : "Select A Day",
+                                    txtSize: 10,
+                                    txtColor: txtColor),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 30,
                             ),
                             Container(
                               height: 30,
@@ -424,6 +475,8 @@ class _CasesMapState extends State<CasesMap> {
                             onChanged: (double value) {
                               setState(() {
                                 _currentSliderValue = value;
+                                _getDengueCasesByDate(
+                                    _currentSliderValue.toInt());
                               });
                             },
                           ),
