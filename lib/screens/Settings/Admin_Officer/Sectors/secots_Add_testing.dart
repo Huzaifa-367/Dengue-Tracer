@@ -1,17 +1,37 @@
 import 'dart:convert';
 
+import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PolygonCreat extends StatefulWidget {
-  const PolygonCreat({super.key});
+import 'package:http/http.dart' as http;
+
+class PolygonCreator extends StatefulWidget {
+  const PolygonCreator({super.key});
 
   @override
-  _PolygonCreatState createState() => _PolygonCreatState();
+  _PolygonCreatorState createState() => _PolygonCreatorState();
 }
 
-class _PolygonCreatState extends State<PolygonCreat> {
+class PolygonData {
+  String secName;
+  double threshold;
+  List<List<double>> points;
+
+  PolygonData(
+      {required this.secName, required this.threshold, required this.points});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'secName': secName,
+      'threshold': threshold,
+      'points': points,
+    };
+  }
+}
+
+class _PolygonCreatorState extends State<PolygonCreator> {
   final Set<Marker> _markers = {};
   Set<Polygon> _polygons = {};
   GoogleMapController? _controller;
@@ -33,6 +53,34 @@ class _PolygonCreatState extends State<PolygonCreat> {
         markerId: MarkerId(_markers.length.toString()),
         position: point,
       ));
+    });
+  }
+
+  void _onSavePressedapi() async {
+    final polygonData = PolygonData(
+      secName: 'My Polygon',
+      threshold: 10.0,
+      points: _markers
+          .map((m) => [m.position.latitude, m.position.longitude])
+          .toList(),
+    );
+
+    final response = await http.post(
+      Uri.parse('$ip/NewSector'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(polygonData.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      // success
+    } else {
+      // error
+    }
+
+    // clear markers and set flag to true
+    setState(() {
+      _markers.clear();
+      _showSavedPolygons = true;
     });
   }
 

@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import 'Admin_Officer/Officer/officer_view.dart';
+import 'Admin_Officer/Sectors/Add_Sectors_Screen.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -321,13 +322,13 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 SettingsItem(
                   backgroundColor: btnColor,
                   onTap: () {
-                    getDialogue(context, "No sectors created yet in API!");
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const Add_Sector_Screen(),
-                    //   ),
-                    // );
+                    //getDialogue(context, "No sectors created yet in API!");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PolygonCreat(),
+                      ),
+                    );
                   },
                   icons: Icons.admin_panel_settings_rounded,
                   iconStyle: IconStyle(

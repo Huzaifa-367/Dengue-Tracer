@@ -39,6 +39,7 @@ List<Marker> markers = [];
 // class Constants {
 //   static const Color primaryColor = Color(0xffFBFBFB);
 //   static const String otpGifImage = "assets/otp.gif";
+List<Map<String, double>>? points;
 
 // }
 class Images {
