@@ -7,6 +7,7 @@ getDialogue(context, String? message) {
     barrierDismissible: false,
     context: context,
     builder: (context) => AlertDialog(
+      backgroundColor: ScfColor,
       actions: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

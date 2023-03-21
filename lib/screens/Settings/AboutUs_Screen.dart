@@ -18,7 +18,8 @@ class _AboutUs_ScreenState extends State<AboutUs_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 249, 242, 242),
+      backgroundColor: ScfColor,
+      // backgroundColor: const Color.fromARGB(255, 249, 242, 242),
       // appBar: AppBar(
       //   title: const Text(
       //     "Settings",
@@ -107,7 +108,7 @@ class _AboutUs_ScreenState extends State<AboutUs_Screen> {
             SettingsGroup(
               items: [
                 SettingsItem(
-                  backgroundColor: btnColor,
+                  backgroundColor: ScfColor2,
                   onTap: () {
                     String contact = "923203608044";
                     UrlLauncher.launch(
@@ -127,7 +128,7 @@ class _AboutUs_ScreenState extends State<AboutUs_Screen> {
             SettingsGroup(
               items: [
                 SettingsItem(
-                  backgroundColor: btnColor,
+                  backgroundColor: ScfColor,
                   onTap: () {
                     UrlLauncher.launch('https://hub4web.com');
                   },

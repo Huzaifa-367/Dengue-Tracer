@@ -80,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ScfColor,
           //backgroundColor: Colors.amber,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),

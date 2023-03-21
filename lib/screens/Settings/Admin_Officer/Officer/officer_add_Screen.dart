@@ -59,7 +59,9 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ScfColor,
           appBar: AppBar(
+            backgroundColor: ScfColor,
             //backgroundColor: btnColor,
             title: TextWidget(
                 title: "Add New Health Inspector",

@@ -67,7 +67,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ScfColor,
           appBar: AppBar(
+            backgroundColor: ScfColor,
             title: TextWidget(
               title: "Edit your profile",
               txtSize: 20,

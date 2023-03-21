@@ -18,7 +18,9 @@ class _NotifScreenState extends State<NotifScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ScfColor,
           appBar: AppBar(
+            backgroundColor: ScfColor,
             title: Text(
               "Notifications",
               style: TextStyle(

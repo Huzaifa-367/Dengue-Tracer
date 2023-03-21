@@ -68,7 +68,7 @@ class _Otp_ScreenState extends State<Otp_Screen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: ScfColor,
+          backgroundColor: ScfColor2,
           body: GestureDetector(
             onTap: () {},
             child: SizedBox(
@@ -299,7 +299,6 @@ class _Otp_ScreenState extends State<Otp_Screen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  
                 ],
               ),
             ),

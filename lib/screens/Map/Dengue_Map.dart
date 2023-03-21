@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/tester.dart';
+import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
@@ -185,6 +185,7 @@ class _CasesMapState extends State<CasesMap> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ScfColor,
           body: Stack(
             alignment: Alignment.topCenter,
             children: [

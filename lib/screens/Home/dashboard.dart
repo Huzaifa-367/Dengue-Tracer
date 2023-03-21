@@ -58,6 +58,7 @@ class _DashBoardState extends State<DashBoard> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ScfColor,
           body: screens[selectedindex],
           bottomNavigationBar: SizedBox(
             child: BottomBarInspiredInside(

@@ -65,6 +65,7 @@ class _PickLocationState extends State<PickLocation> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ScfColor,
           body: Stack(
             alignment: Alignment.topCenter,
             children: [
@@ -179,7 +180,7 @@ class _PickLocationState extends State<PickLocation> {
                             context: context,
                             builder: (context) => Container(
                                 padding: const EdgeInsets.all(20),
-                                color: bkColor,
+                                color: ScfColor,
                                 height:
                                     MediaQuery.of(context).size.height * 0.3,
                                 child: Column(

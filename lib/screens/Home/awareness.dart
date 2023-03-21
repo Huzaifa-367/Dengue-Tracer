@@ -126,6 +126,7 @@ class _AwarenessState extends State<Awareness> {
       child: Container(
         color: Colors.white,
         child: Scaffold(
+          backgroundColor: ScfColor,
           appBar: TabBar(
             indicatorSize: TabBarIndicatorSize.tab,
             splashBorderRadius: BorderRadius.circular(25),

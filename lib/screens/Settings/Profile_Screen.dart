@@ -3,7 +3,7 @@ import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 //import 'package:dengue_tracing_application/Global/BigUserCard.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/rangeslider.dart';
-import 'package:dengue_tracing_application/Global/tester.dart';
+import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
@@ -98,7 +98,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 249, 242, 242),
+      // backgroundColor: const Color.fromARGB(255, 249, 242, 242),
+      backgroundColor: ScfColor,
       body: Padding(
         padding: const EdgeInsets.only(
           top: 10,

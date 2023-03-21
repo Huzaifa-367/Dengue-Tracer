@@ -87,6 +87,7 @@ class _StatsScreenState extends State<StatsScreen> {
         color: Colors.white,
         child: SafeArea(
           child: Scaffold(
+            backgroundColor: ScfColor,
             body: SingleChildScrollView(
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.start,

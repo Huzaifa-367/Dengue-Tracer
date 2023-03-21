@@ -135,6 +135,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
     }
   }
 
+  late final PlutoGridStateManager stateManager;
   bool _isAllOfficers = false;
   @override
   Widget build(BuildContext context) {
@@ -143,7 +144,9 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: ScfColor,
           appBar: AppBar(
+            backgroundColor: ScfColor,
             actions: [
               IconButton(
                 onPressed: (() {
@@ -206,7 +209,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
                     child: PlutoGrid(
                       configuration: PlutoGridConfiguration(
                         style: PlutoGridStyleConfig(
-                          borderColor: btnColor,
+                          borderColor: bkColor,
                           gridBorderColor: btnColor,
                           gridBorderRadius: BorderRadius.circular(12),
                           //rowColor: btnColor,
@@ -221,7 +224,10 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
                       columns: _columns,
                       rows: _rows,
                       onChanged: (PlutoGridOnChangedEvent event) {},
-                      onLoaded: (PlutoGridOnLoadedEvent event) {},
+                      onLoaded: (PlutoGridOnLoadedEvent event) {
+                        stateManager = event.stateManager;
+                        stateManager.setShowColumnFilter(true);
+                      },
                     ),
                   ),
                 ],
