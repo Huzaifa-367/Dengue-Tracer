@@ -4,7 +4,6 @@ import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 //import 'package:dengue_tracing_application/Global/BigUserCard.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/rangeslider.dart';
-import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
@@ -18,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import 'Admin_Officer/Officer/officer_view.dart';
-import 'Admin_Officer/Sectors/Add_Sectors_Screen.dart';
+import 'Admin_Officer/Sectors/secots_Add_testing.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -179,168 +178,170 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                 subtitle: "Tap here to change your data",
               ),
             ),
-            SettingsGroup(
-              items: [
-                SettingsItem(
-                  onTap: () {
-                    //Dialog
-                    showDialog(
-                      //useSafeArea: true,
-                      //To disable alert background
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        //title: const Text("Alert Dialog Box"),
-                        //content: const Text("Do you want to login?"),
-                        actions: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                onPressed: (() {
-                                  Navigator.of(context).pop();
-                                }),
-                                icon: const Icon(Icons.cancel_outlined),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 45,
-                            width: 400,
-                            decoration: BoxDecoration(
-                              color: btnColor,
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 10,
-                                //right: 5,
-                                bottom: 10,
-                                left: 15,
-                              ),
-                              child: TextWidget(
-                                title: "Area Range",
-                                txtSize: 20,
-                                txtColor: bkColor,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              TextWidget(
-                                title: "1 M",
-                                txtSize: 13,
-                                txtColor: txtColor,
-                              ),
-                              const SizedBox(
-                                width: 160,
-                              ),
-                              TextWidget(
-                                title: "500 M",
-                                txtSize: 13,
-                                txtColor: txtColor,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 380,
-                            child: RangeSlidr(),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           const OfficersListScreen(),
-                                  //     ),
-                                  // );
-                                },
-                                child: Container(
+            loggedInUser!.role == "admin"
+                ? SettingsGroup(
+                    items: [
+                      SettingsItem(
+                        onTap: () {
+                          //Dialog
+                          showDialog(
+                            //useSafeArea: true,
+                            //To disable alert background
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              //title: const Text("Alert Dialog Box"),
+                              //content: const Text("Do you want to login?"),
+                              actions: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: (() {
+                                        Navigator.of(context).pop();
+                                      }),
+                                      icon: const Icon(Icons.cancel_outlined),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  height: 45,
+                                  width: 400,
                                   decoration: BoxDecoration(
                                     color: btnColor,
                                     borderRadius: BorderRadius.circular(25),
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 25,
-                                    vertical: 10,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                      //right: 5,
+                                      bottom: 10,
+                                      left: 15,
+                                    ),
+                                    child: TextWidget(
+                                      title: "Area Range",
+                                      txtSize: 20,
+                                      txtColor: bkColor,
+                                    ),
                                   ),
-                                  child: const TextWidget(
-                                      title: "Cancel",
-                                      txtSize: 15,
-                                      txtColor: Colors.white),
                                 ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      range = null;
-                                      // _currentSliderValue=null;
-                                    },
-                                  );
-                                  snackBar(context,
-                                      "Your Area Range Has Been Updated");
-                                  Navigator.of(context).pop();
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: btnColor,
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 25,
-                                    vertical: 10,
-                                  ),
-                                  child: const TextWidget(
-                                      title: "Save",
-                                      txtSize: 15,
-                                      txtColor: Colors.white),
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
+                                Row(
+                                  children: [
+                                    TextWidget(
+                                      title: "1 M",
+                                      txtSize: 13,
+                                      txtColor: txtColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 160,
+                                    ),
+                                    TextWidget(
+                                      title: "500 M",
+                                      txtSize: 13,
+                                      txtColor: txtColor,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 380,
+                                  child: RangeSlidr(),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
 
-                    //
-                  },
-                  icons: CupertinoIcons.pencil_outline,
-                  iconStyle: IconStyle(),
-                  title: 'Prefrences',
-                  subtitle: "Tap here to set area radius",
-                ),
-                SettingsItem(
-                  backgroundColor: btnColor,
-                  onTap: () {
-                    //getDialogue(context, "No sectors created yet in API!");
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PolygonCreat(),
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //       builder: (context) =>
+                                        //           const OfficersListScreen(),
+                                        //     ),
+                                        // );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: btnColor,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 25,
+                                          vertical: 10,
+                                        ),
+                                        child: const TextWidget(
+                                            title: "Cancel",
+                                            txtSize: 15,
+                                            txtColor: Colors.white),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(
+                                          () {
+                                            range = null;
+                                            // _currentSliderValue=null;
+                                          },
+                                        );
+                                        snackBar(context,
+                                            "Your Area Range Has Been Updated");
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: btnColor,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 25,
+                                          vertical: 10,
+                                        ),
+                                        child: const TextWidget(
+                                            title: "Save",
+                                            txtSize: 15,
+                                            txtColor: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+
+                          //
+                        },
+                        icons: CupertinoIcons.pencil_outline,
+                        iconStyle: IconStyle(),
+                        title: 'Prefrences',
+                        subtitle: "Tap here to set area radius",
                       ),
-                    );
-                  },
-                  icons: Icons.admin_panel_settings_rounded,
-                  iconStyle: IconStyle(
-                    iconsColor: Colors.white,
-                    withBackground: true,
-                    backgroundColor: Colors.red,
-                  ),
-                  title: 'Sectors',
-                  subtitle: "Edit Sectors data",
-                ),
-                loggedInUser!.role == "admin"
-                    ? SettingsItem(
+                      SettingsItem(
+                        backgroundColor: btnColor,
+                        onTap: () {
+                          //getDialogue(context, "No sectors created yet in API!");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PolygonCreator(),
+                            ),
+                          );
+                        },
+                        icons: Icons.admin_panel_settings_rounded,
+                        iconStyle: IconStyle(
+                          iconsColor: Colors.white,
+                          withBackground: true,
+                          backgroundColor: Colors.red,
+                        ),
+                        title: 'Sectors',
+                        subtitle: "Edit Sectors data",
+                      ),
+                      SettingsItem(
                         backgroundColor: btnColor,
                         onTap: () {
                           Navigator.push(
@@ -358,68 +359,186 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                         ),
                         title: 'Officers',
                         subtitle: "Edit Sectors & Officers data",
-                      )
-                    : loggedInUser!.role == "officer"
-                        ? SettingsItem(
-                            backgroundColor: btnColor,
+                      ),
+                    ],
+                  )
+                : loggedInUser!.role == "officer"
+                    ? SettingsGroup(
+                        items: [
+                          SettingsItem(
                             onTap: () {
-                              getDialogue(context, "No sectors assigned!");
+                              //Dialog
+                              showDialog(
+                                //useSafeArea: true,
+                                //To disable alert background
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  //title: const Text("Alert Dialog Box"),
+                                  //content: const Text("Do you want to login?"),
+                                  actions: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        IconButton(
+                                          onPressed: (() {
+                                            Navigator.of(context).pop();
+                                          }),
+                                          icon:
+                                              const Icon(Icons.cancel_outlined),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      height: 45,
+                                      width: 400,
+                                      decoration: BoxDecoration(
+                                        color: btnColor,
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 10,
+                                          //right: 5,
+                                          bottom: 10,
+                                          left: 15,
+                                        ),
+                                        child: TextWidget(
+                                          title: "Area Range",
+                                          txtSize: 20,
+                                          txtColor: bkColor,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        TextWidget(
+                                          title: "1 M",
+                                          txtSize: 13,
+                                          txtColor: txtColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 160,
+                                        ),
+                                        TextWidget(
+                                          title: "500 M",
+                                          txtSize: 13,
+                                          txtColor: txtColor,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      width: 380,
+                                      child: RangeSlidr(),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+
+                                            // Navigator.push(
+                                            //     context,
+                                            //     MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           const OfficersListScreen(),
+                                            //     ),
+                                            // );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: btnColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 25,
+                                              vertical: 10,
+                                            ),
+                                            child: const TextWidget(
+                                                title: "Cancel",
+                                                txtSize: 15,
+                                                txtColor: Colors.white),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            setState(
+                                              () {
+                                                range = null;
+                                                // _currentSliderValue=null;
+                                              },
+                                            );
+                                            snackBar(context,
+                                                "Your Area Range Has Been Updated");
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: btnColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 25,
+                                              vertical: 10,
+                                            ),
+                                            child: const TextWidget(
+                                                title: "Save",
+                                                txtSize: 15,
+                                                txtColor: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+
+                              //
                             },
-                            icons: Icons.area_chart_rounded,
-                            iconStyle: IconStyle(
-                              iconsColor: Colors.white,
-                              withBackground: true,
-                              backgroundColor: Colors.red,
-                            ),
-                            title: 'Sectors',
-                            subtitle: "View your assigned Sectors",
-                          )
-                        : SettingsItem(
-                            backgroundColor: btnColor,
-                            onTap: () {
-                              getDialogue(context, "Your are not authorized!");
-                            },
-                            icons: Icons.area_chart_rounded,
-                            iconStyle: IconStyle(
-                              iconsColor: Colors.white,
-                              withBackground: true,
-                              backgroundColor: Colors.red,
-                            ),
-                            title: 'Sectors',
-                            subtitle: "Edit Sectors & Officers data",
+                            icons: CupertinoIcons.pencil_outline,
+                            iconStyle: IconStyle(),
+                            title: 'Prefrences',
+                            subtitle: "Tap here to set area radius",
                           ),
-                SettingsItem(
-                  onTap: () {},
-                  icons: _hasDengue
-                      ? Icons.sentiment_very_dissatisfied
-                      : Icons.emoji_emotions_outlined,
-                  iconStyle: IconStyle(
-                    iconsColor: Colors.white,
-                    withBackground: true,
-                    backgroundColor: Colors.red,
-                  ),
-                  title: 'Status',
-                  subtitle: "Do you have Dengue?",
-                  trailing: Switch.adaptive(
-                    inactiveTrackColor:
-                        const Color.fromARGB(255, 255, 255, 255),
-                    inactiveThumbColor:
-                        const Color.fromARGB(255, 246, 195, 195),
-                    //enableFeedback: true,
-                    activeColor: btnColor,
-                    value: _hasDengue,
-                    onChanged: (value) {
-                      setState(
-                        () {
-                          _hasDengue = value;
-                          _DengueStatussetting(value, context);
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
+                        ],
+                      )
+                    : SettingsItem(
+                        onTap: () {},
+                        icons: _hasDengue
+                            ? Icons.sentiment_very_dissatisfied
+                            : Icons.emoji_emotions_outlined,
+                        iconStyle: IconStyle(
+                          iconsColor: Colors.white,
+                          withBackground: true,
+                          backgroundColor: Colors.red,
+                        ),
+                        title: 'Status',
+                        subtitle: "Do you have Dengue?",
+                        trailing: Switch.adaptive(
+                          inactiveTrackColor:
+                              const Color.fromARGB(255, 255, 255, 255),
+                          inactiveThumbColor:
+                              const Color.fromARGB(255, 246, 195, 195),
+                          //enableFeedback: true,
+                          activeColor: btnColor,
+                          value: _hasDengue,
+                          onChanged: (value) {
+                            setState(
+                              () {
+                                _hasDengue = value;
+                                _DengueStatussetting(value, context);
+                              },
+                            );
+                          },
+                        ),
+                      ),
             SettingsGroup(
               items: [
                 SettingsItem(
