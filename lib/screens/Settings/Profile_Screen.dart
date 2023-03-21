@@ -785,6 +785,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                             children: [
                               TextButton(
                                 onPressed: () {
+                                  Navigator.of(context).pop();
                                   // Navigator.push(
                                   //     context,
                                   //     MaterialPageRoute(
