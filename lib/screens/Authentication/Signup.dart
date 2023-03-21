@@ -5,9 +5,9 @@ import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
-import 'package:dengue_tracing_application/screens/Authentication/Location_Picker.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
+import 'package:dengue_tracing_application/screens/Authentication/Location_Picker.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,6 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
   // PickResult? selectedPlace;
   // final LatLng kInitialPosition = const LatLng(33.643272, 73.079070);
   bool isVisible = true;
+  bool isVisible2 = true;
 
   var textController = TextEditingController();
   CameraPosition cameraPosition = const CameraPosition(
@@ -132,17 +133,17 @@ class _SignupScreenState extends State<SignupScreen> {
                     //siconn: Icons.email,
                     controller: passwordcont2,
                     hintText: "Repeat Password",
-                    obscureText: isVisible,
+                    obscureText: isVisible2,
                     keytype: TextInputType.text,
 
                     prefixIcon: const Icon(Icons.password),
                     sufixIconPress: () {
                       setState(() {
-                        isVisible = !isVisible;
+                        isVisible2 = !isVisible2;
                       });
                     },
                     sufixIcon:
-                        isVisible ? Icons.visibility : Icons.visibility_off,
+                        isVisible2 ? Icons.visibility : Icons.visibility_off,
                   ),
                   const SizedBox(
                     height: 10,
@@ -155,8 +156,12 @@ class _SignupScreenState extends State<SignupScreen> {
 
                     sufixIconPress: () async {
                       home_loccont.text = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => const PickLocation()));
+                        MaterialPageRoute(
+                          builder: (context) => const PickLocation(),
+                          //builder: (context) => const MapScreen(),
+                        ),
+                      );
+                      //builder: (context) => const Mapp_test()));
                       // textController.text =
                       //     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
                       // Navigator.of(context).pop();

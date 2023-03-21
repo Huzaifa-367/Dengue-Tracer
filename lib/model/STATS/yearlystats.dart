@@ -59,8 +59,17 @@ class _YearlyDataState extends State<YearlyData> {
           ],
         ),
         SfCartesianChart(
-          primaryXAxis: CategoryAxis(),
-          primaryYAxis: NumericAxis(minimum: 0, maximum: 20, interval: 1),
+          primaryXAxis: CategoryAxis(
+            interval: 1,
+          ),
+          zoomPanBehavior: ZoomPanBehavior(
+            enablePanning: true,
+          ),
+          primaryYAxis: NumericAxis(
+            minimum: 0,
+            maximum: 20,
+            interval: 1,
+          ),
           tooltipBehavior: _tooltip,
           series: <ChartSeries<_ChartData, String>>[
             ColumnSeries<_ChartData, String>(

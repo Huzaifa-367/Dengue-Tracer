@@ -6,6 +6,7 @@ import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
+import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -35,6 +36,7 @@ class _CasesMapState extends State<CasesMap> {
   @override
   void initState() {
     super.initState();
+    getGeoLocationPosition();
     _getDengueUsers();
     // loadDengueCases();
   }
@@ -77,8 +79,7 @@ class _CasesMapState extends State<CasesMap> {
 
   List<dynamic> _users = [];
   Set<Marker> _markers = {};
-  var iconBase =
-      'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png';
+
   //Api to get all dengue users
   Future<void> _getDengueUsers() async {
     final String apiUrl = '$ip/GetDengueUsers';

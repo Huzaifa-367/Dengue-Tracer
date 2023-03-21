@@ -1,5 +1,6 @@
 import 'package:app_feedback/app_feedback.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 //import 'package:dengue_tracing_application/Global/BigUserCard.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/rangeslider.dart';
@@ -125,7 +126,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
               ),
 
               userMoreInfo: TextWidget(
-                title: loggedInUser!.email,
+                title: loggedInUser!.email ?? "",
                 txtSize: 10,
                 txtColor: txtColor,
               ),
@@ -148,7 +149,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                     ),
                     onPressed: (() {}),
                     child: Text(
-                      loggedInUser!.role,
+                      loggedInUser!.role ?? "",
                       style: GoogleFonts.gemunuLibre(
                         fontWeight: FontWeight.w900,
                         color: Colors.white,
@@ -229,16 +230,18 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                           Row(
                             children: [
                               TextWidget(
-                                  title: "1 KM",
-                                  txtSize: 13,
-                                  txtColor: txtColor),
+                                title: "1 M",
+                                txtSize: 13,
+                                txtColor: txtColor,
+                              ),
                               const SizedBox(
                                 width: 160,
                               ),
                               TextWidget(
-                                  title: "10 KM",
-                                  txtSize: 13,
-                                  txtColor: txtColor),
+                                title: "500 M",
+                                txtSize: 13,
+                                txtColor: txtColor,
+                              ),
                             ],
                           ),
                           const SizedBox(
@@ -277,10 +280,14 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  setState(() {
-                                    range = null;
-                                    // _currentSliderValue=null;
-                                  });
+                                  setState(
+                                    () {
+                                      range = null;
+                                      // _currentSliderValue=null;
+                                    },
+                                  );
+                                  snackBar(context,
+                                      "Your Area Range Has Been Updated");
                                   Navigator.of(context).pop();
                                 },
                                 child: Container(

@@ -4,6 +4,7 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
+import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -55,6 +56,12 @@ class _PickLocationState extends State<PickLocation> {
     target: LatLng(33.643005, 73.077706),
     zoom: 14.4746,
   );
+  @override
+  void initState() {
+    super.initState();
+    getGeoLocationPosition();
+    //getUserLocation();
+  }
 
   var home_loccont = TextEditingController();
   var latLong;

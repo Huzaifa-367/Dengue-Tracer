@@ -6,7 +6,7 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:http/http.dart' as http;
 
 class User {
-  late String name, phone_number, email, password, role, home_location;
+  String? name, phone_number, email, password, role, home_location;
   //,office_location;
   String? image;
   late int user_id;
@@ -18,6 +18,8 @@ class User {
     role = map["role"];
     image = map["image"];
     user_id = map["user_id"];
+    home_location = map["home_location"];
+    phone_number = map["phone_number"];
   }
 
   // Future<String?> login() async {

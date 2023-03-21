@@ -3,14 +3,17 @@ import 'dart:io';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
+import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
+import 'package:dengue_tracing_application/screens/Settings/Map_Test.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../Authentication/Login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geocoding/geocoding.dart';
 
 import '../../model/USER/usermodel.dart';
+import 'Profile_Screen.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({Key? key}) : super(key: key);
@@ -20,9 +23,6 @@ class ProfileEditScreen extends StatefulWidget {
 }
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
-  //Shared Preference start
-  bool _hasDengue = false;
-
   @override
   void initState() {
     // namecont.text = loggedInUser!.name;
@@ -31,36 +31,55 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     // passwordcont.text = loggedInUser!.password;
     // home_loccont.text = loggedInUser!.home_location;
     super.initState();
-
-    _loadDarkModeSetting();
+    getAddress();
+    // _loadDarkModeSetting();
   }
 
-  void _loadDarkModeSetting() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _hasDengue = prefs.getBool('Has_Dengue') ?? false;
-    });
+  Future<void> getAddress() async {
+    try {
+      // Get the user's current location
+      //LocationData locationData = await _location.getLocation();
+      LatLng userLocation = LatLng(
+        double.parse(loggedInUser!.home_location!.split(',')[0]),
+        double.parse(loggedInUser!.home_location!.split(',')[1]),
+      );
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          userLocation.latitude, userLocation.longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        String address =
+            '${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}';
+        home_loccont.text = address;
+      } else {
+        home_loccont.text = "No address found";
+      }
+    } catch (e) {
+      home_loccont.text = "Error getting address: ${e.toString()}";
+    }
   }
 
-  // ignore: non_constant_identifier_names
-  void _DengueStatussetting(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('Has_Dengue', value);
-  }
-
-  //Shared Preference End
-
-  final TextEditingController namecont = TextEditingController();
-  final TextEditingController phonecont = TextEditingController();
-  final TextEditingController emailcont = TextEditingController();
-  final TextEditingController passwordcont = TextEditingController();
+  final TextEditingController namecont = TextEditingController(
+    text: loggedInUser!.name,
+  );
+  final TextEditingController phonecont = TextEditingController(
+    text: loggedInUser?.phone_number,
+  );
+  final TextEditingController emailcont = TextEditingController(
+    text: loggedInUser!.email,
+  );
+  final TextEditingController passwordcont = TextEditingController(
+    text: loggedInUser!.password,
+  );
   final TextEditingController home_loccont = TextEditingController();
   // TextEditingController office_loccont = TextEditingController();
 
   /// Variables
   User? u;
   File? imageFile;
-
+  bool isVisible = true;
+  bool isVisible2 = true;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -257,7 +276,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       width: 140,
                     ),
                     Text(
-                      loggedInUser!.name,
+                      loggedInUser!.name ?? "",
                       style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
@@ -270,7 +289,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                   ],
                 ),
                 Text(
-                  loggedInUser!.email,
+                  loggedInUser!.email ?? "",
                   style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     color: Colors.black,
@@ -297,6 +316,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: MyTextField(
+                    maxlines: 1,
                     controller: emailcont,
                     hintText: "Email",
                     keytype: TextInputType.text,
@@ -311,6 +331,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: MyTextField(
+                    maxlines: 1,
                     controller: phonecont,
                     hintText: "Phone Number",
                     keytype: TextInputType.text,
@@ -325,12 +346,19 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: MyTextField(
+                    maxlines: 1,
                     controller: passwordcont,
                     hintText: "Password",
                     keytype: TextInputType.text,
-                    obscureText: false,
+                    obscureText: isVisible,
                     prefixIcon: const Icon(Icons.password),
-                    sufixIcon: Icons.remove_red_eye,
+                    sufixIconPress: () {
+                      setState(() {
+                        isVisible = !isVisible;
+                      });
+                    },
+                    sufixIcon:
+                        isVisible ? Icons.visibility : Icons.visibility_off,
                   ),
                 ),
                 const SizedBox(
@@ -339,12 +367,19 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: MyTextField(
+                    maxlines: 1,
                     controller: passwordcont,
                     hintText: "Repeat Password",
                     keytype: TextInputType.text,
-                    obscureText: false,
+                    obscureText: isVisible2,
                     prefixIcon: const Icon(Icons.password),
-                    sufixIcon: Icons.remove_red_eye,
+                    sufixIconPress: () {
+                      setState(() {
+                        isVisible2 = !isVisible2;
+                      });
+                    },
+                    sufixIcon:
+                        isVisible2 ? Icons.visibility : Icons.visibility_off,
                   ),
                 ),
                 const SizedBox(
@@ -352,13 +387,22 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: MyTextField(
+                  child: MyTextField_ReadOnly(
+                    maxlines: 2,
+                    readonly: true,
                     controller: home_loccont,
-                    hintText: "Location",
-                    keytype: TextInputType.text,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.map),
-                    sufixIcon: Icons.pin_drop,
+                    hintText: "Home Location",
+
+                    sufixIconPress: () async {
+                      //home_loccont.text = await
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const Homepage()));
+                      // textController.text =
+                      //     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
+                      // Navigator.of(context).pop();
+                    },
+                    //prefixIcon: const Icon(Icons.map),
+                    sufixIcon: Icons.arrow_forward_rounded,
                   ),
                 ),
                 const SizedBox(
@@ -378,7 +422,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         // loggedInUser!.password = passwordcont.text;
                         // loggedInUser!.home_location = home_loccont.text;
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const LoginScreen()));
+                            builder: (context) => const Profile_Screen()));
                       }),
                     ),
                   ),

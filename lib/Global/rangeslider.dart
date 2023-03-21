@@ -9,7 +9,7 @@ class RangeSlidr extends StatefulWidget {
 }
 
 class _RangeSlidrState extends State<RangeSlidr> {
-  double _currentSliderValue = 2.0;
+  double _currentSliderValue = 1.0;
   @override
   Widget build(BuildContext context) {
     return //Dialog
@@ -17,7 +17,7 @@ class _RangeSlidrState extends State<RangeSlidr> {
       activeColor: btnColor,
       value: _currentSliderValue,
       min: 1,
-      max: 10,
+      max: 500,
       divisions: 10,
       label: _currentSliderValue.round().toString(),
       onChanged: (double value) {

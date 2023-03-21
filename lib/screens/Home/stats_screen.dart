@@ -255,22 +255,43 @@ class _StatsScreenState extends State<StatsScreen> {
                               ],
                             ),
                             SfCartesianChart(
-                              primaryXAxis: CategoryAxis(),
+                              //enableAxisAnimation: true,
+                              primaryXAxis: CategoryAxis(
+                                //opposedPosition: true,
+                                autoScrollingMode: AutoScrollingMode.end,
+                                visibleMaximum: 5,
+                                interval: 1,
+                              ),
+                              zoomPanBehavior: ZoomPanBehavior(
+                                enablePanning: true,
+                              ),
                               primaryYAxis: NumericAxis(
-                                  minimum: 0, maximum: 20, interval: 1),
+                                //numberFormat: NumberFormat('##########人'),
+
+                                minimum: 0,
+                                maximum: 20,
+                                interval: 1,
+                              ),
                               tooltipBehavior: _tooltip,
                               series: <ChartSeries<_ChartData, String>>[
                                 ColumnSeries<_ChartData, String>(
-                                    dataSource: _chartData,
-                                    xValueMapper: (_ChartData data, _) =>
-                                        data.date.toString(),
-                                    yValueMapper: (_ChartData data, _) =>
-                                        data.cases,
-                                    name: 'Dengue Cases',
-                                    color: btnColor,
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(5.0),
-                                        topRight: Radius.circular(5.0))),
+                                  dataSource: _chartData,
+
+                                  // emptyPointSettings: EmptyPointSettings(
+                                  //     // Mode of empty point
+                                  //     mode: EmptyPointMode.average),
+                                  xValueMapper: (_ChartData data, _) =>
+                                      data.date.toString(),
+                                  yValueMapper: (_ChartData data, _) =>
+                                      data.cases,
+                                  name: 'Dengue Cases',
+                                  color: btnColor,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(5.0),
+                                    topRight: Radius.circular(5.0),
+                                  ),
+                                  //enableTooltip: true,
+                                ),
                               ],
                             ),
                           ],
