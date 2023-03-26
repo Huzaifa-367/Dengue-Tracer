@@ -131,6 +131,7 @@ class _PolygonCreatorState extends State<PolygonCreator> {
         _showSavedPolygons = true;
       });
     }
+    _onSavePressedapi();
   }
 
   @override
