@@ -310,8 +310,11 @@ class _DengueMapState extends State<DengueMap> {
                 left: 16,
                 right: 16,
                 child: Container(
-                  color: btnColor.withOpacity(.5),
                   alignment: Alignment.bottomCenter,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: ScfColor.withOpacity(.7),
+                  ),
                   //padding: const EdgeInsets.only(bottom: 16.0),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -330,18 +333,19 @@ class _DengueMapState extends State<DengueMap> {
                       ),
                       tooltipBehavior: _tooltip,
                       series: <ChartSeries<_ChartData, String>>[
-                        ColumnSeries<_ChartData, String>(
+                        FastLineSeries<_ChartData, String>(
                           dataSource: _chartData,
                           xValueMapper: (_ChartData data, _) => data.date,
                           yValueMapper: (_ChartData data, _) => data.cases,
                           name: 'Dengue Cases',
+
                           color: btnColor,
-                          
+
                           //width: .2,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(5.0),
-                            topRight: Radius.circular(5.0),
-                          ),
+                          // borderRadius: const BorderRadius.only(
+                          //   topLeft: Radius.circular(5.0),
+                          //   topRight: Radius.circular(5.0),
+                          // ),
                         ),
                       ],
                     ),
