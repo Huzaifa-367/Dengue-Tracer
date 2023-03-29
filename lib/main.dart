@@ -1,8 +1,19 @@
+import 'package:dengue_tracing_application/Controller/NotificationController.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/screens/Welcome/splashscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const DengueProject());
+void main() => runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => authController(),
+          ),
+        ],
+        child: const DengueProject(),
+      ),
+    );
 
 class DengueProject extends StatelessWidget {
   const DengueProject({Key? key}) : super(key: key);
@@ -14,7 +25,7 @@ class DengueProject extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        primaryColor: btnColor,  
+        primaryColor: btnColor,
       ),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),

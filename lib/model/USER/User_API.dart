@@ -34,11 +34,15 @@ login(email, password, context) async {
 
 signUp(User u, context) async {
   FormData data = FormData.fromMap(u.tomap());
-  var response = await Dio().post('$ip/NewUser',
-      data: data,
-      options: Options(headers: {
+  var response = await Dio().post(
+    '$ip/NewUser',
+    data: data,
+    options: Options(
+      headers: {
         "Content-Type": "application/json",
-      }));
+      },
+    ),
+  );
   if (response.statusCode == 200) {
     if (response.data == "Exsist") {
       snackBar(context, "Account already exsists.");
