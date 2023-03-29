@@ -7,11 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 
-class PolygonCreator extends StatefulWidget {
-  const PolygonCreator({super.key});
+class SectorCreator extends StatefulWidget {
+  const SectorCreator({super.key});
 
   @override
-  _PolygonCreatorState createState() => _PolygonCreatorState();
+  _SectorCreatorState createState() => _SectorCreatorState();
 }
 
 class PolygonData {
@@ -31,7 +31,7 @@ class PolygonData {
   }
 }
 
-class _PolygonCreatorState extends State<PolygonCreator> {
+class _SectorCreatorState extends State<SectorCreator> {
   final Set<Marker> _markers = {};
   Set<Polygon> _polygons = {};
   GoogleMapController? _controller;

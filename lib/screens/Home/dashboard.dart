@@ -3,6 +3,7 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/screens/Home/awareness.dart';
 import 'package:dengue_tracing_application/screens/Map/Dengue_Map.dart';
 import 'package:dengue_tracing_application/screens/Home/stats_screen.dart';
+import 'package:dengue_tracing_application/screens/Map/map_temporal.dart';
 import 'package:dengue_tracing_application/screens/Settings/Profile_Screen.dart';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,11 @@ const List<TabItem> items = [
     count: ButtonBar(),
     icon: Icons.map_rounded,
     title: 'Map',
+  ),
+  TabItem(
+    count: ButtonBar(),
+    icon: Icons.map_rounded,
+    title: 'Temp_Map',
   ),
   TabItem(
     icon: Icons.graphic_eq,
@@ -47,6 +53,7 @@ class _DashBoardState extends State<DashBoard> {
     //const MapScreen2(),
     //const MapsDemo(),
     const CasesMap(),
+    const DengueMap(),
     const StatsScreen(),
     const Awareness(),
     const Profile_Screen(),

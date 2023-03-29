@@ -6,8 +6,10 @@ Color tnColor = const Color.fromARGB(255, 255, 0, 17);
 Color btnColor = const Color(0XFFf85f6a);
 Color bkColor = const Color.fromARGB(255, 247, 214, 216);
 Color txtColor = const Color.fromARGB(255, 0, 0, 0);
-Color ScfColor = const Color(0xfff2f9fe);
+Color ScfColor = const Color(0xF5F5F5F5);
 Color ScfColor2 = const Color.fromARGB(255, 255, 249, 249);
+Color ScfColor3 = const Color(0xfff2f9fe);
+
 Color tbtnColor = const Color.fromARGB(255, 245, 130, 130);
 Color greenColor = Colors.green.shade200;
 

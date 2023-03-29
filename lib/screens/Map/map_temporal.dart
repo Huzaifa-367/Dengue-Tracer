@@ -1,29 +1,28 @@
 import 'dart:convert';
-
 import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_charts/charts.dart';
+
 import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
-import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
 import 'dart:async';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/material.dart';
 import 'package:map_picker/map_picker.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-import 'package:http/http.dart' as http;
-
 import 'package:intl/intl.dart';
 
-class CasesMap extends StatefulWidget {
-  const CasesMap({Key? key}) : super(key: key);
+class DengueMap extends StatefulWidget {
+  const DengueMap({Key? key}) : super(key: key);
 
   @override
-  _CasesMapState createState() => _CasesMapState();
+  _DengueMapState createState() => _DengueMapState();
 }
 
 final CustomInfoWindowController _customInfoWindowController =
@@ -32,14 +31,28 @@ void dispose() {
   _customInfoWindowController.dispose();
 }
 
-class _CasesMapState extends State<CasesMap> {
+class _ChartData {
+  _ChartData(this.date, this.cases);
+
+  final String date;
+  final int cases;
+}
+
+class _DengueMapState extends State<DengueMap> {
   @override
   void initState() {
     super.initState();
+    _tooltip = TooltipBehavior(enable: true);
     getGeoLocationPosition();
     _getDengueUsers();
+    _getChartData();
     // loadDengueCases();
   }
+
+  Set<Marker> _markers = {};
+  final List<_ChartData> _chartData = [];
+  List<dynamic> _users = [];
+  late TooltipBehavior _tooltip;
 
   final List<dynamic> _mapThemes = [
     {
@@ -62,6 +75,45 @@ class _CasesMapState extends State<CasesMap> {
     }
   ];
 
+  void _getChartData() async {
+    var response = await http.get(Uri.parse('$ip/GetDengueCasesByDate'));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      for (var item in data) {
+        // Trimming the time part from the date
+        var trimmedDate = item['Date'].toString().split('T')[0];
+
+        _chartData.add(_ChartData(trimmedDate, item['Count']));
+      }
+      setState(() {});
+    }
+  }
+
+  // void _createMarkers() {
+  //   _markers.clear();
+  //   for (var data in _chartData) {
+  //     var marker = Marker(
+  //       markerId: MarkerId(data.date.toString()),
+  //       position: LatLng(data.latitude, data.longitude),
+  //       infoWindow: InfoWindow(title: 'Dengue Cases: ${data.cases}'),
+  //       icon:
+  //           BitmapDescriptor.defaultMarkerWithHue(_getMarkerColor(data.cases)),
+  //     );
+  //     _markers.add(marker);
+  //   }
+  // }
+
+  // double _getMarkerColor(int cases) {
+  //   // Define a color scheme based on the number of cases
+  //   if (cases <= 10) {
+  //     return BitmapDescriptor.hueGreen;
+  //   } else if (cases <= 20) {
+  //     return BitmapDescriptor.hueYellow;
+  //   } else {
+  //     return BitmapDescriptor.hueRed;
+  //   }
+  // }
+
   //
   final _controller = Completer<GoogleMapController>();
   //
@@ -81,8 +133,8 @@ class _CasesMapState extends State<CasesMap> {
   var addressController = TextEditingController();
   //
 
-  List<dynamic> _users = [];
-  Set<Marker> _markers = {};
+  // List<dynamic> _users = [];
+  // Set<Marker> _markers = {};
 
   //Api to get all dengue users
   Future<void> _getDengueUsers() async {
@@ -253,26 +305,72 @@ class _CasesMapState extends State<CasesMap> {
                   },
                 ),
               ),
-
-              //My Address Field
               Positioned(
-                top: MediaQuery.of(context).viewPadding.top + 50,
-                width: MediaQuery.of(context).size.width - 50,
-                height: 150,
-                child: MyTextField_ReadOnly(
-                  maxlines: 2,
-                  readonly: true,
-                  controller: addressController,
-                  hintText: "Location",
-
-                  sufixIconPress: () {
-                    addressController.text =
-                        "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
-                  },
-                  //prefixIcon: const Icon(Icons.map),
-                  sufixIcon: Icons.arrow_forward_rounded,
+                top: 55,
+                left: 16,
+                right: 16,
+                child: Container(
+                  color: btnColor.withOpacity(.5),
+                  alignment: Alignment.bottomCenter,
+                  //padding: const EdgeInsets.only(bottom: 16.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 150.0,
+                    child: SfCartesianChart(
+                      zoomPanBehavior: ZoomPanBehavior(
+                        enablePanning: true,
+                      ),
+                      primaryXAxis: CategoryAxis(
+                        autoScrollingMode: AutoScrollingMode.start,
+                        visibleMaximum: 5,
+                        interval: 1,
+                      ),
+                      primaryYAxis: NumericAxis(
+                        interval: 1,
+                      ),
+                      tooltipBehavior: _tooltip,
+                      series: <ChartSeries<_ChartData, String>>[
+                        ColumnSeries<_ChartData, String>(
+                          dataSource: _chartData,
+                          xValueMapper: (_ChartData data, _) => data.date,
+                          yValueMapper: (_ChartData data, _) => data.cases,
+                          name: 'Dengue Cases',
+                          color: btnColor,
+                          
+                          //width: .2,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(5.0),
+                            topRight: Radius.circular(5.0),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
+
+              //
+              ////
+              /////
+              // //My Address Field
+              // Positioned(
+              //   top: MediaQuery.of(context).viewPadding.top + 50,
+              //   width: MediaQuery.of(context).size.width - 50,
+              //   height: 150,
+              //   child: MyTextField_ReadOnly(
+              //     maxlines: 2,
+              //     readonly: true,
+              //     controller: addressController,
+              //     hintText: "Location",
+
+              //     sufixIconPress: () {
+              //       addressController.text =
+              //           "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
+              //     },
+              //     //prefixIcon: const Icon(Icons.map),
+              //     sufixIcon: Icons.arrow_forward_rounded,
+              //   ),
+              // ),
 
               CustomInfoWindow(
                 controller: _customInfoWindowController,
@@ -504,32 +602,6 @@ class _CasesMapState extends State<CasesMap> {
                   ],
                 ),
               ),
-
-              //User Current Location
-              // Positioned(
-              //   bottom: 95,
-              //   right: 15,
-              //   child: Container(
-              //     width: 35,
-              //     //height: 105,
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(10),
-              //       color: btnColor,
-              //     ),
-              //     child: MaterialButton(
-              //       onPressed: (() {
-              //         // _control?.getLatLng(
-              //         //     const ScreenCoordinate(x: 12.211212, y: 12, 2111));
-              //       }),
-              //       padding: const EdgeInsets.all(0),
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(10),
-              //       ),
-              //       child: const Icon(Icons.my_location, size: 25),
-              //     ),
-              //   ),
-              // ),
-              // Display latitude & longtitude
             ],
           ),
         ),
@@ -537,3 +609,29 @@ class _CasesMapState extends State<CasesMap> {
     );
   }
 }
+
+// class _ChartData {
+//   _ChartData(this.date, this.cases);
+
+//   final DateTime date;
+//   final int cases;
+
+//   double get latitude => // Get latitude based on date
+//       // Example: latitude increases as the year progresses
+//       1.0 + (date.year - 2022) * 0.1;
+
+//   double get longitude => // Get longitude based on date
+//       // Example: longitude increases as the month progresses
+//       -1.0 - date.month * 0.1;
+// }
+
+// class _ChartData {
+//   _ChartData(this.date, this.cases);
+
+//   final DateTime date;
+//   final int cases;
+
+//   double get latitude => 1.0 + (date.year - 2022) * 0.1;
+
+//   double get longitude => -1.0 - date.month * 0.1;
+// }

@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import 'Admin_Officer/Officer/officer_view.dart';
-import 'Admin_Officer/Sectors/secots_Add_Screen_Now.dart';
+import 'Admin_Officer/Sectors/Sectors_AddTest2.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -328,7 +328,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const PolygonCreator(),
+                              builder: (context) => const SectorCreator(),
                             ),
                           );
                         },
