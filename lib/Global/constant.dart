@@ -25,8 +25,8 @@ const Color buttoncolor = Color(0xff3e4784);
 const Color mainFontColor = Color(0xff565c95);
 const Color arrowbgColor = Color(0xffe4e9f7);
 
-String ip = 'http://192.168.9.7/FYP_Api/API/SERVER';
-String imgpath = 'http://192.168.9.7/FYP_Api/Images/';
+String ip = 'http://192.168.0.7/FYP_Api/API/SERVER';
+String imgpath = 'http://192.168.0.7/FYP_Api/Images/';
 User? loggedInUser;
 bool? isRemember = false;
 //User? loggedInUsercopy;

@@ -16,16 +16,21 @@ class PolygonCreator extends StatefulWidget {
 
 class PolygonData {
   String secName;
-  double threshold;
+  int threshold;
+  String dessription;
   List<List<double>> points;
 
   PolygonData(
-      {required this.secName, required this.threshold, required this.points});
+      {required this.secName,
+      required this.threshold,
+      required this.dessription,
+      required this.points});
 
   Map<String, dynamic> toJson() {
     return {
       'secName': secName,
       'threshold': threshold,
+      'description': dessription,
       'points': points,
     };
   }
@@ -58,15 +63,16 @@ class _PolygonCreatorState extends State<PolygonCreator> {
 
   void _onSavePressedapi() async {
     final polygonData = PolygonData(
-      secName: 'My Polygon',
-      threshold: 10.0,
+      secName: 'Example Sector',
+      threshold: 50,
+      dessription: 'Example Description',
       points: _markers
           .map((m) => [m.position.latitude, m.position.longitude])
           .toList(),
     );
 
     final response = await http.post(
-      Uri.parse('$ip/NewSector'),
+      Uri.parse('$ip/SavePolygons'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(polygonData.toJson()),
     );

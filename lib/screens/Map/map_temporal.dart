@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
@@ -46,6 +45,7 @@ class _DengueMapState extends State<DengueMap> {
     getGeoLocationPosition();
     _getDengueUsers();
     _getChartData();
+    _getSectors();
     // loadDengueCases();
   }
 
@@ -193,48 +193,74 @@ class _DengueMapState extends State<DengueMap> {
     }
   }
 
-  getPolygons(context) {
-    Set<Polygon> polygons = {
-      Polygon(
-        visible: true,
-        consumeTapEvents: true,
-        onTap: () {
-          getDialogue(context, "Rehman Abad");
-          //snackBar(context, "Rehman Abad");
-        },
-        polygonId: const PolygonId('polygon1'),
-        points: const <LatLng>[
-          LatLng(33.644217, 73.074658),
-          LatLng(33.644065, 73.080516),
-          LatLng(33.642175, 73.082333),
-          LatLng(33.640020, 73.080607),
-          LatLng(33.637373, 73.077156),
-          LatLng(33.638243, 73.071434),
-        ],
-        strokeWidth: 2,
-        strokeColor: Colors.red,
-        fillColor: Colors.red.withOpacity(0.2),
-      ),
-      Polygon(
-          consumeTapEvents: true,
-          polygonId: const PolygonId('polygon2'),
-          points: const <LatLng>[
-            LatLng(33.637612, 73.076807),
-            LatLng(33.638170, 73.071442),
-            LatLng(33.635490, 73.070011),
-            LatLng(33.633368, 73.070592),
-            LatLng(33.632140, 73.074303),
-            LatLng(33.633815, 73.076986),
-          ],
-          strokeWidth: 2,
-          strokeColor: Colors.blue,
-          fillColor: Colors.blue.withOpacity(0.2),
-          onTap: () {
-            getDialogue(context, "Satellite Town");
-          }),
-    };
-    return polygons;
+  //final List<Sector> _sectors = [];
+  final List<LatLng> _polygons = [];
+
+Future<void> _getSectors() async {
+    final response =
+        await http.get(Uri.parse('$ip/getsectors'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List<dynamic>;
+      for (var element in data) {
+        List<dynamic> latLngs = element['latLongs'];
+        List<LatLng> points = [];
+        for (var latLng in latLngs) {
+          double lat = double.parse(latLng[0].toString());
+          double lng = double.parse(latLng[1].toString());
+          points.add(LatLng(lat, lng));
+        }
+        setState(() {
+          _polygons.addAll(points);
+        });
+      }
+    } else {
+      throw Exception('Failed to load sectors');
+    }
   }
+
+
+  // getPolygons(context) {
+  //   Set<Polygon> polygons = {
+  //     Polygon(
+  //       visible: true,
+  //       consumeTapEvents: true,
+  //       onTap: () {
+  //         getDialogue(context, "Rehman Abad");
+  //         //snackBar(context, "Rehman Abad");
+  //       },
+  //       polygonId: const PolygonId('polygon1'),
+  //       points: const <LatLng>[
+  //         LatLng(33.644217, 73.074658),
+  //         LatLng(33.644065, 73.080516),
+  //         LatLng(33.642175, 73.082333),
+  //         LatLng(33.640020, 73.080607),
+  //         LatLng(33.637373, 73.077156),
+  //         LatLng(33.638243, 73.071434),
+  //       ],
+  //       strokeWidth: 2,
+  //       strokeColor: Colors.red,
+  //       fillColor: Colors.red.withOpacity(0.2),
+  //     ),
+  //     Polygon(
+  //         consumeTapEvents: true,
+  //         polygonId: const PolygonId('polygon2'),
+  //         points: const <LatLng>[
+  //           LatLng(33.637612, 73.076807),
+  //           LatLng(33.638170, 73.071442),
+  //           LatLng(33.635490, 73.070011),
+  //           LatLng(33.633368, 73.070592),
+  //           LatLng(33.632140, 73.074303),
+  //           LatLng(33.633815, 73.076986),
+  //         ],
+  //         strokeWidth: 2,
+  //         strokeColor: Colors.blue,
+  //         fillColor: Colors.blue.withOpacity(0.2),
+  //         onTap: () {
+  //           getDialogue(context, "Satellite Town");
+  //         }),
+  //   };
+  //   return polygons;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -277,7 +303,16 @@ class _DengueMapState extends State<DengueMap> {
                         controller;
                   },
                   markers: _markers,
-                  polygons: getPolygons(context),
+                  //polygons: getPolygons(context),
+                  polygons: <Polygon>{
+                    Polygon(
+                      polygonId: const PolygonId('sectors'),
+                      points: _polygons,
+                      strokeWidth: 2,
+                      strokeColor: Colors.blue,
+                      fillColor: Colors.blue.withOpacity(0.2),
+                    ),
+                  },
 
                   onCameraMoveStarted: () {
                     // notify map is moving

@@ -49,9 +49,6 @@ class _DashBoardState extends State<DashBoard> {
 
   int selectedindex = 0;
   List<Widget> screens = [
-    //const MapScreen(),
-    //const MapScreen2(),
-    //const MapsDemo(),
     const CasesMap(),
     const DengueMap(),
     const StatsScreen(),

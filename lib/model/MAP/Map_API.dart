@@ -31,6 +31,34 @@ getDengueUsers() async {
   }
 }
 
+class Sector {
+  final int sec_id;
+  final String sec_name;
+  final double threshold;
+  final String description;
+  final List<LatLng> latLongs;
+
+  Sector({
+    required this.sec_id,
+    required this.sec_name,
+    required this.threshold,
+    required this.description,
+    required this.latLongs,
+  });
+
+  factory Sector.fromJson(Map<String, dynamic> json) {
+    return Sector(
+      sec_id: json['sec_id'],
+      sec_name: json['sec_name'],
+      threshold: json['threshold'],
+      description: json['description'],
+      latLongs: List<LatLng>.from(
+        json['latLongs'].map((latLng) => LatLng(latLng[0], latLng[1])),
+      ),
+    );
+  }
+}
+
 Future<Position> getGeoLocationPosition() async {
   bool serviceEnabled;
   LocationPermission permission;
