@@ -18,6 +18,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:intl/intl.dart';
+import 'package:dio/dio.dart';
 
 class CasesMap extends StatefulWidget {
   const CasesMap({Key? key}) : super(key: key);
@@ -38,6 +39,7 @@ class _CasesMapState extends State<CasesMap> {
     super.initState();
     getGeoLocationPosition();
     _getDengueUsers();
+    _fetchPolygons();
     // loadDengueCases();
   }
 
@@ -141,48 +143,94 @@ class _CasesMapState extends State<CasesMap> {
     }
   }
 
-  getPolygons(context) {
-    Set<Polygon> polygons = {
-      Polygon(
-        visible: true,
-        consumeTapEvents: true,
-        onTap: () {
-          getDialogue(context, "Rehman Abad");
-          //snackBar(context, "Rehman Abad");
-        },
-        polygonId: const PolygonId('polygon1'),
-        points: const <LatLng>[
-          LatLng(33.644217, 73.074658),
-          LatLng(33.644065, 73.080516),
-          LatLng(33.642175, 73.082333),
-          LatLng(33.640020, 73.080607),
-          LatLng(33.637373, 73.077156),
-          LatLng(33.638243, 73.071434),
-        ],
-        strokeWidth: 2,
-        strokeColor: Colors.red,
-        fillColor: Colors.red.withOpacity(0.2),
-      ),
-      Polygon(
-          consumeTapEvents: true,
-          polygonId: const PolygonId('polygon2'),
-          points: const <LatLng>[
-            LatLng(33.637612, 73.076807),
-            LatLng(33.638170, 73.071442),
-            LatLng(33.635490, 73.070011),
-            LatLng(33.633368, 73.070592),
-            LatLng(33.632140, 73.074303),
-            LatLng(33.633815, 73.076986),
-          ],
-          strokeWidth: 2,
-          strokeColor: Colors.blue,
-          fillColor: Colors.blue.withOpacity(0.2),
-          onTap: () {
-            getDialogue(context, "Satellite Town");
-          }),
-    };
-    return polygons;
+  final Set<Polygon> _polygons = {};
+  Future<void> _fetchPolygons() async {
+    try {
+      final response = await Dio().get('$ip/getsectors');
+      //final body = response.data;
+      final body = response.data;
+      if (body is List<dynamic>) {
+        final data = body.map((item) => item as Map<String, dynamic>).toList();
+        // Now you can access the properties of each item in the list
+        for (final item in data) {
+          final secId = item['sec_id'] as int;
+          final secName = item['sec_name'] as String;
+          final threshold = item['threshold'] as int;
+          final description = item['description'] as String;
+          final latLongs = item['latLongs'] as List<dynamic>;
+
+          var latLngs = (item['latLongs'] as List<dynamic>)
+              .map((e) => LatLng(
+                    double.parse(e.split(',')[0]),
+                    double.parse(e.split(',')[1]),
+                  ))
+              .toList();
+          if (latLngs.isNotEmpty) {
+            final polygon = Polygon(
+              visible: true,
+              consumeTapEvents: true,
+              onTap: () {
+                getDialogue(context, "$secName\n$threshold");
+              },
+              polygonId: PolygonId(secId.toString()),
+              points: latLngs,
+              strokeColor: Colors.blue,
+              strokeWidth: 3,
+              fillColor: Colors.blue.withOpacity(0.2),
+            );
+            setState(() {
+              _polygons.add(polygon);
+            });
+          }
+        }
+      }
+    } catch (error) {
+      print('Failed to fetch polygons: $error');
+    }
   }
+
+  // getPolygons(context) {
+  //   Set<Polygon> polygons = {
+  //     Polygon(
+  //       visible: true,
+  //       consumeTapEvents: true,
+  //       onTap: () {
+  //         getDialogue(context, "Rehman Abad");
+  //         //snackBar(context, "Rehman Abad");
+  //       },
+  //       polygonId: const PolygonId('polygon1'),
+  //       points: const <LatLng>[
+  //         LatLng(33.644217, 73.074658),
+  //         LatLng(33.644065, 73.080516),
+  //         LatLng(33.642175, 73.082333),
+  //         LatLng(33.640020, 73.080607),
+  //         LatLng(33.637373, 73.077156),
+  //         LatLng(33.638243, 73.071434),
+  //       ],
+  //       strokeWidth: 2,
+  //       strokeColor: Colors.red,
+  //       fillColor: Colors.red.withOpacity(0.2),
+  //     ),
+  //     Polygon(
+  //         consumeTapEvents: true,
+  //         polygonId: const PolygonId('polygon2'),
+  //         points: const <LatLng>[
+  //           LatLng(33.637612, 73.076807),
+  //           LatLng(33.638170, 73.071442),
+  //           LatLng(33.635490, 73.070011),
+  //           LatLng(33.633368, 73.070592),
+  //           LatLng(33.632140, 73.074303),
+  //           LatLng(33.633815, 73.076986),
+  //         ],
+  //         strokeWidth: 2,
+  //         strokeColor: Colors.blue,
+  //         fillColor: Colors.blue.withOpacity(0.2),
+  //         onTap: () {
+  //           getDialogue(context, "Satellite Town");
+  //         }),
+  //   };
+  //   return polygons;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +273,7 @@ class _CasesMapState extends State<CasesMap> {
                         controller;
                   },
                   markers: _markers,
-                  polygons: getPolygons(context),
+                  polygons: _polygons,
 
                   onCameraMoveStarted: () {
                     // notify map is moving

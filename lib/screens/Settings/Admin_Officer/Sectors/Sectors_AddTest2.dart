@@ -62,7 +62,7 @@ class _PolygonSaverState extends State<PolygonSaver> {
 
     final Map<String, dynamic> requestBody = {
       'secName': namecont.text,
-      'threshold': thresholdcont.text as int,
+      'threshold': thresholdcont.text,
       'description': descriptioncont.text,
       'latLongs': _currentPolygon
     };
@@ -85,7 +85,7 @@ class _PolygonSaverState extends State<PolygonSaver> {
       }
     } catch (error) {
       // Handle any errors that occur during the request
-      snackBar(context, 'Failed to save polygons: $error');
+      snackBar(context, 'Failed to save polygons:');
       //print('Failed to save polygons: $error');
     }
   }
@@ -223,6 +223,7 @@ class _PolygonSaverState extends State<PolygonSaver> {
                             ),
                             TextButton(
                               onPressed: () {
+                                Navigator.of(context).pop();
                                 _savePolygons(_polygons, context);
 
                                 // Navigator.of(context).pop();

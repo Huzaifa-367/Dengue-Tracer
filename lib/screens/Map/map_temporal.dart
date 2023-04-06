@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,6 +16,7 @@ import 'package:map_picker/map_picker.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 
 class DengueMap extends StatefulWidget {
@@ -45,7 +47,7 @@ class _DengueMapState extends State<DengueMap> {
     getGeoLocationPosition();
     _getDengueUsers();
     _getChartData();
-    _getSectors();
+    _fetchPolygons();
     // loadDengueCases();
   }
 
@@ -193,31 +195,51 @@ class _DengueMapState extends State<DengueMap> {
     }
   }
 
-  //final List<Sector> _sectors = [];
-  final List<LatLng> _polygons = [];
+  final Set<Polygon> _polygons = {};
+  Future<void> _fetchPolygons() async {
+    try {
+      final response = await Dio().get('$ip/getsectors');
+      //final body = response.data;
+      final body = response.data;
+      if (body is List<dynamic>) {
+        final data = body.map((item) => item as Map<String, dynamic>).toList();
+        // Now you can access the properties of each item in the list
+        for (final item in data) {
+          final secId = item['sec_id'] as int;
+          final secName = item['sec_name'] as String;
+          final threshold = item['threshold'] as int;
+          final description = item['description'] as String;
+          final latLongs = item['latLongs'] as List<dynamic>;
 
-Future<void> _getSectors() async {
-    final response =
-        await http.get(Uri.parse('$ip/getsectors'));
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as List<dynamic>;
-      for (var element in data) {
-        List<dynamic> latLngs = element['latLongs'];
-        List<LatLng> points = [];
-        for (var latLng in latLngs) {
-          double lat = double.parse(latLng[0].toString());
-          double lng = double.parse(latLng[1].toString());
-          points.add(LatLng(lat, lng));
+          var latLngs = (item['latLongs'] as List<dynamic>)
+              .map((e) => LatLng(
+                    double.parse(e.split(',')[0]),
+                    double.parse(e.split(',')[1]),
+                  ))
+              .toList();
+          if (latLngs.isNotEmpty) {
+            final polygon = Polygon(
+              visible: true,
+              consumeTapEvents: true,
+              onTap: () {
+                getDialogue(context, "$secName\n$threshold");
+              },
+              polygonId: PolygonId(secId.toString()),
+              points: latLngs,
+              strokeColor: Colors.blue,
+              strokeWidth: 3,
+              fillColor: Colors.blue.withOpacity(0.2),
+            );
+            setState(() {
+              _polygons.add(polygon);
+            });
+          }
         }
-        setState(() {
-          _polygons.addAll(points);
-        });
       }
-    } else {
-      throw Exception('Failed to load sectors');
+    } catch (error) {
+      print('Failed to fetch polygons: $error');
     }
   }
-
 
   // getPolygons(context) {
   //   Set<Polygon> polygons = {
@@ -304,15 +326,7 @@ Future<void> _getSectors() async {
                   },
                   markers: _markers,
                   //polygons: getPolygons(context),
-                  polygons: <Polygon>{
-                    Polygon(
-                      polygonId: const PolygonId('sectors'),
-                      points: _polygons,
-                      strokeWidth: 2,
-                      strokeColor: Colors.blue,
-                      fillColor: Colors.blue.withOpacity(0.2),
-                    ),
-                  },
+                  polygons: _polygons,
 
                   onCameraMoveStarted: () {
                     // notify map is moving
