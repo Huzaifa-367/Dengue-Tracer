@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
+import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
@@ -13,9 +16,16 @@ class PolygonSaver extends StatefulWidget {
 
 class _PolygonSaverState extends State<PolygonSaver> {
   final Completer<GoogleMapController> _controller = Completer();
+  late final GoogleMapController _mapController;
   final Set<Polygon> _polygons = {};
   final List<LatLng> _currentPolygon = [];
   bool _isDrawing = false;
+
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
+  }
 
   void _toggleDrawing() {
     setState(() {
@@ -44,18 +54,12 @@ class _PolygonSaverState extends State<PolygonSaver> {
   }
 
   Future<void> _savePolygons(Set<Polygon> polygons) async {
-    // Extract the necessary data from the polygons
-    final List<List<List<double>>> latLongs = polygons.map((polygon) {
-      final List<LatLng> points = polygon.points;
-      return points.map((point) => [point.latitude, point.longitude]).toList();
-    }).toList();
-
     // Create the request body as a JSON object
     final Map<String, dynamic> requestBody = {
-      'secName': 'Sector 2',
-      'threshold': 50.0,
+      'secName': 'Sector 4',
+      'threshold': 40.0,
       'description': 'Example Description',
-      'latLongs': latLongs
+      'latLongs': _currentPolygon
     };
 
     // Send the HTTP request
@@ -78,6 +82,51 @@ class _PolygonSaverState extends State<PolygonSaver> {
     }
   }
 
+  Future<void> _fetchPolygons() async {
+    try {
+      final response = await Dio().get('$ip/getsectors');
+      //final body = response.data;
+      final body = response.data;
+      if (body is List<dynamic>) {
+        final data = body.map((item) => item as Map<String, dynamic>).toList();
+        // Now you can access the properties of each item in the list
+        for (final item in data) {
+          final secId = item['sec_id'] as int;
+          final secName = item['sec_name'] as String;
+          final threshold = item['threshold'] as int;
+          final description = item['description'] as String;
+          final latLongs = item['latLongs'] as List<dynamic>;
+
+          var latLngs = (item['latLongs'] as List<dynamic>)
+              .map((e) => LatLng(
+                    double.parse(e.split(',')[0]),
+                    double.parse(e.split(',')[1]),
+                  ))
+              .toList();
+          if (latLngs.isNotEmpty) {
+            final polygon = Polygon(
+              visible: true,
+              consumeTapEvents: true,
+              onTap: () {
+                getDialogue(context, "$secName\n$threshold");
+              },
+              polygonId: PolygonId(secId.toString()),
+              points: latLngs,
+              strokeColor: Colors.blue,
+              strokeWidth: 3,
+              fillColor: Colors.blue.withOpacity(0.2),
+            );
+            setState(() {
+              _polygons.add(polygon);
+            });
+          }
+        }
+      }
+    } catch (error) {
+      print('Failed to fetch polygons: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,8 +134,122 @@ class _PolygonSaverState extends State<PolygonSaver> {
         title: const Text('Polygon Saver'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.check),
-            onPressed: () => _savePolygons(_polygons),
+            icon: const Icon(Icons.save_as_rounded),
+            onPressed: () {
+              getDialogue2(
+                context,
+                [
+                  //Dialog
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: (() {
+                          Navigator.of(context).pop();
+                        }),
+                        icon: const Icon(Icons.cancel_outlined),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 45,
+                    width: 400,
+                    decoration: BoxDecoration(
+                      color: btnColor,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        //right: 5,
+                        bottom: 10,
+                        left: 15,
+                      ),
+                      child: TextWidget(
+                        title: "Area Range",
+                        txtSize: 20,
+                        txtColor: bkColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      TextWidget(
+                        title: "1 M",
+                        txtSize: 13,
+                        txtColor: txtColor,
+                      ),
+                      const SizedBox(
+                        width: 160,
+                      ),
+                      TextWidget(
+                        title: "500 M",
+                        txtSize: 13,
+                        txtColor: txtColor,
+                      ),
+                    ],
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           const OfficersListScreen(),
+                          //     ),
+                          // );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: btnColor,
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 10,
+                          ),
+                          child: const TextWidget(
+                              title: "Cancel",
+                              txtSize: 15,
+                              txtColor: Colors.white),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _savePolygons(_polygons);
+                          snackBar(context, "Your Area Range Has Been Updated");
+                          // Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: btnColor,
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 10,
+                          ),
+                          child: const TextWidget(
+                              title: "Save",
+                              txtSize: 15,
+                              txtColor: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -105,6 +268,8 @@ class _PolygonSaverState extends State<PolygonSaver> {
         },
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
+          _mapController = controller;
+          _fetchPolygons();
         },
       ),
       floatingActionButton: FloatingActionButton(

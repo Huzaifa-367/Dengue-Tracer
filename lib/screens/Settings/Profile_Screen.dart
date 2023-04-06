@@ -321,6 +321,26 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                         title: 'Prefrences',
                         subtitle: "Tap here to set area radius",
                       ),
+                      // SettingsItem(
+                      //   backgroundColor: btnColor,
+                      //   onTap: () {
+                      //     //getDialogue(context, "No sectors created yet in API!");
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => const PolygonViewer(),
+                      //       ),
+                      //     );
+                      //   },
+                      //   icons: Icons.area_chart_rounded,
+                      //   iconStyle: IconStyle(
+                      //     iconsColor: Colors.white,
+                      //     withBackground: true,
+                      //     backgroundColor: Colors.red,
+                      //   ),
+                      //   title: 'View Sectors',
+                      //   subtitle: "Edit Sectors data",
+                      // ),
                       SettingsItem(
                         backgroundColor: btnColor,
                         onTap: () {

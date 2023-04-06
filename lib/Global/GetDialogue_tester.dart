@@ -34,3 +34,14 @@ getDialogue(context, String? message) {
     ),
   );
 }
+
+getDialogue2(context, List<Widget> children) {
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: ScfColor,
+      actions: children,
+    ),
+  );
+}
