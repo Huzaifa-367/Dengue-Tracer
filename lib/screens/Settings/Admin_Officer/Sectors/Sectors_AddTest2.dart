@@ -57,11 +57,12 @@ class _PolygonSaverState extends State<PolygonSaver> {
     });
   }
 
-  Future<void> _savePolygons(Set<Polygon> polygons) async {
+  Future<void> _savePolygons(Set<Polygon> polygons, context) async {
     // Create the request body as a JSON object
+
     final Map<String, dynamic> requestBody = {
       'secName': namecont.text,
-      'threshold': thresholdcont.text,
+      'threshold': thresholdcont.text as int,
       'description': descriptioncont.text,
       'latLongs': _currentPolygon
     };
@@ -74,15 +75,18 @@ class _PolygonSaverState extends State<PolygonSaver> {
       // Check if the request was successful
       if (response.statusCode == 200) {
         // Handle the success response
-        print('Polygons saved successfully: ${response.data}');
+        snackBar(context, "New Sector Has been added Successfully");
+        //print('Polygons saved successfully: ${response.data}');
         //snackBar(context, 'Polygons saved successfully');
       } else {
         // Handle the error response
-        print('Failed to save polygons: ${response.data}');
+        snackBar(context, 'Failed to save polygons: ${response.data}');
+        // print('Failed to save polygons: ${response.data}');
       }
     } catch (error) {
       // Handle any errors that occur during the request
-      print('Failed to save polygons: $error');
+      snackBar(context, 'Failed to save polygons: $error');
+      //print('Failed to save polygons: $error');
     }
   }
 
@@ -110,7 +114,6 @@ class _PolygonSaverState extends State<PolygonSaver> {
           if (latLngs.isNotEmpty) {
             final polygon = Polygon(
               visible: true,
-              
               consumeTapEvents: _isDrawing == false ? true : false,
               onTap: () {
                 getDialogue(context, "$secName\n$threshold");
@@ -144,91 +147,105 @@ class _PolygonSaverState extends State<PolygonSaver> {
               getWidgetDialogue(
                 context,
                 [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: (() {
-                          Navigator.of(context).pop();
-                        }),
-                        icon: const Icon(Icons.cancel_outlined),
-                      ),
-                    ],
-                  ),
-                  MyTextField(
-                    maxlines: 1,
-                    //siconn: Icons.email,
-                    controller: namecont,
-                    hintText: "Email",
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.email),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  MyTextField(
-                    controller: thresholdcont,
-                    hintText: "Threshold",
-                    obscureText: false,
-                  ),
-                  MyTextField(
-                    controller: descriptioncont,
-                    hintText: "Description",
-                    maxlines: 5,
-                    obscureText: false,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: (() {
+                                Navigator.of(context).pop();
+                              }),
+                              icon: const Icon(Icons.cancel_outlined),
+                            ),
+                          ],
+                        ),
+                        MyTextField(
+                          maxlines: 1,
+                          //siconn: Icons.email,
+                          controller: namecont,
+                          hintText: "Sector Name",
 
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           const OfficersListScreen(),
-                          //     ),
-                          // );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: btnColor,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 25,
-                            vertical: 10,
-                          ),
-                          child: const TextWidget(
-                              title: "Cancel",
-                              txtSize: 15,
-                              txtColor: Colors.white),
+                          obscureText: false,
+                          prefixIcon: const Icon(Icons.email),
                         ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          _savePolygons(_polygons);
-                          snackBar(context, "Your Area Range Has Been Updated");
-                          // Navigator.of(context).pop();
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: btnColor,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 25,
-                            vertical: 10,
-                          ),
-                          child: const TextWidget(
-                              title: "Save",
-                              txtSize: 15,
-                              txtColor: Colors.white),
+                        const SizedBox(
+                          height: 10,
                         ),
-                      ),
-                    ],
+                        MyTextField(
+                          controller: thresholdcont,
+                          hintText: "Threshold",
+                          obscureText: false,
+                          maxlines: 1,
+                          prefixIcon: const Icon(Icons.numbers_rounded),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        MyTextField(
+                          controller: descriptioncont,
+                          hintText: "Description",
+                          maxlines: 5,
+                          obscureText: false,
+                          prefixIcon: const Icon(Icons.description_rounded),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) =>
+                                //           const OfficersListScreen(),
+                                //     ),
+                                // );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: btnColor,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
+                                child: const TextWidget(
+                                    title: "Cancel",
+                                    txtSize: 15,
+                                    txtColor: Colors.white),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                _savePolygons(_polygons, context);
+
+                                // Navigator.of(context).pop();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: btnColor,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
+                                child: const TextWidget(
+                                    title: "Save",
+                                    txtSize: 15,
+                                    txtColor: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );
@@ -236,24 +253,28 @@ class _PolygonSaverState extends State<PolygonSaver> {
           ),
         ],
       ),
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: const CameraPosition(
-          target: LatLng(33.643005, 73.077706),
-          zoom: 14.4746,
-        ),
-        polygons: _polygons,
-        onTap: (LatLng point) {
-          if (_isDrawing) {
-            _addPoint(point);
-            _updatePolygons();
-          }
-        },
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-          _mapController = controller;
-          _fetchPolygons();
-        },
+      body: Stack(
+        children: [
+          GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(33.643005, 73.077706),
+              zoom: 14.4746,
+            ),
+            polygons: _polygons,
+            onTap: (LatLng point) {
+              if (_isDrawing) {
+                _addPoint(point);
+                _updatePolygons();
+              }
+            },
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+              _mapController = controller;
+              _fetchPolygons();
+            },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _toggleDrawing,
