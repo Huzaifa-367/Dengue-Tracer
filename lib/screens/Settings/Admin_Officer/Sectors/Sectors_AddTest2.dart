@@ -3,6 +3,7 @@ import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
+import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';
@@ -20,6 +21,9 @@ class _PolygonSaverState extends State<PolygonSaver> {
   final Set<Polygon> _polygons = {};
   final List<LatLng> _currentPolygon = [];
   bool _isDrawing = false;
+  TextEditingController namecont = TextEditingController();
+  TextEditingController thresholdcont = TextEditingController();
+  TextEditingController descriptioncont = TextEditingController();
 
   @override
   void dispose() {
@@ -56,9 +60,9 @@ class _PolygonSaverState extends State<PolygonSaver> {
   Future<void> _savePolygons(Set<Polygon> polygons) async {
     // Create the request body as a JSON object
     final Map<String, dynamic> requestBody = {
-      'secName': 'Sector 4',
-      'threshold': 40.0,
-      'description': 'Example Description',
+      'secName': namecont.text,
+      'threshold': thresholdcont.text,
+      'description': descriptioncont.text,
       'latLongs': _currentPolygon
     };
 
@@ -106,7 +110,8 @@ class _PolygonSaverState extends State<PolygonSaver> {
           if (latLngs.isNotEmpty) {
             final polygon = Polygon(
               visible: true,
-              consumeTapEvents: true,
+              
+              consumeTapEvents: _isDrawing == false ? true : false,
               onTap: () {
                 getDialogue(context, "$secName\n$threshold");
               },
@@ -136,11 +141,9 @@ class _PolygonSaverState extends State<PolygonSaver> {
           IconButton(
             icon: const Icon(Icons.save_as_rounded),
             onPressed: () {
-              getDialogue2(
+              getWidgetDialogue(
                 context,
                 [
-                  //Dialog
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -152,48 +155,28 @@ class _PolygonSaverState extends State<PolygonSaver> {
                       ),
                     ],
                   ),
-                  Container(
-                    height: 45,
-                    width: 400,
-                    decoration: BoxDecoration(
-                      color: btnColor,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        //right: 5,
-                        bottom: 10,
-                        left: 15,
-                      ),
-                      child: TextWidget(
-                        title: "Area Range",
-                        txtSize: 20,
-                        txtColor: bkColor,
-                      ),
-                    ),
+                  MyTextField(
+                    maxlines: 1,
+                    //siconn: Icons.email,
+                    controller: namecont,
+                    hintText: "Email",
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.email),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
-                  Row(
-                    children: [
-                      TextWidget(
-                        title: "1 M",
-                        txtSize: 13,
-                        txtColor: txtColor,
-                      ),
-                      const SizedBox(
-                        width: 160,
-                      ),
-                      TextWidget(
-                        title: "500 M",
-                        txtSize: 13,
-                        txtColor: txtColor,
-                      ),
-                    ],
+                  MyTextField(
+                    controller: thresholdcont,
+                    hintText: "Threshold",
+                    obscureText: false,
                   ),
-
+                  MyTextField(
+                    controller: descriptioncont,
+                    hintText: "Description",
+                    maxlines: 5,
+                    obscureText: false,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

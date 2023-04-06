@@ -35,7 +35,7 @@ getDialogue(context, String? message) {
   );
 }
 
-getDialogue2(context, List<Widget> children) {
+getWidgetDialogue(context, List<Widget> children) {
   showDialog(
     barrierDismissible: false,
     context: context,
