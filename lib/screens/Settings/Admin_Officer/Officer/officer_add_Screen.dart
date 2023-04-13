@@ -7,10 +7,12 @@ import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';
-import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Sectors/SectorsDropDown.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_custom_selector/flutter_custom_selector.dart' as sector;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class OfficerAddScreen extends StatefulWidget {
   const OfficerAddScreen({Key? key}) : super(key: key);
@@ -51,6 +53,23 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
     setState(() {
       imageFile = File(pickedFile!.path);
     });
+  }
+
+  List<String>? sectors;
+  List<String>? selectedDataString;
+  int? selectedSectorId;
+
+  Future<List<String>> fetchSectors() async {
+    final response = await http.get(Uri.parse('$ip/GetSectors'));
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body) as List<dynamic>;
+      final sectors = jsonData
+          .map((e) => e['sec_name'] != null ? e['sec_name'].toString() : '')
+          .toList();
+      return sectors;
+    } else {
+      throw Exception("Failed to fetch sectors data");
+    }
   }
 
   @override
@@ -293,9 +312,27 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: SectorsDrop(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: FutureBuilder<List<String>>(
+                      future: fetchSectors(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          sectors = snapshot.data;
+                          return sector.CustomSingleSelectField<String>(
+                            title: "Sectors",
+                            items: sectors!,
+                            //enableAllOptionSelect: true,
+                            onSelectionDone: _onSelectionComplete,
+                            itemAsString: (item) => item.toString(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return const Text("Error fetching sectors data");
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -318,6 +355,7 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                             u.phone_number = phonecont.text;
                             u.password = passwordcont.text;
                             u.home_location = "";
+
                             await AddOfficer(
                               u,
                               context,
@@ -340,5 +378,12 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
         ),
       ),
     );
+  }
+
+  void _onSelectionComplete(dynamic value) {
+    int selectedSectorId = value as int;
+    setState(() {
+      // set the state of your widget with the selected sector ID
+    });
   }
 }

@@ -9,9 +9,11 @@ class User {
   String? name, phone_number, email, password, role, home_location;
   //,office_location;
   String? image;
+  int? sec_id;
   late int user_id;
   User();
   User.fromMap(Map<String, dynamic> map) {
+    sec_id = map['sec_id'];
     name = map['name'];
     email = map["email"];
     password = map["password"];
@@ -37,6 +39,7 @@ class User {
 
   Map<String, dynamic> tomap() {
     return <String, dynamic>{
+      'sec_id': sec_id,
       'role': role,
       'name': name,
       'email': email,
