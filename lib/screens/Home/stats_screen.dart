@@ -1,5 +1,7 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
+import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:dengue_tracing_application/screens/Home/notifications.dart';
+import 'package:draggable_menu/draggable_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -79,12 +81,20 @@ class _StatsScreenState extends State<StatsScreen> {
     }
   }
 
+  TextEditingController namecont = TextEditingController();
+  TextEditingController phonecont = TextEditingController();
+  TextEditingController emailcont = TextEditingController();
+  TextEditingController passwordcont = TextEditingController();
+  TextEditingController passwordcont2 = TextEditingController();
+  TextEditingController home_loccont = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    double bannerHeight = 200;
     return DefaultTabController(
       length: 3,
       child: Container(
-        color: Colors.white,
+        color: ScfColor,
         child: SafeArea(
           child: Scaffold(
             backgroundColor: ScfColor,
@@ -242,66 +252,120 @@ class _StatsScreenState extends State<StatsScreen> {
                     child: SizedBox(
                       height: 600,
                       width: 500,
-                      child: TabBarView(children: [
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                TextWidget(
-                                  title: "No. Of Cases",
-                                  txtSize: 15,
-                                  txtColor: txtColor,
-                                )
-                              ],
-                            ),
-                            SfCartesianChart(
-                              //enableAxisAnimation: true,
-                              primaryXAxis: CategoryAxis(
-                                //opposedPosition: true,
-                                autoScrollingMode: AutoScrollingMode.end,
-                                visibleMaximum: 5,
-                                interval: 1,
+                      child: TabBarView(
+                        children: [
+                          Column(
+                            children: [
+                              Row(
+                                children: [
+                                  TextWidget(
+                                    title: "No. Of Cases",
+                                    txtSize: 15,
+                                    txtColor: txtColor,
+                                  )
+                                ],
                               ),
-                              zoomPanBehavior: ZoomPanBehavior(
-                                enablePanning: true,
-                              ),
-                              primaryYAxis: NumericAxis(
-                                //numberFormat: NumberFormat('##########人'),
-
-                                minimum: 0,
-                                maximum: 20,
-                                interval: 1,
-                              ),
-                              tooltipBehavior: _tooltip,
-                              series: <ChartSeries<_ChartData, String>>[
-                                ColumnSeries<_ChartData, String>(
-                                  dataSource: _chartData,
-
-                                  // emptyPointSettings: EmptyPointSettings(
-                                  //     // Mode of empty point
-                                  //     mode: EmptyPointMode.average),
-                                  xValueMapper: (_ChartData data, _) =>
-                                      data.date.toString(),
-                                  yValueMapper: (_ChartData data, _) =>
-                                      data.cases,
-                                  name: 'Dengue Cases',
-                                  color: btnColor,
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(5.0),
-                                    topRight: Radius.circular(5.0),
-                                  ),
-                                  //enableTooltip: true,
+                              SfCartesianChart(
+                                //enableAxisAnimation: true,
+                                primaryXAxis: CategoryAxis(
+                                  //opposedPosition: true,
+                                  autoScrollingMode: AutoScrollingMode.end,
+                                  visibleMaximum: 5,
+                                  interval: 1,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                zoomPanBehavior: ZoomPanBehavior(
+                                  enablePanning: true,
+                                ),
+                                primaryYAxis: NumericAxis(
+                                  //numberFormat: NumberFormat('##########人'),
 
-                        //chart_screen(),
-                        //DailyData(),
-                        const MonthlyData(),
-                        const YearlyData(),
-                      ]),
+                                  minimum: 0,
+                                  maximum: 20,
+                                  interval: 1,
+                                ),
+                                tooltipBehavior: _tooltip,
+                                series: <ChartSeries<_ChartData, String>>[
+                                  ColumnSeries<_ChartData, String>(
+                                    dataSource: _chartData,
+
+                                    // emptyPointSettings: EmptyPointSettings(
+                                    //     // Mode of empty point
+                                    //     mode: EmptyPointMode.average),
+                                    xValueMapper: (_ChartData data, _) =>
+                                        data.date.toString(),
+                                    yValueMapper: (_ChartData data, _) =>
+                                        data.cases,
+                                    name: 'Dengue Cases',
+                                    color: btnColor,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(5.0),
+                                      topRight: Radius.circular(5.0),
+                                    ),
+                                    //enableTooltip: true,
+                                  ),
+                                ],
+                              ),
+                              ButtonWidget(
+                                btnText: "Expandable ",
+                                onPress: () => DraggableMenu.open(
+                                  context,
+                                  DraggableMenu(
+                                    color: ScfColor2,
+                                    uiType: DraggableMenuUiType.softModern,
+                                    expandable: true,
+                                    fastDrag: true,
+                                    minimizeBeforeFastDrag: true,
+                                    expandedHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.72,
+                                    maxHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.36,
+                                    child: ScrollableManager(
+                                      enableExpandedScroll: true,
+                                      child: Scaffold(
+                                        body: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "Sign Up",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w800,
+                                                  color: txtColor,
+                                                  fontSize: 25,
+                                                ),
+                                              ),
+                                              MyTextField(
+                                                maxlines: 1,
+                                                //siconn: Icons.email,
+                                                controller: emailcont,
+                                                hintText: "Email",
+                                                obscureText: false,
+                                                prefixIcon:
+                                                    const Icon(Icons.email),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  barrier: true,
+                                ),
+                              )
+                            ],
+                          ),
+
+                          //chart_screen(),
+                          //DailyData(),
+                          const MonthlyData(),
+                          const YearlyData(),
+                        ],
+                      ),
                     ),
                   ),
                 ],

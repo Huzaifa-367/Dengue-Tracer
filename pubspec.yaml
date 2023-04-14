@@ -70,6 +70,8 @@ dependencies:
   flutter_email_sender: ^5.2.0
   csv: ^5.0.1
   mailer: ^6.0.0
+  expandable_bottom_sheet: ^1.1.1+1
+  draggable_menu: ^0.2.0
 
   #pull_to_refresh: ^2.0.0
  

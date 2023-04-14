@@ -70,21 +70,26 @@ class _PolygonViewerState extends State<PolygonViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Polygon Viewer'),
-      ),
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: const CameraPosition(
-          target: LatLng(33.643005, 73.077706),
-          zoom: 14.4746,
+    return Container(
+      color: ScfColor,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Polygon Viewer'),
+          ),
+          body: GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(33.643005, 73.077706),
+              zoom: 14.4746,
+            ),
+            polygons: _polygons,
+            onMapCreated: (GoogleMapController controller) {
+              _mapController = controller;
+              _fetchPolygons();
+            },
+          ),
         ),
-        polygons: _polygons,
-        onMapCreated: (GoogleMapController controller) {
-          _mapController = controller;
-          _fetchPolygons();
-        },
       ),
     );
   }

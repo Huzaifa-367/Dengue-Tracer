@@ -124,7 +124,7 @@ class _AwarenessState extends State<Awareness> {
     return DefaultTabController(
       length: 2,
       child: Container(
-        color: Colors.white,
+        color: ScfColor,
         child: Scaffold(
           backgroundColor: ScfColor,
           appBar: TabBar(

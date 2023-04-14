@@ -235,7 +235,7 @@ class _CasesMapState extends State<CasesMap> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: ScfColor,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: ScfColor,

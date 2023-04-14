@@ -142,42 +142,47 @@ class _PolygonCreatorState extends State<PolygonCreator> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Polygon Creator'),
-      ),
-      body: Stack(
-        children: [
-          GoogleMap(
-            markers: _markers,
-            polygons: _polygons,
-            onMapCreated: _onMapCreated,
-            onTap: _onTap,
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(33.643005, 73.077706),
-              zoom: 14.4746,
-            ),
+    return Container(
+      color: ScfColor,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Polygon Creator'),
           ),
-          if (_showSavedPolygons)
-            SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: GoogleMap(
+          body: Stack(
+            children: [
+              GoogleMap(
+                markers: _markers,
                 polygons: _polygons,
+                onMapCreated: _onMapCreated,
+                onTap: _onTap,
                 initialCameraPosition: const CameraPosition(
                   target: LatLng(33.643005, 73.077706),
                   zoom: 14.4746,
                 ),
               ),
+              if (_showSavedPolygons)
+                SizedBox(
+                  height: double.infinity,
+                  width: double.infinity,
+                  child: GoogleMap(
+                    polygons: _polygons,
+                    initialCameraPosition: const CameraPosition(
+                      target: LatLng(33.643005, 73.077706),
+                      zoom: 14.4746,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          floatingActionButton: Positioned(
+            right: 40,
+            bottom: 50,
+            child: FloatingActionButton(
+              onPressed: _onSavePressed,
+              child: const Icon(Icons.save),
             ),
-        ],
-      ),
-      floatingActionButton: Positioned(
-        right: 40,
-        bottom: 50,
-        child: FloatingActionButton(
-          onPressed: _onSavePressed,
-          child: const Icon(Icons.save),
+          ),
         ),
       ),
     );

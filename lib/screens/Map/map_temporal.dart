@@ -287,7 +287,7 @@ class _DengueMapState extends State<DengueMap> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: ScfColor,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: ScfColor,

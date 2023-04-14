@@ -141,7 +141,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
   Widget build(BuildContext context) {
     //var DataRepository;
     return Container(
-      color: Colors.white,
+      color: ScfColor,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: ScfColor,
