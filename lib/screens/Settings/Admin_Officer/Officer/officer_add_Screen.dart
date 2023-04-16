@@ -96,146 +96,146 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 120,
-                      ),
-                      Stack(
-                        children: [
-                          loggedInUser!.image != null
-                              ? imageFile == null
-                                  ? CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: NetworkImage(
-                                          imgpath + loggedInUser!.image!),
-                                    )
-                                  : CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: FileImage(imageFile!),
-                                    )
-                              : const CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage: AssetImage(Images.dpImage),
-                                ),
-                          Positioned(
-                            bottom: 0.2,
-                            right: 0.2,
-                            //left: 50,
-                            child: GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    actions: <Widget>[
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            onPressed: (() {
-                                              Navigator.of(context).pop();
-                                            }),
-                                            icon: const Icon(Icons.cancel),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          TextWidget(
-                                              title: "Pick Image From?",
-                                              txtSize: 20,
-                                              txtColor: btnColor),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          TextButton(
-                                            onPressed: () async {
-                                              XFile? file = await ImagePicker()
-                                                  .pickImage(
-                                                      source:
-                                                          ImageSource.gallery);
-                                              if (file != null) {
-                                                imageFile = File(file.path);
-                                                loggedInUser!
-                                                    .uploadPic(imageFile!);
-                                              }
+                  // Row(
+                  //   children: [
+                  //     const SizedBox(
+                  //       width: 120,
+                  //     ),
+                  //     Stack(
+                  //       children: [
+                  //         loggedInUser!.image != null
+                  //             ? imageFile == null
+                  //                 ? CircleAvatar(
+                  //                     radius: 50,
+                  //                     backgroundImage: NetworkImage(
+                  //                         imgpath + loggedInUser!.image!),
+                  //                   )
+                  //                 : CircleAvatar(
+                  //                     radius: 50,
+                  //                     backgroundImage: FileImage(imageFile!),
+                  //                   )
+                  //             : const CircleAvatar(
+                  //                 radius: 50,
+                  //                 backgroundImage: AssetImage(Images.dpImage),
+                  //               ),
+                  //         Positioned(
+                  //           bottom: 0.2,
+                  //           right: 0.2,
+                  //           //left: 50,
+                  //           child: GestureDetector(
+                  //             onTap: () {
+                  //               showDialog(
+                  //                 barrierDismissible: false,
+                  //                 context: context,
+                  //                 builder: (context) => AlertDialog(
+                  //                   actions: <Widget>[
+                  //                     Row(
+                  //                       mainAxisAlignment:
+                  //                           MainAxisAlignment.end,
+                  //                       children: [
+                  //                         IconButton(
+                  //                           onPressed: (() {
+                  //                             Navigator.of(context).pop();
+                  //                           }),
+                  //                           icon: const Icon(Icons.cancel),
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                     Row(
+                  //                       mainAxisAlignment:
+                  //                           MainAxisAlignment.center,
+                  //                       children: [
+                  //                         TextWidget(
+                  //                             title: "Pick Image From?",
+                  //                             txtSize: 20,
+                  //                             txtColor: btnColor),
+                  //                       ],
+                  //                     ),
+                  //                     Row(
+                  //                       mainAxisAlignment:
+                  //                           MainAxisAlignment.center,
+                  //                       children: [
+                  //                         TextButton(
+                  //                           onPressed: () async {
+                  //                             XFile? file = await ImagePicker()
+                  //                                 .pickImage(
+                  //                                     source:
+                  //                                         ImageSource.gallery);
+                  //                             if (file != null) {
+                  //                               imageFile = File(file.path);
+                  //                               loggedInUser!
+                  //                                   .uploadPic(imageFile!);
+                  //                             }
 
-                                              Navigator.of(context).pop();
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: btnColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(25),
-                                              ),
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  right: 8,
-                                                  bottom: 10,
-                                                  left: 8),
-                                              child: const TextWidget(
-                                                  title: "Gallery",
-                                                  txtSize: 15,
-                                                  txtColor: Colors.white),
-                                            ),
-                                          ),
-                                          TextButton(
-                                            onPressed: () async {
-                                              XFile? file =
-                                                  await ImagePicker().pickImage(
-                                                source: ImageSource.camera,
-                                              );
-                                              if (file != null) {
-                                                imageFile = File(file.path);
-                                                loggedInUser
-                                                    ?.uploadPic(imageFile!);
-                                              }
+                  //                             Navigator.of(context).pop();
+                  //                             setState(() {});
+                  //                           },
+                  //                           child: Container(
+                  //                             decoration: BoxDecoration(
+                  //                               color: btnColor,
+                  //                               borderRadius:
+                  //                                   BorderRadius.circular(25),
+                  //                             ),
+                  //                             padding: const EdgeInsets.only(
+                  //                                 top: 10,
+                  //                                 right: 8,
+                  //                                 bottom: 10,
+                  //                                 left: 8),
+                  //                             child: const TextWidget(
+                  //                                 title: "Gallery",
+                  //                                 txtSize: 15,
+                  //                                 txtColor: Colors.white),
+                  //                           ),
+                  //                         ),
+                  //                         TextButton(
+                  //                           onPressed: () async {
+                  //                             XFile? file =
+                  //                                 await ImagePicker().pickImage(
+                  //                               source: ImageSource.camera,
+                  //                             );
+                  //                             if (file != null) {
+                  //                               imageFile = File(file.path);
+                  //                               loggedInUser
+                  //                                   ?.uploadPic(imageFile!);
+                  //                             }
 
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: btnColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(25),
-                                              ),
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  right: 8,
-                                                  bottom: 10,
-                                                  left: 8),
-                                              child: const TextWidget(
-                                                  title: "  Camera  ",
-                                                  txtSize: 15,
-                                                  txtColor: Colors.white),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              child: Icon(
-                                //size: 35,
-                                Icons.camera_alt,
-                                size: 35,
-                                color: btnColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  //                             Navigator.of(context).pop();
+                  //                           },
+                  //                           child: Container(
+                  //                             decoration: BoxDecoration(
+                  //                               color: btnColor,
+                  //                               borderRadius:
+                  //                                   BorderRadius.circular(25),
+                  //                             ),
+                  //                             padding: const EdgeInsets.only(
+                  //                                 top: 10,
+                  //                                 right: 8,
+                  //                                 bottom: 10,
+                  //                                 left: 8),
+                  //                             child: const TextWidget(
+                  //                                 title: "  Camera  ",
+                  //                                 txtSize: 15,
+                  //                                 txtColor: Colors.white),
+                  //                           ),
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               );
+                  //             },
+                  //             child: Icon(
+                  //               //size: 35,
+                  //               Icons.camera_alt,
+                  //               size: 35,
+                  //               color: btnColor,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -323,7 +323,18 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                             title: "Sectors",
                             items: sectors!,
                             //enableAllOptionSelect: true,
-                            onSelectionDone: _onSelectionComplete,
+                            onSelectionDone: (dynamic value) {
+                              int selectedSectorIndex =
+                                  sectors!.indexOf(value as String);
+                              selectedSectorId = selectedSectorIndex != -1
+                                  ? selectedSectorIndex + 1
+                                  : null; // assuming sector IDs start from 1
+
+                              // if (selectedSectorId != null) {
+                              //   // call the C# API
+                              // }
+                            },
+
                             itemAsString: (item) => item.toString(),
                           );
                         } else if (snapshot.hasError) {
@@ -355,6 +366,7 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
                             u.phone_number = phonecont.text;
                             u.password = passwordcont.text;
                             u.home_location = "";
+                            u.sec_id = selectedSectorId;
 
                             await AddOfficer(
                               u,
@@ -378,12 +390,5 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
         ),
       ),
     );
-  }
-
-  void _onSelectionComplete(dynamic value) {
-    int selectedSectorId = value as int;
-    setState(() {
-      // set the state of your widget with the selected sector ID
-    });
   }
 }

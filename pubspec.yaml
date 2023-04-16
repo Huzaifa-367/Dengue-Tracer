@@ -72,6 +72,7 @@ dependencies:
   mailer: ^6.0.0
   expandable_bottom_sheet: ^1.1.1+1
   draggable_menu: ^0.2.0
+  flutter_expandable_fab: ^1.7.1
 
   #pull_to_refresh: ^2.0.0
  

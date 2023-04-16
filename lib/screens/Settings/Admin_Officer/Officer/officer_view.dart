@@ -4,6 +4,7 @@ import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 import 'package:http/http.dart' as http;
@@ -139,6 +140,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
   bool _isAllOfficers = false;
   @override
   Widget build(BuildContext context) {
+    final key = GlobalObjectKey<ExpandableFabState>(context);
     //var DataRepository;
     return Container(
       color: ScfColor,
@@ -147,20 +149,20 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
           backgroundColor: ScfColor,
           appBar: AppBar(
             backgroundColor: ScfColor,
-            actions: [
-              IconButton(
-                onPressed: (() {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const OfficerAddScreen(),
-                  ));
-                }),
-                icon: Icon(
-                  Icons.add_box_rounded,
-                  size: 30,
-                  color: btnColor,
-                ),
-              ),
-            ],
+            // actions: [
+            //   IconButton(
+            //     onPressed: (() {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //         builder: (context) => const OfficerAddScreen(),
+            //       ));
+            //     }),
+            //     icon: Icon(
+            //       Icons.add_box_rounded,
+            //       size: 30,
+            //       color: btnColor,
+            //     ),
+            //   ),
+            // ],
             title: TextWidget(
                 title: "All Health Officers", txtSize: 20, txtColor: txtColor),
           ),
@@ -169,6 +171,10 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
+                  Divider(color: btnColor, thickness: 2),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -233,6 +239,68 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
                 ],
               ),
             ),
+          ),
+          floatingActionButtonLocation: ExpandableFab.location,
+          floatingActionButton: ExpandableFab(
+            key: key,
+            duration: const Duration(seconds: 1),
+            distance: 60.0,
+            type: ExpandableFabType.fan,
+            // fanAngle: 70,
+            //child: const Icon(Icons.account_box),
+            foregroundColor: ScfColor,
+            backgroundColor: btnColor,
+            closeButtonStyle: ExpandableFabCloseButtonStyle(
+              //child: Icon(Icons.abc),
+              foregroundColor: ScfColor,
+              backgroundColor: btnColor,
+            ),
+            overlayStyle: ExpandableFabOverlayStyle(
+              //color: Colors.black.withOpacity(0.5),
+              blur: 5,
+            ),
+            onOpen: () {
+              debugPrint('onOpen');
+            },
+            afterOpen: () {
+              debugPrint('afterOpen');
+            },
+            onClose: () {
+              debugPrint('onClose');
+            },
+            afterClose: () {
+              debugPrint('afterClose');
+            },
+            children: [
+              FloatingActionButton.small(
+                tooltip: "Edit Officer",
+                backgroundColor: btnColor,
+                foregroundColor: ScfColor,
+                heroTag: null,
+                child: const Icon(Icons.edit),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => const OfficerAddScreen()),
+                    ),
+                  );
+                },
+              ),
+              FloatingActionButton.small(
+                tooltip: "Add New Officer",
+                backgroundColor: btnColor,
+                foregroundColor: ScfColor,
+                heroTag: null,
+                child: const Icon(Icons.add_box_rounded),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => const OfficerAddScreen()),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

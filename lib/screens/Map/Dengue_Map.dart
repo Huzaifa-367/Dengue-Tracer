@@ -189,49 +189,6 @@ class _CasesMapState extends State<CasesMap> {
     }
   }
 
-  // getPolygons(context) {
-  //   Set<Polygon> polygons = {
-  //     Polygon(
-  //       visible: true,
-  //       consumeTapEvents: true,
-  //       onTap: () {
-  //         getDialogue(context, "Rehman Abad");
-  //         //snackBar(context, "Rehman Abad");
-  //       },
-  //       polygonId: const PolygonId('polygon1'),
-  //       points: const <LatLng>[
-  //         LatLng(33.644217, 73.074658),
-  //         LatLng(33.644065, 73.080516),
-  //         LatLng(33.642175, 73.082333),
-  //         LatLng(33.640020, 73.080607),
-  //         LatLng(33.637373, 73.077156),
-  //         LatLng(33.638243, 73.071434),
-  //       ],
-  //       strokeWidth: 2,
-  //       strokeColor: Colors.red,
-  //       fillColor: Colors.red.withOpacity(0.2),
-  //     ),
-  //     Polygon(
-  //         consumeTapEvents: true,
-  //         polygonId: const PolygonId('polygon2'),
-  //         points: const <LatLng>[
-  //           LatLng(33.637612, 73.076807),
-  //           LatLng(33.638170, 73.071442),
-  //           LatLng(33.635490, 73.070011),
-  //           LatLng(33.633368, 73.070592),
-  //           LatLng(33.632140, 73.074303),
-  //           LatLng(33.633815, 73.076986),
-  //         ],
-  //         strokeWidth: 2,
-  //         strokeColor: Colors.blue,
-  //         fillColor: Colors.blue.withOpacity(0.2),
-  //         onTap: () {
-  //           getDialogue(context, "Satellite Town");
-  //         }),
-  //   };
-  //   return polygons;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -261,6 +218,7 @@ class _CasesMapState extends State<CasesMap> {
                   zoomControlsEnabled: false,
                   // hide location button
                   myLocationButtonEnabled: true,
+
                   // mapToolbarEnabled: true,
                   //trafficEnabled: true,
                   mapType: MapType.normal,
