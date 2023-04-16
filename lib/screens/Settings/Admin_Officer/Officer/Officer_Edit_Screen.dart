@@ -14,14 +14,14 @@ import 'package:flutter_custom_selector/flutter_custom_selector.dart' as sector;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class OfficerAddScreen extends StatefulWidget {
-  const OfficerAddScreen({Key? key}) : super(key: key);
+class Officer_Edit_Screen extends StatefulWidget {
+  const Officer_Edit_Screen({Key? key}) : super(key: key);
 
   @override
-  State<OfficerAddScreen> createState() => _OfficerAddScreenState();
+  State<Officer_Edit_Screen> createState() => _Officer_Edit_ScreenState();
 }
 
-class _OfficerAddScreenState extends State<OfficerAddScreen> {
+class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
   TextEditingController namecont = TextEditingController();
   TextEditingController phonecont = TextEditingController();
   TextEditingController emailcont = TextEditingController();
@@ -81,7 +81,7 @@ class _OfficerAddScreenState extends State<OfficerAddScreen> {
           appBar: AppBar(
             //backgroundColor: btnColor,
             title: TextWidget(
-                title: "Add New Health Officer",
+                title: "Eddit Health Officer",
                 txtSize: 20,
                 txtColor: txtColor),
           ),

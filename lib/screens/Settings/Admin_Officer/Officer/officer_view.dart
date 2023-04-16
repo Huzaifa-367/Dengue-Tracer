@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dengue_tracing_application/Global/text_widget.dart';
+import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/Officer_Edit_Screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dengue_tracing_application/Global/constant.dart';
@@ -243,7 +244,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
           floatingActionButtonLocation: ExpandableFab.location,
           floatingActionButton: ExpandableFab(
             key: key,
-            duration: const Duration(seconds: 1),
+            // duration: const Duration(seconds: 1),
             distance: 60.0,
             type: ExpandableFabType.fan,
             // fanAngle: 70,
@@ -281,7 +282,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: ((context) => const OfficerAddScreen()),
+                      builder: ((context) => const Officer_Edit_Screen()),
                     ),
                   );
                 },
