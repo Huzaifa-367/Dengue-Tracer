@@ -81,9 +81,10 @@ class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
           appBar: AppBar(
             //backgroundColor: btnColor,
             title: TextWidget(
-                title: "Eddit Health Officer",
-                txtSize: 20,
-                txtColor: txtColor),
+              title: "Edit Health Officer",
+              txtSize: 20,
+              txtColor: txtColor,
+            ),
           ),
           //backgroundColor: Colors.amber,
           body: SingleChildScrollView(
