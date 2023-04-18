@@ -282,7 +282,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: ((context) => const Officer_Edit_Screen()),
+                      builder: ((context) =>  Officer_Edit_Screen()),
                     ),
                   );
                 },

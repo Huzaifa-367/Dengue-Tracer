@@ -25,3 +25,26 @@ AddOfficer(User u, context) async {
     }
   }
 }
+
+UpdateOfficerSector(
+    int? selectedSectorId, int? selectedofficerId, context) async {
+  //FormData data = FormData.fromMap(u.tomap());
+  var response = await Dio().post(
+      '$ip/AssignOfficerSectors?sec_id=$selectedSectorId&user_id=$selectedofficerId');
+  // data: data,
+  // options: Options(headers: {
+  //   "Content-Type": "application/json",
+  // }));
+  if (response.statusCode == 200) {
+    if (response.data == "Assigned") {
+      snackBar(context, "Sector Assigned Successfully.");
+    } else {
+      snackBar(context, "Sector Updated Successfully.");
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) {
+          return const OfficersListScreen();
+        },
+      ));
+    }
+  }
+}

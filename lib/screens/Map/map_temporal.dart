@@ -139,6 +139,32 @@ class _DengueMapState extends State<DengueMap> {
   // Set<Marker> _markers = {};
 
   //Api to get all dengue users
+  // Future<void> _getDengueUsers() async {
+  //   final String apiUrl = '$ip/GetDengueUsers';
+  //   final response = await http.get(Uri.parse(apiUrl));
+
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       _users = json.decode(response.body);
+  //       _markers = Set<Marker>.from(
+  //         _users.map(
+  //           (user) => Marker(
+  //             markerId: MarkerId(user['name']),
+  //             position: LatLng(
+  //               double.parse(user['home_location'].split(',')[0]),
+  //               double.parse(user['home_location'].split(',')[1]),
+  //             ),
+  //             infoWindow: InfoWindow(title: user['name']),
+  //             icon: BitmapDescriptor.defaultMarkerWithHue(
+  //                 BitmapDescriptor.hueRed),
+  //           ),
+  //         ),
+  //       );
+  //     });
+  //   } else {
+  //     throw Exception('Failed to fetch dengue users.');
+  //   }
+  // }
   Future<void> _getDengueUsers() async {
     final String apiUrl = '$ip/GetDengueUsers';
     final response = await http.get(Uri.parse(apiUrl));
@@ -155,8 +181,12 @@ class _DengueMapState extends State<DengueMap> {
                 double.parse(user['home_location'].split(',')[1]),
               ),
               infoWindow: InfoWindow(title: user['name']),
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueRed),
+              icon: user['user_id'] == loggedInUser!.user_id
+                  ? BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueAzure)
+                  : BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueRed),
+              // flat: true,
             ),
           ),
         );
@@ -196,10 +226,54 @@ class _DengueMapState extends State<DengueMap> {
   }
 
   final Set<Polygon> _polygons = {};
+  // Future<void> _fetchPolygons() async {
+  //   try {
+  //     final response = await Dio().get('$ip/getsectors');
+  //     //final body = response.data;
+  //     final body = response.data;
+  //     if (body is List<dynamic>) {
+  //       final data = body.map((item) => item as Map<String, dynamic>).toList();
+  //       // Now you can access the properties of each item in the list
+  //       for (final item in data) {
+  //         final secId = item['sec_id'] as int;
+  //         final secName = item['sec_name'] as String;
+  //         final threshold = item['threshold'] as int;
+  //         final description = item['description'] as String;
+  //         final latLongs = item['latLongs'] as List<dynamic>;
+
+  //         var latLngs = (item['latLongs'] as List<dynamic>)
+  //             .map((e) => LatLng(
+  //                   double.parse(e.split(',')[0]),
+  //                   double.parse(e.split(',')[1]),
+  //                 ))
+  //             .toList();
+  //         if (latLngs.isNotEmpty) {
+  //           final polygon = Polygon(
+  //             visible: true,
+  //             consumeTapEvents: true,
+  //             onTap: () {
+  //               getDialogue(context, "$secName\n$threshold");
+  //             },
+  //             polygonId: PolygonId(secId.toString()),
+  //             points: latLngs,
+  //             strokeColor: Colors.blue,
+  //             strokeWidth: 3,
+  //             fillColor: Colors.blue.withOpacity(0.2),
+  //           );
+  //           setState(() {
+  //             _polygons.add(polygon);
+  //           });
+  //         }
+  //       }
+  //     }
+  //   } catch (error) {
+  //     print('Failed to fetch polygons: $error');
+  //   }
+  // }
+
   Future<void> _fetchPolygons() async {
     try {
       final response = await Dio().get('$ip/getsectors');
-      //final body = response.data;
       final body = response.data;
       if (body is List<dynamic>) {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
@@ -226,9 +300,19 @@ class _DengueMapState extends State<DengueMap> {
               },
               polygonId: PolygonId(secId.toString()),
               points: latLngs,
-              strokeColor: Colors.blue,
+              strokeColor: secId == loggedInUser!.sec_id
+                  ? btnColor
+                  : const Color.fromARGB(
+                      255,
+                      74,
+                      216,
+                      192,
+                    ), // Change stroke color for logged-in user's polygon
               strokeWidth: 3,
-              fillColor: Colors.blue.withOpacity(0.2),
+              fillColor: secId == loggedInUser!.sec_id
+                  ? btnColor.withOpacity(0.2)
+                  : const Color.fromARGB(255, 74, 216, 192).withOpacity(
+                      0.2), // Change fill color for logged-in user's polygon
             );
             setState(() {
               _polygons.add(polygon);
@@ -241,48 +325,65 @@ class _DengueMapState extends State<DengueMap> {
     }
   }
 
-  // getPolygons(context) {
-  //   Set<Polygon> polygons = {
-  //     Polygon(
-  //       visible: true,
-  //       consumeTapEvents: true,
-  //       onTap: () {
-  //         getDialogue(context, "Rehman Abad");
-  //         //snackBar(context, "Rehman Abad");
-  //       },
-  //       polygonId: const PolygonId('polygon1'),
-  //       points: const <LatLng>[
-  //         LatLng(33.644217, 73.074658),
-  //         LatLng(33.644065, 73.080516),
-  //         LatLng(33.642175, 73.082333),
-  //         LatLng(33.640020, 73.080607),
-  //         LatLng(33.637373, 73.077156),
-  //         LatLng(33.638243, 73.071434),
-  //       ],
-  //       strokeWidth: 2,
-  //       strokeColor: Colors.red,
-  //       fillColor: Colors.red.withOpacity(0.2),
-  //     ),
-  //     Polygon(
-  //         consumeTapEvents: true,
-  //         polygonId: const PolygonId('polygon2'),
-  //         points: const <LatLng>[
-  //           LatLng(33.637612, 73.076807),
-  //           LatLng(33.638170, 73.071442),
-  //           LatLng(33.635490, 73.070011),
-  //           LatLng(33.633368, 73.070592),
-  //           LatLng(33.632140, 73.074303),
-  //           LatLng(33.633815, 73.076986),
-  //         ],
-  //         strokeWidth: 2,
-  //         strokeColor: Colors.blue,
-  //         fillColor: Colors.blue.withOpacity(0.2),
-  //         onTap: () {
-  //           getDialogue(context, "Satellite Town");
-  //         }),
-  //   };
-  //   return polygons;
+  // Future<void> _fetchPolygons() async {
+  //   try {
+  //     final response = await Dio().get('$ip/getsectors');
+  //     final body = response.data;
+  //     if (body is List<dynamic>) {
+  //       final data = body.map((item) => item as Map<String, dynamic>).toList();
+  //       for (final item in data) {
+  //         final secId = item['sec_id'] as int;
+  //         final secName = item['sec_name'] as String;
+  //         final threshold = item['threshold'] as int;
+  //         final description = item['description'] as String;
+  //         final latLongs = item['latLongs'] as List<dynamic>;
+
+  //         // Filter polygons based on logged-in user's sector ID
+
+  //         if (secId == loggedInUser!.sec_id) {
+  //           var latLngs = (item['latLongs'] as List<dynamic>)
+  //               .map((e) => LatLng(
+  //                     double.parse(e.split(',')[0]),
+  //                     double.parse(e.split(',')[1]),
+  //                   ))
+  //               .toList();
+  //           if (latLngs.isNotEmpty) {
+  //             final polygon = Polygon(
+  //               visible: true,
+  //               consumeTapEvents: true,
+  //               onTap: () {
+  //                 getDialogue(context, "$secName\n$threshold");
+  //               },
+  //               polygonId: PolygonId(secId.toString()),
+  //               points: latLngs,
+  //               strokeColor: Colors.blue,
+  //               strokeWidth: 3,
+  //               fillColor: Colors.blue.withOpacity(0.2),
+  //             );
+  //             setState(() {
+  //               _polygons.add(polygon);
+  //             });
+  //           }
+  //         }
+  //       }
+  //     }
+  //   } catch (error) {
+  //     print('Failed to fetch polygons: $error');
+  //   }
   // }
+
+// Future<User?> _getUser() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   final userId = prefs.getInt('user_id');
+//   if (userId != null) {
+//     final response = await Dio().get('$ip/getuser/$userId');
+//     final body = response.data;
+//     if (body is Map<String, dynamic>) {
+//       return User.fromJson(body);
+//     }
+//   }
+//   return null;
+// }
 
   @override
   Widget build(BuildContext context) {

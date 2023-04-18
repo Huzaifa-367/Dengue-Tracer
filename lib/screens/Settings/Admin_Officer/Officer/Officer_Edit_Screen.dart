@@ -4,8 +4,6 @@ import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
-import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
-import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';
 
 import 'package:flutter/material.dart';
@@ -55,6 +53,45 @@ class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
     });
   }
 
+  List<String>? officers;
+  Map<String, int>? officerIds;
+  int? selectedOfficerId;
+
+  Future<List<String>> fetchOfficers() async {
+    final response = await http.get(Uri.parse('http://example.com/officers'));
+
+    if (response.statusCode == 200) {
+      final officersJson = jsonDecode(response.body) as List<dynamic>;
+      final officers =
+          officersJson.map((officer) => officer['name'] as String).toList();
+
+      return officers;
+    } else {
+      throw Exception('Failed to fetch officers');
+    }
+  }
+
+  Future<Map<String, int>> fetchOfficersWithIds() async {
+    final response = await http.get(Uri.parse('$ip/getofficers'));
+
+    if (response.statusCode == 200) {
+      final officersJson = jsonDecode(response.body) as List<dynamic>;
+      final officers = officersJson.fold<Map<String, int>>({}, (map, officer) {
+        final name = officer['name'];
+        final userId = officer['user_id'];
+        if (name != null && userId != null) {
+          return map..[name] = userId;
+        } else {
+          return map;
+        }
+      });
+
+      return officers;
+    } else {
+      throw Exception('Failed to fetch officers');
+    }
+  }
+
   List<String>? sectors;
   List<String>? selectedDataString;
   int? selectedSectorId;
@@ -87,228 +124,63 @@ class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
             ),
           ),
           //backgroundColor: Colors.amber,
+
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Divider(color: btnColor, thickness: 2),
+                  Divider(
+                    color: btnColor,
+                    thickness: 2,
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  TextWidget(
+                    title: "Select Officer",
+                    txtSize: 15,
+                    txtColor: txtColor,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: FutureBuilder<Map<String, int>>(
+                      future: fetchOfficersWithIds(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          officerIds = snapshot.data;
+                          officers = officerIds!.keys.toList();
+                          return sector.CustomSingleSelectField<String>(
+                            title: 'Officers',
+                            items: officers!,
+                            onSelectionDone: (value) {
+                              final selectedOfficerId =
+                                  officerIds![value as String];
+                              setState(() {
+                                this.selectedOfficerId = selectedOfficerId;
+                              });
+                            },
+                            itemAsString: (item) => item.toString(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return const Text('Error fetching officers data');
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
+                    ),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
-                  // Row(
-                  //   children: [
-                  //     const SizedBox(
-                  //       width: 120,
-                  //     ),
-                  //     Stack(
-                  //       children: [
-                  //         loggedInUser!.image != null
-                  //             ? imageFile == null
-                  //                 ? CircleAvatar(
-                  //                     radius: 50,
-                  //                     backgroundImage: NetworkImage(
-                  //                         imgpath + loggedInUser!.image!),
-                  //                   )
-                  //                 : CircleAvatar(
-                  //                     radius: 50,
-                  //                     backgroundImage: FileImage(imageFile!),
-                  //                   )
-                  //             : const CircleAvatar(
-                  //                 radius: 50,
-                  //                 backgroundImage: AssetImage(Images.dpImage),
-                  //               ),
-                  //         Positioned(
-                  //           bottom: 0.2,
-                  //           right: 0.2,
-                  //           //left: 50,
-                  //           child: GestureDetector(
-                  //             onTap: () {
-                  //               showDialog(
-                  //                 barrierDismissible: false,
-                  //                 context: context,
-                  //                 builder: (context) => AlertDialog(
-                  //                   actions: <Widget>[
-                  //                     Row(
-                  //                       mainAxisAlignment:
-                  //                           MainAxisAlignment.end,
-                  //                       children: [
-                  //                         IconButton(
-                  //                           onPressed: (() {
-                  //                             Navigator.of(context).pop();
-                  //                           }),
-                  //                           icon: const Icon(Icons.cancel),
-                  //                         ),
-                  //                       ],
-                  //                     ),
-                  //                     Row(
-                  //                       mainAxisAlignment:
-                  //                           MainAxisAlignment.center,
-                  //                       children: [
-                  //                         TextWidget(
-                  //                             title: "Pick Image From?",
-                  //                             txtSize: 20,
-                  //                             txtColor: btnColor),
-                  //                       ],
-                  //                     ),
-                  //                     Row(
-                  //                       mainAxisAlignment:
-                  //                           MainAxisAlignment.center,
-                  //                       children: [
-                  //                         TextButton(
-                  //                           onPressed: () async {
-                  //                             XFile? file = await ImagePicker()
-                  //                                 .pickImage(
-                  //                                     source:
-                  //                                         ImageSource.gallery);
-                  //                             if (file != null) {
-                  //                               imageFile = File(file.path);
-                  //                               loggedInUser!
-                  //                                   .uploadPic(imageFile!);
-                  //                             }
-
-                  //                             Navigator.of(context).pop();
-                  //                             setState(() {});
-                  //                           },
-                  //                           child: Container(
-                  //                             decoration: BoxDecoration(
-                  //                               color: btnColor,
-                  //                               borderRadius:
-                  //                                   BorderRadius.circular(25),
-                  //                             ),
-                  //                             padding: const EdgeInsets.only(
-                  //                                 top: 10,
-                  //                                 right: 8,
-                  //                                 bottom: 10,
-                  //                                 left: 8),
-                  //                             child: const TextWidget(
-                  //                                 title: "Gallery",
-                  //                                 txtSize: 15,
-                  //                                 txtColor: Colors.white),
-                  //                           ),
-                  //                         ),
-                  //                         TextButton(
-                  //                           onPressed: () async {
-                  //                             XFile? file =
-                  //                                 await ImagePicker().pickImage(
-                  //                               source: ImageSource.camera,
-                  //                             );
-                  //                             if (file != null) {
-                  //                               imageFile = File(file.path);
-                  //                               loggedInUser
-                  //                                   ?.uploadPic(imageFile!);
-                  //                             }
-
-                  //                             Navigator.of(context).pop();
-                  //                           },
-                  //                           child: Container(
-                  //                             decoration: BoxDecoration(
-                  //                               color: btnColor,
-                  //                               borderRadius:
-                  //                                   BorderRadius.circular(25),
-                  //                             ),
-                  //                             padding: const EdgeInsets.only(
-                  //                                 top: 10,
-                  //                                 right: 8,
-                  //                                 bottom: 10,
-                  //                                 left: 8),
-                  //                             child: const TextWidget(
-                  //                                 title: "  Camera  ",
-                  //                                 txtSize: 15,
-                  //                                 txtColor: Colors.white),
-                  //                           ),
-                  //                         ),
-                  //                       ],
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               );
-                  //             },
-                  //             child: Icon(
-                  //               //size: 35,
-                  //               Icons.camera_alt,
-                  //               size: 35,
-                  //               color: btnColor,
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ],
-                  // ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  MyTextField(
-                    controller: namecont,
-                    hintText: "Name",
-                    keytype: TextInputType.text,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.person),
-                    //sufixIcon: Icons.remove_red_eye,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  MyTextField(
-                    controller: emailcont,
-                    hintText: "Email",
-                    keytype: TextInputType.emailAddress,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.email),
-                    //sufixIcon: Icons.remove_red_eye,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  MyTextField(
-                    controller: phonecont,
-                    hintText: "Phone Number",
-                    keytype: TextInputType.phone,
-                    obscureText: false,
-                    prefixIcon: const Icon(Icons.call),
-                    // sufixIcon: Icons.remove_red_eye,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  MyTextField(
-                    maxlines: 1,
-                    //siconn: Icons.email,
-                    controller: passwordcont,
-                    hintText: "Password",
-                    obscureText: isVisible,
-                    keytype: TextInputType.text,
-
-                    prefixIcon: const Icon(Icons.password),
-                    sufixIconPress: () {
-                      setState(() {
-                        isVisible = !isVisible;
-                      });
-                    },
-                    sufixIcon:
-                        isVisible ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  MyTextField(
-                    maxlines: 1,
-                    //siconn: Icons.email,
-                    controller: passwordcont2,
-                    hintText: "Repeat Password",
-                    obscureText: isVisible,
-                    keytype: TextInputType.text,
-
-                    prefixIcon: const Icon(Icons.password),
-                    sufixIconPress: () {
-                      setState(() {
-                        isVisible = !isVisible;
-                      });
-                    },
-                    sufixIcon:
-                        isVisible ? Icons.visibility : Icons.visibility_off,
+                  TextWidget(
+                    title: "Select Sector",
+                    txtSize: 15,
+                    txtColor: txtColor,
                   ),
                   const SizedBox(
                     height: 10,
@@ -357,25 +229,26 @@ class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
                       child: ButtonWidget(
                         btnText: "Save",
                         onPress: (() async {
-                          if (passwordcont.text == passwordcont2.text &&
-                              namecont.text != "" &&
-                              emailcont.text != "") {
-                            User u = User();
-                            u.role = role;
-                            u.name = namecont.text;
-                            u.email = emailcont.text;
-                            u.phone_number = phonecont.text;
-                            u.password = passwordcont.text;
-                            u.home_location = "";
-                            u.sec_id = selectedSectorId;
+                          if (selectedSectorId != null &&
+                              selectedOfficerId != null) {
+                            // User u = User();
+                            // u.role = role;
+                            // u.name = namecont.text;
+                            // u.email = emailcont.text;
+                            // u.phone_number = phonecont.text;
+                            // u.password = passwordcont.text;
+                            // u.home_location = "";
+                            // u.sec_id = selectedSectorId;
+                            // selectedOfficerId
 
-                            await AddOfficer(
-                              u,
+                            await UpdateOfficerSector(
+                              selectedSectorId,
+                              selectedOfficerId,
                               context,
                             );
                           } else {
-                            snackBar(
-                                context, "Please fill all fields correctly");
+                            snackBar(context,
+                                "Please Select Values Form Both Sections.");
                           }
                         }),
                       ),
