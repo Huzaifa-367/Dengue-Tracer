@@ -18,6 +18,8 @@ import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import 'Admin_Officer/Officer/officer_view.dart';
 import 'Admin_Officer/Sectors/Sectors_AddTest2.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -61,6 +63,19 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   bool get feedbackAvailable => feedback != null && feedback!.rating != null;
 
   //
+
+  Future<List<dynamic>> fetchDengueUsers() async {
+    final response = await http.get(Uri.parse('$ip/GetDengueUsers'));
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON.
+      var data = jsonDecode(response.body);
+      return List.from(data);
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load Dengue Users');
+    }
+  }
+
   //Shared Preference start
   bool _hasDengue = false;
 
@@ -76,6 +91,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
     //FeedBack Code Ends
     super.initState();
     _loadDarkModeSetting();
+    fetchDengueUsers();
   }
 
   void _loadDarkModeSetting() async {
