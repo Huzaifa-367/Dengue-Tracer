@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
+import 'package:draggable_menu/draggable_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -296,7 +297,188 @@ class _DengueMapState extends State<DengueMap> {
               visible: true,
               consumeTapEvents: true,
               onTap: () {
-                getDialogue(context, "$secName\n$threshold");
+                DraggableMenu.open(
+                  context,
+                  DraggableMenu(
+                    color: tbtnColor,
+                    uiType: DraggableMenuUiType.softModern,
+                    expandable: true,
+                    fastDrag: true,
+                    minimizeBeforeFastDrag: true,
+                    expandedHeight: MediaQuery.of(context).size.height * 0.72,
+                    maxHeight: MediaQuery.of(context).size.height * 0.36,
+                    child: ScrollableManager(
+                      enableExpandedScroll: true,
+                      child: Scaffold(
+                        backgroundColor: ScfColor,
+                        body: Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Sector Name: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: grey,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    Text(
+                                      secName,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: txtColor,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const Text(
+                                      "Threshold: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: grey,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    Text(
+                                      "$threshold",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: txtColor,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Text(
+                                  "Description",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: grey,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Container(
+                                  height: 110,
+                                  width: 450,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: ScfColor2,
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        description,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text(
+                                  "Actions Takekn",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: grey,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: 300,
+                                  width: 400,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: ScfColor2,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListView.builder(
+                                      itemCount: 15,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          color: null,
+                                          child: ListTile(
+                                            leading: Icon(
+                                              Icons.warning,
+                                              color: tbtnColor,
+                                              size: 33,
+                                            ),
+                                            title: Text.rich(
+                                              TextSpan(
+                                                text: 'Date: ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: txtColor,
+                                                  fontSize: 13,
+                                                ),
+                                                children: const <InlineSpan>[
+                                                  TextSpan(
+                                                    text: "2022-11-10",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: grey,
+                                                      fontSize: 13,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              "45576",
+                                              //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                color: txtColor,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            trailing: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "View Detail",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  color: btnColor,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  barrier: true,
+                );
               },
               polygonId: PolygonId(secId.toString()),
               points: latLngs,
@@ -456,14 +638,14 @@ class _DengueMapState extends State<DengueMap> {
                 ),
               ),
               Positioned(
-                top: 55,
-                left: 16,
-                right: 16,
+                top: 60,
+                left: 15,
+                right: 15,
                 child: Container(
                   alignment: Alignment.bottomCenter,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: ScfColor.withOpacity(.7),
+                    color: ScfColor2.withOpacity(.8),
                   ),
                   //padding: const EdgeInsets.only(bottom: 16.0),
                   child: SizedBox(
@@ -478,6 +660,9 @@ class _DengueMapState extends State<DengueMap> {
                         visibleMaximum: 5,
                         interval: 1,
                       ),
+                      // borderColor: ScfColor,
+                      // borderWidth: 2,
+                      //backgroundColor: ScfColor,
                       primaryYAxis: NumericAxis(
                         interval: 1,
                       ),
@@ -507,24 +692,26 @@ class _DengueMapState extends State<DengueMap> {
               ////
               /////
               // //My Address Field
-              // Positioned(
-              //   top: MediaQuery.of(context).viewPadding.top + 50,
-              //   width: MediaQuery.of(context).size.width - 50,
-              //   height: 150,
-              //   child: MyTextField_ReadOnly(
-              //     maxlines: 2,
-              //     readonly: true,
-              //     controller: addressController,
-              //     hintText: "Location",
+              //My Address Field
+              Positioned(
+                top: MediaQuery.of(context).viewPadding.top + 10,
+                width: MediaQuery.of(context).size.width - 70,
+                height: 150,
+                left: 15,
+                child: MyTextField_ReadOnly(
+                  maxlines: 1,
+                  readonly: true,
+                  controller: addressController,
+                  hintText: "Location",
 
-              //     sufixIconPress: () {
-              //       addressController.text =
-              //           "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
-              //     },
-              //     //prefixIcon: const Icon(Icons.map),
-              //     sufixIcon: Icons.arrow_forward_rounded,
-              //   ),
-              // ),
+                  sufixIconPress: () {
+                    addressController.text =
+                        "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
+                  },
+                  //prefixIcon: const Icon(Icons.map),
+                  sufixIcon: Icons.arrow_forward_rounded,
+                ),
+              ),
 
               CustomInfoWindow(
                 controller: _customInfoWindowController,
@@ -734,7 +921,7 @@ class _DengueMapState extends State<DengueMap> {
                           ],
                         ),
                         SizedBox(
-                          width: 305,
+                          width: 300,
                           child: Slider(
                             activeColor: btnColor,
                             value: _currentSliderValue,

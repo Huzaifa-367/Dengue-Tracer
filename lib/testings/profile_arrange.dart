@@ -9,6 +9,7 @@ import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
 import 'package:dengue_tracing_application/screens/Settings/AboutUs_Screen.dart';
+import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Sectors/Testings/secots_Add_Screen_Now.dart';
 import 'package:dengue_tracing_application/screens/Settings/profileEdit_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import '../screens/Settings/Admin_Officer/Officer/officer_view.dart';
-import '../screens/Settings/Admin_Officer/Sectors/secots_Add_Screen_Now.dart';
 
 class ProfileArrange_Screen extends StatefulWidget {
   const ProfileArrange_Screen({super.key});

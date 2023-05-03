@@ -16,9 +16,15 @@ login(email, password, context) async {
   if (response.statusCode == 200) {
     //log(response.data);
     if (response.data != 'false') {
-      loggedInUser = User.fromMap(response.data);
+      final List<dynamic> dataList = response.data;
 
-      //loggedInUsercopy = loggedInUser;
+      // Parse the first item in the list as a Map
+      final Map<String, dynamic> dataMap = dataList.first;
+
+      // Create a new User object from the map
+      loggedInUser = User.fromMap(dataMap);
+
+      // Navigate to dashboard screen with loggedInUser data
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const DashBoard(),
@@ -35,7 +41,7 @@ login(email, password, context) async {
 signUp(User u, context) async {
   FormData data = FormData.fromMap(u.tomap());
   var response = await Dio().post(
-    '$ip/NewUser',
+    '$ip/SignUp',
     data: data,
     options: Options(
       headers: {
@@ -56,6 +62,35 @@ signUp(User u, context) async {
     }
   }
 }
+
+// Future<void> signUp(User u, context) async {
+//   final Map<String, dynamic> userData = u.tomap();
+//   try {
+//     final response = await Dio().post('$ip/NewUser', data: userData);
+//     if (response.statusCode == 200) {
+//       final String message = response.data;
+//       if (message == 'Created') {
+//         // Navigate to login screen after successful signup
+//         Navigator.of(context).push(
+//           MaterialPageRoute(
+//             builder: (context) {
+//               return const LoginScreen();
+//             },
+//           ),
+//         );
+//         snackBar(context, 'Account created successfully. Please login.');
+//       } else if (message == 'Exist') {
+//         snackBar(context, 'An account with this email already exists.');
+//       } else {
+//         snackBar(context, 'Error creating account. Please try again later.');
+//       }
+//     } else {
+//       snackBar(context, 'Error creating account. Please try again later.');
+//     }
+//   } catch (error) {
+//     snackBar(context, 'Error creating account. Please try again later.');
+//   }
+// }
 
 reset(email, context) async {
   var response = await Dio().get(

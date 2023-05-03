@@ -9,6 +9,10 @@ class User {
   String? name, phone_number, email, password, role, home_location;
   //,office_location;
   String? image;
+  String? office_location, sec_name, sec_description;
+  DateTime? startDate;
+  bool? status;
+  DateTime? endDate;
   int? sec_id;
   late int user_id;
   User();
@@ -21,7 +25,14 @@ class User {
     image = map["image"];
     user_id = map["user_id"];
     home_location = map["home_location"];
+    office_location = map["office_location"];
     phone_number = map["phone_number"];
+    sec_name = map['sec_name'];
+    sec_description = map['description'];
+    startDate =
+        map['startdate'] != null ? DateTime.parse(map['startdate']) : null;
+    status = map['status'];
+    endDate = map['enddate'] != null ? DateTime.parse(map['enddate']) : null;
   }
 
   // Future<String?> login() async {
@@ -46,6 +57,12 @@ class User {
       'phone_number': phone_number,
       'password': password,
       'home_location': home_location,
+      // "office_location": office_location,
+      // "sec_name": sec_name,
+      // "description": sec_description,
+      // "startdate": startdate,
+      // "status": status,
+      // "enddate": enddate,
     };
   }
 

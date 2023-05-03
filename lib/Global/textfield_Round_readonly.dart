@@ -51,7 +51,7 @@ class MyTextField_ReadOnly extends StatelessWidget {
         //     fontSize: 15,
         //   ),
         // ),
-        contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        contentPadding: const EdgeInsets.fromLTRB(15, 10, 0, 10),
         hintStyle: TextStyle(
           fontWeight: FontWeight.w700,
           color: btnColor,

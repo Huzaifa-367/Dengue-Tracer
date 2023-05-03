@@ -1,7 +1,6 @@
 import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/screens/Home/awareness.dart';
-import 'package:dengue_tracing_application/screens/Map/Dengue_Map.dart';
 import 'package:dengue_tracing_application/screens/Home/stats_screen.dart';
 import 'package:dengue_tracing_application/screens/Map/map_temporal.dart';
 import 'package:dengue_tracing_application/screens/Settings/Profile_Screen.dart';
@@ -11,15 +10,15 @@ import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 
 const List<TabItem> items = [
   TabItem(
-    count: ButtonBar(),
+    //count: ButtonBar(),
     icon: Icons.map_rounded,
     title: 'Map',
   ),
-  TabItem(
-    count: ButtonBar(),
-    icon: Icons.map_rounded,
-    title: 'Temp_Map',
-  ),
+  // TabItem(
+  //   count: ButtonBar(),
+  //   icon: Icons.map_rounded,
+  //   title: 'Temp_Map',
+  // ),
   TabItem(
     icon: Icons.graphic_eq,
     title: 'Stats',
@@ -49,7 +48,7 @@ class _DashBoardState extends State<DashBoard> {
 
   int selectedindex = 0;
   List<Widget> screens = [
-    const CasesMap(),
+    //const CasesMap(),
     const DengueMap(),
     const StatsScreen(),
     const Awareness(),

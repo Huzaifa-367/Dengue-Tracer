@@ -2,6 +2,7 @@
 
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:custom_info_window/custom_info_window.dart';
+import 'package:dengue_tracing_application/Global/text_widget.dart';
 
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
@@ -11,6 +12,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:map_picker/map_picker.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:dio/dio.dart';
+
+import '../../Global/GetDialogue_tester.dart';
 
 class PickLocation extends StatefulWidget {
   const PickLocation({Key? key}) : super(key: key);
@@ -60,7 +64,104 @@ class _PickLocationState extends State<PickLocation> {
   void initState() {
     super.initState();
     getGeoLocationPosition();
+    _fetchPolygons();
     //getUserLocation();
+  }
+
+//
+//
+//
+//
+//
+  String? sectorId;
+  final Set<Polygon> _polygons = {};
+
+  Future<void> _fetchPolygons() async {
+    try {
+      final response = await Dio().get('$ip/getsectors');
+      final body = response.data;
+      if (body is List<dynamic>) {
+        final data = body.map((item) => item as Map<String, dynamic>).toList();
+        for (final item in data) {
+          final secId = item['sec_id'] as int;
+          final secName = item['sec_name'] as String;
+          final threshold = item['threshold'] as int;
+          final description = item['description'] as String;
+          final latLongs = item['latLongs'] as List<dynamic>;
+
+          var latLngs = (item['latLongs'] as List<dynamic>)
+              .map((e) => LatLng(
+                    double.parse(e.split(',')[0]),
+                    double.parse(e.split(',')[1]),
+                  ))
+              .toList();
+          if (latLngs.isNotEmpty) {
+            final polygon = Polygon(
+              visible: true,
+              consumeTapEvents: true,
+              onTap: () {
+                getDialogue(context, "$secName\n$threshold");
+              },
+              polygonId: PolygonId(
+                  secId.toString()), // Use sector ID as the polygon ID
+              points: latLngs,
+              strokeColor: Colors.blue,
+              strokeWidth: 3,
+              fillColor: Colors.blue.withOpacity(0.2),
+            );
+            setState(() {
+              _polygons.add(polygon);
+            });
+          }
+        }
+      }
+    } catch (error) {
+      print('Failed to fetch polygons: $error');
+    }
+  }
+
+  String checkSectorLocation(String latLong, Set<Polygon> polygons) {
+    final List<String> latLongList = latLong.split(',');
+    final double latitude = double.parse(latLongList[0]);
+    final double longitude = double.parse(latLongList[1]);
+
+    for (Polygon polygon in polygons) {
+      if (isPointInPolygon(polygon.points, latitude, longitude)) {
+        // Use the polygon ID as the sector ID
+        return polygon.polygonId.value;
+      }
+    }
+
+    return 'You,re not in our Sectors.';
+  }
+
+  bool isPointInPolygon(
+      List<LatLng> polygon, double latitude, double longitude) {
+    // Count the number of times a ray casted horizontally from the point
+    // intersects with the edges of the polygon. If the count is odd,
+    // the point is inside the polygon; otherwise, it is outside the polygon.
+    bool isInside = false;
+    final int polygonLength = polygon.length;
+
+    for (int i = 0, j = polygonLength - 1; i < polygonLength; j = i++) {
+      final double piLat = polygon[i].latitude;
+      final double piLong = polygon[i].longitude;
+      final double pjLat = polygon[j].latitude;
+      final double pjLong = polygon[j].longitude;
+
+      // Add a buffer to the latitude to ensure precision
+      const double buffer = 1e-10;
+      final double latBuffer = latitude + buffer;
+
+      if (((piLong > longitude) != (pjLong > longitude)) &&
+          (latBuffer <
+              (pjLat - piLat) * (longitude - piLong) / (pjLong - piLong) +
+                  piLat)) {
+        isInside = !isInside;
+      }
+    }
+
+    return isInside;
   }
 
   var home_loccont = TextEditingController();
@@ -100,6 +201,7 @@ class _PickLocationState extends State<PickLocation> {
                   myLocationButtonEnabled: true,
                   mapType: MapType.normal,
                   //  camera position
+                  polygons: _polygons,
                   initialCameraPosition: cameraPosition,
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
@@ -136,29 +238,56 @@ class _PickLocationState extends State<PickLocation> {
                     home_loccont.text =
                         '${placemarks.first.name},${placemarks.first.subLocality}, ${placemarks.first.locality}, ${placemarks.first.country}';
                     //'${placemarks.first.name}, ${placemarks.first.postalCode}, ${placemarks.first.subLocality}, ${placemarks.first.locality}, ${placemarks.first.administrativeArea}, ${placemarks.first.country}';
+
+                    setState(() {
+                      sectorId = checkSectorLocation(latLong, _polygons);
+                      print(sectorId);
+                    });
                   },
                 ),
               ),
 
               //My Address Field
               Positioned(
-                top: MediaQuery.of(context).viewPadding.top + 20,
-                width: MediaQuery.of(context).size.width - 50,
+                top: MediaQuery.of(context).viewPadding.top + 10,
+                width: MediaQuery.of(context).size.width - 70,
                 height: 150,
-                child: MyTextField_ReadOnly(
-                  maxlines: 2,
-                  readonly: true,
-                  controller: home_loccont,
-                  hintText: "Location",
+                left: 10,
+                child: Column(
+                  children: [
+                    MyTextField_ReadOnly(
+                      maxlines: 1,
+                      readonly: true,
+                      controller: home_loccont,
+                      hintText: "Location",
 
-                  sufixIconPress: () {
-                    Navigator.pop(context, latLong);
-                    //Navigator.pop(context, readableAdress);
-                    // textController.text =
-                    //     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
-                  },
-                  //prefixIcon: const Icon(Icons.map),
-                  sufixIcon: Icons.arrow_forward_rounded,
+                      sufixIconPress: () {
+                        Navigator.pop(context, latLong);
+                        //Navigator.pop(context, readableAdress);
+                        // textController.text =
+                        //     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
+                      },
+                      //prefixIcon: const Icon(Icons.map),
+                      sufixIcon: Icons.arrow_forward_rounded,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15),
+                        ),
+                        color: bkColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextWidget(
+                          title: "Sector ID: $sectorId",
+                          txtSize: 13,
+                          txtColor: txtColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 

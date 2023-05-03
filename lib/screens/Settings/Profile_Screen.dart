@@ -12,14 +12,11 @@ import 'package:dengue_tracing_application/screens/Settings/profileEdit_Screen.d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import 'Admin_Officer/Officer/officer_view.dart';
-import 'Admin_Officer/Sectors/Sectors_AddTest2.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'Admin_Officer/Sectors/Sectors_Add_Screen_NowW.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});
@@ -64,20 +61,20 @@ class _Profile_ScreenState extends State<Profile_Screen> {
 
   //
 
-  Future<List<dynamic>> fetchDengueUsers() async {
-    final response = await http.get(Uri.parse('$ip/GetDengueUsers'));
-    if (response.statusCode == 200) {
-      // If the call to the server was successful, parse the JSON.
-      var data = jsonDecode(response.body);
-      return List.from(data);
-    } else {
-      // If that call was not successful, throw an error.
-      throw Exception('Failed to load Dengue Users');
-    }
-  }
+  // Future<List<dynamic>> fetchDengueUsers() async {
+  //   final response = await http.get(Uri.parse('$ip/GetDengueUsers'));
+  //   if (response.statusCode == 200) {
+  //     // If the call to the server was successful, parse the JSON.
+  //     var data = jsonDecode(response.body);
+  //     return List.from(data);
+  //   } else {
+  //     // If that call was not successful, throw an error.
+  //     throw Exception('Failed to load Dengue Users');
+  //   }
+  // }
 
   //Shared Preference start
-  bool _hasDengue = false;
+  final bool _hasDengue = false;
 
   @override
   void initState() {
@@ -90,25 +87,25 @@ class _Profile_ScreenState extends State<Profile_Screen> {
     );
     //FeedBack Code Ends
     super.initState();
-    _loadDarkModeSetting();
-    fetchDengueUsers();
+    // _loadDarkModeSetting();
+    // fetchDengueUsers();
   }
 
-  void _loadDarkModeSetting() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _hasDengue = prefs.getBool('Has_Dengue') ?? false;
-    });
-  }
+  // void _loadDarkModeSetting() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _hasDengue = prefs.getBool('Has_Dengue') ?? false;
+  //   });
+  // }
 
-  // ignore: non_constant_identifier_names
-  void _DengueStatussetting(bool value, context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('Has_Dengue', value);
-    if (value == true) {
-      updateUserStatus(context, loggedInUser!.user_id, _hasDengue);
-    }
-  }
+  // // ignore: non_constant_identifier_names
+  // void _DengueStatussetting(bool value, context) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setBool('Has_Dengue', value);
+  //   if (value == true) {
+  //     updateUserStatus(context, loggedInUser!.user_id, _hasDengue);
+  //   }
+  // }
 
   //Shared Preference End
   //User? u = loggedInUser;
@@ -136,7 +133,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                   cardRadius: 20,
                   backgroundMotifColor: const Color.fromRGBO(255, 255, 255, 1),
                   //settingColor: Colors.amber,
-                  userName: loggedInUser!.name,
+                  userName: loggedInUser!.name!,
                   // userProfilePic: null,
                   userProfilePic: NetworkImage(
                     loggedInUser!.image != null
@@ -705,7 +702,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                               ),
                               SettingsItem(
                                 onTap: () {},
-                                icons: _hasDengue
+                                icons: loggedInUser!.status!
                                     ? Icons.sentiment_very_dissatisfied
                                     : Icons.emoji_emotions_outlined,
                                 iconStyle: IconStyle(
@@ -722,12 +719,17 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                                       const Color.fromARGB(255, 246, 195, 195),
                                   //enableFeedback: true,
                                   activeColor: btnColor,
-                                  value: _hasDengue,
+                                  value: loggedInUser!.status!,
                                   onChanged: (value) {
                                     setState(
                                       () {
-                                        _hasDengue = value;
-                                        _DengueStatussetting(value, context);
+                                        loggedInUser!.status = value;
+                                        loggedInUser!.status == true
+                                            ? updateUserStatus(context,
+                                                loggedInUser!.user_id, true)
+                                            : updateUserStatus(context,
+                                                loggedInUser!.user_id, false);
+                                        //_DengueStatussetting(value, context);
                                       },
                                     );
                                   },

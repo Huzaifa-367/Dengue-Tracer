@@ -262,11 +262,12 @@ class _CasesMapState extends State<CasesMap> {
 
               //My Address Field
               Positioned(
-                top: MediaQuery.of(context).viewPadding.top + 50,
-                width: MediaQuery.of(context).size.width - 50,
+                top: MediaQuery.of(context).viewPadding.top + 10,
+                width: MediaQuery.of(context).size.width - 70,
                 height: 150,
+                left: 10,
                 child: MyTextField_ReadOnly(
-                  maxlines: 2,
+                  maxlines: 1,
                   readonly: true,
                   controller: addressController,
                   hintText: "Location",

@@ -14,6 +14,7 @@ getDengueUsers() async {
 
     markers = data.map((item) {
       final LatLng latLng = LatLng(item['lat_long'][0], item['lat_long'][1]);
+      final String userid = item['user_id'];
       final String title = item['name'];
       final String snippet = item['email'];
 
