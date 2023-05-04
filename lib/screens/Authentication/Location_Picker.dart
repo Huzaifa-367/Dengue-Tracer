@@ -105,9 +105,10 @@ class _PickLocationState extends State<PickLocation> {
               polygonId: PolygonId(
                   secId.toString()), // Use sector ID as the polygon ID
               points: latLngs,
-              strokeColor: Colors.blue,
-              strokeWidth: 3,
-              fillColor: Colors.blue.withOpacity(0.2),
+              strokeColor: const Color.fromARGB(255, 74, 216, 192),
+              strokeWidth: 1,
+              fillColor:
+                  const Color.fromARGB(255, 74, 216, 192).withOpacity(0.2),
             );
             setState(() {
               _polygons.add(polygon);

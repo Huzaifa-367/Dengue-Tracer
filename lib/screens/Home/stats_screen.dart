@@ -14,6 +14,7 @@ import 'package:dengue_tracing_application/model/STATS/yearlystats.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:badges/badges.dart' as badges;
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({Key? key}) : super(key: key);
@@ -102,34 +103,50 @@ class _StatsScreenState extends State<StatsScreen> {
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextWidget(
-                        title: "Cases Report",
-                        txtSize: 25,
-                        txtColor: txtColor,
-                      ),
-                      const SizedBox(
-                        width: 140,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const NotifScreen(),
-                          ));
-                        },
-                        icon: const Icon(
-                          Icons.notifications,
-                          size: 35,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      right: 15,
+                      left: 10,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextWidget(
+                          title: "Cases Report",
+                          txtSize: 25,
+                          txtColor: txtColor,
                         ),
-                        // icon: const Icon(
-                        //   size: 35,
-                        //   Icons.notifications,
-                        // ),
-                        color: btnColor,
-                      ),
-                    ],
+                        const SizedBox(
+                          width: 140,
+                        ),
+                        badges.Badge(
+                          badgeContent: Text(
+                            '6',
+                            style: TextStyle(
+                              color: ScfColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          showBadge: true,
+                          ignorePointer: false,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const NotifScreen(),
+                                ),
+                              );
+                            },
+                            child: Icon(
+                              Icons.notifications,
+                              color: btnColor,
+                              size: 35,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(

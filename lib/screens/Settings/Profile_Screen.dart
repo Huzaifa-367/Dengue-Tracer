@@ -16,7 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 import 'Admin_Officer/Officer/officer_view.dart';
-import 'Admin_Officer/Sectors/Sectors_Add_Screen_NowW.dart';
+import 'Admin_Officer/Sectors/Sectors_Add_Screen_Now.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});

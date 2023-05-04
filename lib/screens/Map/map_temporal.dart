@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
-import 'package:draggable_menu/draggable_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -272,6 +271,241 @@ class _DengueMapState extends State<DengueMap> {
   //   }
   // }
 
+  // Future<void> _fetchPolygons() async {
+  //   try {
+  //     final response = await Dio().get('$ip/getsectors');
+  //     final body = response.data;
+  //     if (body is List<dynamic>) {
+  //       final data = body.map((item) => item as Map<String, dynamic>).toList();
+  //       // Now you can access the properties of each item in the list
+  //       for (final item in data) {
+  //         final secId = item['sec_id'] as int;
+  //         final secName = item['sec_name'] as String;
+  //         final threshold = item['threshold'] as int;
+  //         final description = item['description'] as String;
+  //         final latLongs = item['latLongs'] as List<dynamic>;
+
+  //         var latLngs = (item['latLongs'] as List<dynamic>)
+  //             .map((e) => LatLng(
+  //                   double.parse(e.split(',')[0]),
+  //                   double.parse(e.split(',')[1]),
+  //                 ))
+  //             .toList();
+  //         if (latLngs.isNotEmpty) {
+  //           final polygon = Polygon(
+  //             visible: true,
+  //             consumeTapEvents: true,
+  //             onTap: () {
+  //               DraggableMenu.open(
+  //                 context,
+  //                 DraggableMenu(
+  //                   color: tbtnColor,
+  //                   uiType: DraggableMenuUiType.softModern,
+  //                   expandable: true,
+  //                   fastDrag: true,
+  //                   minimizeBeforeFastDrag: true,
+  //                   expandedHeight: MediaQuery.of(context).size.height * 0.72,
+  //                   maxHeight: MediaQuery.of(context).size.height * 0.36,
+  //                   child: ScrollableManager(
+  //                     enableExpandedScroll: true,
+  //                     child: Scaffold(
+  //                       backgroundColor: ScfColor,
+  //                       body: Padding(
+  //                         padding: const EdgeInsets.all(18.0),
+  //                         child: SingleChildScrollView(
+  //                           child: Column(
+  //                             // mainAxisAlignment: MainAxisAlignment.center,
+  //                             children: [
+  //                               Row(
+  //                                 children: [
+  //                                   const Text(
+  //                                     "Sector Name: ",
+  //                                     style: TextStyle(
+  //                                       fontWeight: FontWeight.w800,
+  //                                       color: grey,
+  //                                       fontSize: 15,
+  //                                     ),
+  //                                   ),
+  //                                   Text(
+  //                                     secName,
+  //                                     style: TextStyle(
+  //                                       fontWeight: FontWeight.w800,
+  //                                       color: txtColor,
+  //                                       fontSize: 15,
+  //                                     ),
+  //                                   ),
+  //                                 ],
+  //                               ),
+  //                               Row(
+  //                                 children: [
+  //                                   const Text(
+  //                                     "Threshold: ",
+  //                                     style: TextStyle(
+  //                                       fontWeight: FontWeight.w800,
+  //                                       color: grey,
+  //                                       fontSize: 15,
+  //                                     ),
+  //                                   ),
+  //                                   Text(
+  //                                     "$threshold",
+  //                                     style: TextStyle(
+  //                                       fontWeight: FontWeight.w800,
+  //                                       color: txtColor,
+  //                                       fontSize: 15,
+  //                                     ),
+  //                                   ),
+  //                                 ],
+  //                               ),
+  //                               const Text(
+  //                                 "Description",
+  //                                 style: TextStyle(
+  //                                   fontWeight: FontWeight.w800,
+  //                                   color: grey,
+  //                                   fontSize: 15,
+  //                                 ),
+  //                               ),
+  //                               Container(
+  //                                 height: 110,
+  //                                 width: 450,
+  //                                 decoration: BoxDecoration(
+  //                                   borderRadius: BorderRadius.circular(10),
+  //                                   color: ScfColor2,
+  //                                 ),
+  //                                 child: SingleChildScrollView(
+  //                                   child: Padding(
+  //                                     padding: const EdgeInsets.all(10.0),
+  //                                     child: Text(
+  //                                       description,
+  //                                       style: const TextStyle(
+  //                                         fontWeight: FontWeight.w800,
+  //                                         color: grey,
+  //                                         fontSize: 12,
+  //                                       ),
+  //                                     ),
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                               const SizedBox(
+  //                                 height: 10,
+  //                               ),
+  //                               const Text(
+  //                                 "Actions Takekn",
+  //                                 style: TextStyle(
+  //                                   fontWeight: FontWeight.w800,
+  //                                   color: grey,
+  //                                   fontSize: 15,
+  //                                 ),
+  //                               ),
+  //                               const SizedBox(
+  //                                 height: 10,
+  //                               ),
+  //                               Container(
+  //                                 height: 300,
+  //                                 width: 400,
+  //                                 decoration: BoxDecoration(
+  //                                   borderRadius: BorderRadius.circular(10),
+  //                                   color: ScfColor2,
+  //                                 ),
+  //                                 child: Padding(
+  //                                   padding: const EdgeInsets.all(8.0),
+  //                                   child: ListView.builder(
+  //                                     itemCount: 15,
+  //                                     itemBuilder: (context, index) {
+  //                                       return Card(
+  //                                         color: null,
+  //                                         child: ListTile(
+  //                                           leading: Icon(
+  //                                             Icons.warning,
+  //                                             color: tbtnColor,
+  //                                             size: 33,
+  //                                           ),
+  //                                           title: Text.rich(
+  //                                             TextSpan(
+  //                                               text: 'Date: ',
+  //                                               style: TextStyle(
+  //                                                 fontWeight: FontWeight.w600,
+  //                                                 color: txtColor,
+  //                                                 fontSize: 13,
+  //                                               ),
+  //                                               children: const <InlineSpan>[
+  //                                                 TextSpan(
+  //                                                   text: "2022-11-10",
+  //                                                   style: TextStyle(
+  //                                                     fontWeight:
+  //                                                         FontWeight.w600,
+  //                                                     color: grey,
+  //                                                     fontSize: 13,
+  //                                                   ),
+  //                                                 )
+  //                                               ],
+  //                                             ),
+  //                                           ),
+  //                                           subtitle: Text(
+  //                                             "45576",
+  //                                             //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
+  //                                             style: TextStyle(
+  //                                               fontWeight: FontWeight.w400,
+  //                                               color: txtColor,
+  //                                               fontSize: 12,
+  //                                             ),
+  //                                           ),
+  //                                           trailing: TextButton(
+  //                                             onPressed: () {},
+  //                                             child: Text(
+  //                                               "View Detail",
+  //                                               style: TextStyle(
+  //                                                 fontWeight: FontWeight.w400,
+  //                                                 color: btnColor,
+  //                                                 fontSize: 12,
+  //                                               ),
+  //                                             ),
+  //                                           ),
+  //                                         ),
+  //                                       );
+  //                                     },
+  //                                   ),
+  //                                 ),
+  //                               ),
+  //                               const SizedBox(
+  //                                 height: 10,
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 barrier: true,
+  //               );
+  //             },
+  //             polygonId: PolygonId(secId.toString()),
+  //             points: latLngs,
+  //             strokeColor: secId == loggedInUser!.sec_id ||
+  //                     loggedInUser!.role == "admin" ||
+  //                     loggedInUser!.role == "officer"
+  //                 ? btnColor
+  //                 : Colors
+  //                     .transparent, // Change stroke color for logged-in user's polygon
+  //             strokeWidth: 1,
+  //             fillColor: secId == loggedInUser!.sec_id ||
+  //                     loggedInUser!.role == "admin" ||
+  //                     loggedInUser!.role == "officer"
+  //                 ? btnColor.withOpacity(0.2)
+  //                 : Colors
+  //                     .transparent, // Change fill color for logged-in user's polygon
+  //           );
+  //           setState(() {
+  //             _polygons.add(polygon);
+  //           });
+  //         }
+  //       }
+  //     }
+  //   } catch (error) {
+  //     print('Failed to fetch polygons: $error');
+  //   }
+  // }
+
   Future<void> _fetchPolygons() async {
     try {
       final response = await Dio().get('$ip/getsectors');
@@ -293,212 +527,29 @@ class _DengueMapState extends State<DengueMap> {
                   ))
               .toList();
           if (latLngs.isNotEmpty) {
-            final polygon = Polygon(
-              visible: true,
-              consumeTapEvents: true,
-              onTap: () {
-                DraggableMenu.open(
-                  context,
-                  DraggableMenu(
-                    color: tbtnColor,
-                    uiType: DraggableMenuUiType.softModern,
-                    expandable: true,
-                    fastDrag: true,
-                    minimizeBeforeFastDrag: true,
-                    expandedHeight: MediaQuery.of(context).size.height * 0.72,
-                    maxHeight: MediaQuery.of(context).size.height * 0.36,
-                    child: ScrollableManager(
-                      enableExpandedScroll: true,
-                      child: Scaffold(
-                        backgroundColor: ScfColor,
-                        body: Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              // mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Sector Name: ",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        color: grey,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    Text(
-                                      secName,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        color: txtColor,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Threshold: ",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        color: grey,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    Text(
-                                      "$threshold",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        color: txtColor,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Text(
-                                  "Description",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: grey,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Container(
-                                  height: 110,
-                                  width: 450,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: ScfColor2,
-                                  ),
-                                  child: SingleChildScrollView(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Text(
-                                        description,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w800,
-                                          color: grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const Text(
-                                  "Actions Takekn",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: grey,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  height: 300,
-                                  width: 400,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: ScfColor2,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ListView.builder(
-                                      itemCount: 15,
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          color: null,
-                                          child: ListTile(
-                                            leading: Icon(
-                                              Icons.warning,
-                                              color: tbtnColor,
-                                              size: 33,
-                                            ),
-                                            title: Text.rich(
-                                              TextSpan(
-                                                text: 'Date: ',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  color: txtColor,
-                                                  fontSize: 13,
-                                                ),
-                                                children: const <InlineSpan>[
-                                                  TextSpan(
-                                                    text: "2022-11-10",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: grey,
-                                                      fontSize: 13,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              "45576",
-                                              //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: txtColor,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            trailing: TextButton(
-                                              onPressed: () {},
-                                              child: Text(
-                                                "View Detail",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  color: btnColor,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  barrier: true,
-                );
-              },
-              polygonId: PolygonId(secId.toString()),
-              points: latLngs,
-              strokeColor: secId == loggedInUser!.sec_id
-                  ? btnColor
-                  : const Color.fromARGB(
-                      255,
-                      74,
-                      216,
-                      192,
-                    ), // Change stroke color for logged-in user's polygon
-              strokeWidth: 3,
-              fillColor: secId == loggedInUser!.sec_id
-                  ? btnColor.withOpacity(0.2)
-                  : const Color.fromARGB(255, 74, 216, 192).withOpacity(
-                      0.2), // Change fill color for logged-in user's polygon
-            );
-            setState(() {
-              _polygons.add(polygon);
-            });
+            // Only add the polygon if the user is an admin or if the polygon is assigned to the user
+            if (loggedInUser!.role == "admin" ||
+                secId == loggedInUser!.sec_id) {
+              final polygon = Polygon(
+                visible: true,
+                consumeTapEvents: true,
+                onTap: () {},
+                polygonId: PolygonId(secId.toString()),
+                points: latLngs,
+                strokeColor: secId == loggedInUser!.sec_id
+                    ? btnColor
+                    : const Color.fromARGB(255, 74, 216,
+                        192), // Change stroke color for logged-in user's polygon
+                strokeWidth: 1,
+                fillColor: secId == loggedInUser!.sec_id
+                    ? btnColor.withOpacity(0.2)
+                    : const Color.fromARGB(255, 74, 216, 192).withOpacity(
+                        0.2), // Change fill color for logged-in user's polygon
+              );
+              setState(() {
+                _polygons.add(polygon);
+              });
+            }
           }
         }
       }
@@ -566,7 +617,7 @@ class _DengueMapState extends State<DengueMap> {
 //   }
 //   return null;
 // }
-
+  bool? ismoving = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -613,13 +664,16 @@ class _DengueMapState extends State<DengueMap> {
 
                   onCameraMoveStarted: () {
                     // notify map is moving
-                    mapPickerController.mapMoving!();
-                    addressController.text = "checking ...";
+
+                    setState(() {
+                      mapPickerController.mapMoving!();
+                      addressController.text = "checking ...";
+                      ismoving = true;
+                    });
                   },
                   onCameraMove: (cameraPosition) {
                     this.cameraPosition = cameraPosition;
                     _customInfoWindowController.onCameraMove!();
-                    // _customInfoWindowController.onCameraMove!();
                   },
                   onCameraIdle: () async {
                     // notify map stopped moving
@@ -629,6 +683,9 @@ class _DengueMapState extends State<DengueMap> {
                       cameraPosition.target.latitude,
                       cameraPosition.target.longitude,
                     );
+                    setState(() {
+                      ismoving = false;
+                    });
 
                     // update the ui with the address
                     addressController.text =
@@ -637,56 +694,59 @@ class _DengueMapState extends State<DengueMap> {
                   },
                 ),
               ),
-              Positioned(
-                top: 60,
-                left: 15,
-                right: 15,
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: ScfColor2.withOpacity(.8),
-                  ),
-                  //padding: const EdgeInsets.only(bottom: 16.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 150.0,
-                    child: SfCartesianChart(
-                      zoomPanBehavior: ZoomPanBehavior(
-                        enablePanning: true,
-                      ),
-                      primaryXAxis: CategoryAxis(
-                        autoScrollingMode: AutoScrollingMode.start,
-                        visibleMaximum: 5,
-                        interval: 1,
-                      ),
-                      // borderColor: ScfColor,
-                      // borderWidth: 2,
-                      //backgroundColor: ScfColor,
-                      primaryYAxis: NumericAxis(
-                        interval: 1,
-                      ),
-                      tooltipBehavior: _tooltip,
-                      series: <ChartSeries<_ChartData, String>>[
-                        FastLineSeries<_ChartData, String>(
-                          dataSource: _chartData,
-                          xValueMapper: (_ChartData data, _) => data.date,
-                          yValueMapper: (_ChartData data, _) => data.cases,
-                          name: 'Dengue Cases',
-
-                          color: btnColor,
-
-                          //width: .2,
-                          // borderRadius: const BorderRadius.only(
-                          //   topLeft: Radius.circular(5.0),
-                          //   topRight: Radius.circular(5.0),
-                          // ),
+              ismoving! == false
+                  ? Positioned(
+                      top: 60,
+                      left: 15,
+                      right: 15,
+                      child: Container(
+                        alignment: Alignment.bottomCenter,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: ScfColor2.withOpacity(.8),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+                        //padding: const EdgeInsets.only(bottom: 16.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 150.0,
+                          child: SfCartesianChart(
+                            zoomPanBehavior: ZoomPanBehavior(
+                              enablePanning: true,
+                            ),
+                            primaryXAxis: CategoryAxis(
+                              autoScrollingMode: AutoScrollingMode.start,
+                              visibleMaximum: 5,
+                              interval: 1,
+                            ),
+                            // borderColor: ScfColor,
+                            // borderWidth: 2,
+                            //backgroundColor: ScfColor,
+                            primaryYAxis: NumericAxis(
+                              interval: 1,
+                            ),
+                            tooltipBehavior: _tooltip,
+                            series: <ChartSeries<_ChartData, String>>[
+                              FastLineSeries<_ChartData, String>(
+                                dataSource: _chartData,
+                                xValueMapper: (_ChartData data, _) => data.date,
+                                yValueMapper: (_ChartData data, _) =>
+                                    data.cases,
+                                name: 'Dengue Cases',
+
+                                color: btnColor,
+
+                                //width: .2,
+                                // borderRadius: const BorderRadius.only(
+                                //   topLeft: Radius.circular(5.0),
+                                //   topRight: Radius.circular(5.0),
+                                // ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
 
               //
               ////
@@ -721,138 +781,151 @@ class _DengueMapState extends State<DengueMap> {
               ),
 
               //Theme Selection Button
-              Positioned(
-                bottom: 80,
-                right: 30,
-                child: Container(
-                  width: 35,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: btnColor,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      MaterialButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) => Container(
-                                padding: const EdgeInsets.all(20),
-                                color: ScfColor,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Select Theme",
-                                      style: TextStyle(
-                                          color: txtColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      height: 100,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: _mapThemes.length,
-                                          itemBuilder: (context, index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                _control!.setMapStyle(
-                                                  _mapThemes[index]['style'],
-                                                );
-                                                Navigator.pop(context);
-                                              },
-                                              child: Container(
-                                                width: 100,
-                                                margin: const EdgeInsets.only(
-                                                    right: 10),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.cover,
-                                                      image: NetworkImage(
-                                                          _mapThemes[index]
-                                                              ['image']),
-                                                    )),
-                                              ),
-                                            );
-                                          }),
-                                    ),
-                                  ],
-                                )),
-                          );
-                        },
-                        padding: const EdgeInsets.all(0),
-                        shape: RoundedRectangleBorder(
+              ismoving == false
+                  ? Positioned(
+                      bottom: 80,
+                      right: 30,
+                      child: Container(
+                        width: 35,
+                        height: 50,
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
+                          color: btnColor,
                         ),
-                        child: Icon(
-                          Icons.layers_rounded,
-                          size: 25,
-                          color: ScfColor,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            MaterialButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) => Container(
+                                      padding: const EdgeInsets.all(20),
+                                      color: ScfColor,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.3,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Select Theme",
+                                            style: TextStyle(
+                                                color: txtColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 18),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 100,
+                                            child: ListView.builder(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: _mapThemes.length,
+                                                itemBuilder: (context, index) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      _control!.setMapStyle(
+                                                        _mapThemes[index]
+                                                            ['style'],
+                                                      );
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Container(
+                                                      width: 100,
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              right: 10),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          image:
+                                                              DecorationImage(
+                                                            fit: BoxFit.cover,
+                                                            image: NetworkImage(
+                                                                _mapThemes[
+                                                                        index]
+                                                                    ['image']),
+                                                          )),
+                                                    ),
+                                                  );
+                                                }),
+                                          ),
+                                        ],
+                                      )),
+                                );
+                              },
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Icon(
+                                Icons.layers_rounded,
+                                size: 25,
+                                color: ScfColor,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    )
+                  : const SizedBox(),
 
               //Zoom Selection Button
-              Positioned(
-                bottom: 30,
-                left: 15,
-                child: Container(
-                    width: 35,
-                    height: 105,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: btnColor,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        MaterialButton(
-                          onPressed: () {
-                            _control!.animateCamera(CameraUpdate.zoomIn());
-                          },
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
+              ismoving == false
+                  ? Positioned(
+                      bottom: 30,
+                      left: 15,
+                      child: Container(
+                          width: 35,
+                          height: 105,
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
+                            color: btnColor,
                           ),
-                          child: Icon(
-                            Icons.add,
-                            size: 25,
-                            color: ScfColor,
-                          ),
-                        ),
-                        const Divider(height: 5),
-                        MaterialButton(
-                          onPressed: () {
-                            _control!.animateCamera(CameraUpdate.zoomOut());
-                          },
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Icon(
-                            Icons.remove,
-                            size: 25,
-                            color: ScfColor,
-                          ),
-                        )
-                      ],
-                    )),
-              ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              MaterialButton(
+                                onPressed: () {
+                                  _control!
+                                      .animateCamera(CameraUpdate.zoomIn());
+                                },
+                                padding: const EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(
+                                  Icons.add,
+                                  size: 25,
+                                  color: ScfColor,
+                                ),
+                              ),
+                              const Divider(height: 5),
+                              MaterialButton(
+                                onPressed: () {
+                                  _control!
+                                      .animateCamera(CameraUpdate.zoomOut());
+                                },
+                                padding: const EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(
+                                  Icons.remove,
+                                  size: 25,
+                                  color: ScfColor,
+                                ),
+                              )
+                            ],
+                          )),
+                    )
+                  : const SizedBox(),
 
               //Slider
               Positioned(
@@ -863,63 +936,65 @@ class _DengueMapState extends State<DengueMap> {
                   children: [
                     Column(
                       children: [
-                        Row(
-                          children: [
-                            Container(
-                              height: 30,
-                              width: 55,
-                              decoration: BoxDecoration(
-                                color: btnColor,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextWidget(
-                                    title: "DAY 1",
-                                    txtSize: 10,
-                                    txtColor: ScfColor),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 30,
-                            ),
-                            Container(
-                              height: 30,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                color: btnColor,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextWidget(
-                                    title: selectedDate != null
-                                        ? "$selectedDate"
-                                        : "Select A Day",
-                                    txtSize: 10,
-                                    txtColor: ScfColor),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 30,
-                            ),
-                            Container(
-                              height: 30,
-                              width: 55,
-                              decoration: BoxDecoration(
-                                color: btnColor,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextWidget(
-                                    title: "DAY 30",
-                                    txtSize: 10,
-                                    txtColor: ScfColor),
-                              ),
-                            ),
-                          ],
-                        ),
+                        ismoving == false
+                            ? Row(
+                                children: [
+                                  Container(
+                                    height: 30,
+                                    width: 55,
+                                    decoration: BoxDecoration(
+                                      color: btnColor,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextWidget(
+                                          title: "DAY 1",
+                                          txtSize: 10,
+                                          txtColor: ScfColor),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Container(
+                                    height: 30,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      color: btnColor,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextWidget(
+                                          title: selectedDate != null
+                                              ? "$selectedDate"
+                                              : "Select A Day",
+                                          txtSize: 10,
+                                          txtColor: ScfColor),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  Container(
+                                    height: 30,
+                                    width: 55,
+                                    decoration: BoxDecoration(
+                                      color: btnColor,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TextWidget(
+                                          title: "DAY 30",
+                                          txtSize: 10,
+                                          txtColor: ScfColor),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : const SizedBox(),
                         SizedBox(
                           width: 300,
                           child: Slider(
