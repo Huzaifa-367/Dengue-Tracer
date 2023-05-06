@@ -80,7 +80,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
             'email': PlutoCell(value: item['email']),
             'phone_number': PlutoCell(value: item['phone_number']),
             'role': PlutoCell(value: item['role']),
-            'sec_name': PlutoCell(value: item['sec_name']),
+            'sec_name': PlutoCell(value: item['sector']['sec_name']),
           },
         );
       }).toList();
@@ -282,7 +282,7 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: ((context) =>  Officer_Edit_Screen()),
+                      builder: ((context) => const Officer_Edit_Screen()),
                     ),
                   );
                 },

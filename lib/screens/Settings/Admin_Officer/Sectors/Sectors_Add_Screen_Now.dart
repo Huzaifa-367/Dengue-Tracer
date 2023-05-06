@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
+import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
@@ -17,6 +18,8 @@ class PolygonSaver extends StatefulWidget {
 
 class _PolygonSaverState extends State<PolygonSaver> {
   final Completer<GoogleMapController> _controller = Completer();
+  //zoom Controller
+  GoogleMapController? _control;
   late final GoogleMapController _mapController;
   final Set<Polygon> _polygons = {};
   final List<LatLng> _currentPolygon = [];
@@ -37,9 +40,15 @@ class _PolygonSaverState extends State<PolygonSaver> {
     });
   }
 
+  final Set<Marker> _markers = {};
   void _addPoint(LatLng point) {
     setState(() {
       _currentPolygon.add(point);
+      //Adds Marker on Map
+      _markers.add(Marker(
+        markerId: MarkerId(_markers.length.toString()),
+        position: point,
+      ));
     });
   }
 
@@ -47,9 +56,9 @@ class _PolygonSaverState extends State<PolygonSaver> {
     final Polygon newPolygon = Polygon(
       polygonId: PolygonId(_currentPolygon.toString()),
       points: _currentPolygon,
-      strokeColor: Colors.blue,
-      strokeWidth: 3,
-      fillColor: Colors.blue.withOpacity(0.2),
+      strokeColor: const Color.fromARGB(255, 74, 216, 192),
+      strokeWidth: 1,
+      fillColor: const Color.fromARGB(255, 74, 216, 192).withOpacity(0.2),
     );
     setState(() {
       _polygons.add(newPolygon);
@@ -92,7 +101,7 @@ class _PolygonSaverState extends State<PolygonSaver> {
 
   Future<void> _fetchPolygons() async {
     try {
-      final response = await Dio().get('$ip/getsectors');
+      final response = await Dio().get('$ip/GetAllSectors');
       //final body = response.data;
       final body = response.data;
       if (body is List<dynamic>) {
@@ -103,7 +112,7 @@ class _PolygonSaverState extends State<PolygonSaver> {
           final secName = item['sec_name'] as String;
           final threshold = item['threshold'] as int;
           final description = item['description'] as String;
-          final latLongs = item['latLongs'] as List<dynamic>;
+          //final latLongs = item['latLongs'] as List<dynamic>;
 
           var latLngs = (item['latLongs'] as List<dynamic>)
               .map((e) => LatLng(
@@ -140,10 +149,13 @@ class _PolygonSaverState extends State<PolygonSaver> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Polygon Saver'),
+        title: const Text('New Sector'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save_as_rounded),
+            icon: Icon(
+              Icons.save_as_rounded,
+              color: btnColor,
+            ),
             onPressed: () {
               getWidgetDialogue(
                 context,
@@ -159,7 +171,10 @@ class _PolygonSaverState extends State<PolygonSaver> {
                               onPressed: (() {
                                 Navigator.of(context).pop();
                               }),
-                              icon: const Icon(Icons.cancel_outlined),
+                              icon: Icon(
+                                Icons.cancel_outlined,
+                                color: btnColor,
+                              ),
                             ),
                           ],
                         ),
@@ -258,11 +273,21 @@ class _PolygonSaverState extends State<PolygonSaver> {
       body: Stack(
         children: [
           GoogleMap(
+            //indoorViewEnabled: true,
+            //liteModeEnabled: true,
+            buildingsEnabled: true,
+            //zoomGesturesEnabled: true,
+            myLocationEnabled: true,
+
+            zoomControlsEnabled: false,
+            // hide location button
+            myLocationButtonEnabled: true,
             mapType: MapType.normal,
             initialCameraPosition: const CameraPosition(
               target: LatLng(33.643005, 73.077706),
               zoom: 14.4746,
             ),
+            markers: _markers,
             polygons: _polygons,
             onTap: (LatLng point) {
               if (_isDrawing) {
@@ -273,14 +298,61 @@ class _PolygonSaverState extends State<PolygonSaver> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               _mapController = controller;
+              _control = controller;
               _fetchPolygons();
             },
           ),
+          //Zoom Selection Button
+          Positioned(
+            bottom: 40,
+            left: 15,
+            child: Container(
+                width: 35,
+                height: 105,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: btnColor,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        _control!.animateCamera(CameraUpdate.zoomIn());
+                      },
+                      padding: const EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.add, size: 25),
+                    ),
+                    const Divider(height: 5),
+                    MaterialButton(
+                      onPressed: () {
+                        _control!.animateCamera(CameraUpdate.zoomOut());
+                      },
+                      padding: const EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.remove, size: 25),
+                    )
+                  ],
+                )),
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _toggleDrawing,
-        child: Icon(_isDrawing ? Icons.stop : Icons.play_arrow),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            bottom: 20,
+            left: 140,
+            child: ButtonWidget(
+              btnText: _isDrawing ? "Drawing" : "Add New",
+              onPress: _toggleDrawing,
+            ),
+          ),
+        ],
       ),
     );
   }

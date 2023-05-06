@@ -37,6 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
   );
 
   String role = 'user';
+  int? sec_id;
   String? response;
   TextEditingController namecont = TextEditingController();
   TextEditingController phonecont = TextEditingController();
@@ -155,12 +156,20 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: "Home Location",
 
                     sufixIconPress: () async {
-                      home_loccont.text = await Navigator.of(context).push(
+                      var LocId = await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const PickLocation(),
                           //builder: (context) => const MapScreen(),
                         ),
                       );
+                      setState(() {
+                        final LocSecid = LocId.split('-');
+                        home_loccont.text = LocSecid[0];
+                        sec_id = LocSecid[1] == "You,re not in our Sectors."
+                            ? null
+                            : int.parse(LocSecid[1]);
+                      });
+
                       //builder: (context) => const Mapp_test()));
                       // textController.text =
                       //     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
@@ -190,6 +199,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             u.phone_number = phonecont.text;
                             u.password = passwordcont.text;
                             u.home_location = home_loccont.text;
+                            u.sec_id = sec_id;
                             await signUp(
                               u,
                               context,

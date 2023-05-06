@@ -58,7 +58,7 @@ class _PickLocationState extends State<PickLocation> {
 
   CameraPosition cameraPosition = const CameraPosition(
     target: LatLng(33.643005, 73.077706),
-    zoom: 14.4746,
+    zoom: 18,
   );
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _PickLocationState extends State<PickLocation> {
 
   Future<void> _fetchPolygons() async {
     try {
-      final response = await Dio().get('$ip/getsectors');
+      final response = await Dio().get('$ip/getallsectors');
       final body = response.data;
       if (body is List<dynamic>) {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
@@ -104,7 +104,8 @@ class _PickLocationState extends State<PickLocation> {
               },
               polygonId: PolygonId(
                   secId.toString()), // Use sector ID as the polygon ID
-              points: latLngs,
+              // points: latLngs,
+              points: List<LatLng>.from(latLngs),
               strokeColor: const Color.fromARGB(255, 74, 216, 192),
               strokeWidth: 1,
               fillColor:
@@ -167,6 +168,7 @@ class _PickLocationState extends State<PickLocation> {
 
   var home_loccont = TextEditingController();
   var latLong;
+  var latLongsector;
   var readableAdress;
   //
   //
@@ -190,6 +192,7 @@ class _PickLocationState extends State<PickLocation> {
                 ),
                 //add map picker controller
                 mapPickerController: mapPickerController,
+
                 child: GoogleMap(
                   //indoorViewEnabled: true,
                   //liteModeEnabled: true,
@@ -233,6 +236,7 @@ class _PickLocationState extends State<PickLocation> {
                     // update the ui with the address
                     latLong =
                         "${cameraPosition.target.latitude},${cameraPosition.target.longitude}";
+
                     readableAdress =
                         '${placemarks.first.name},${placemarks.first.subLocality}, ${placemarks.first.locality}, ${placemarks.first.country}';
 
@@ -242,6 +246,8 @@ class _PickLocationState extends State<PickLocation> {
 
                     setState(() {
                       sectorId = checkSectorLocation(latLong, _polygons);
+                      latLongsector =
+                          "${cameraPosition.target.latitude},${cameraPosition.target.longitude}-$sectorId";
                       print(sectorId);
                     });
                   },
@@ -263,7 +269,7 @@ class _PickLocationState extends State<PickLocation> {
                       hintText: "Location",
 
                       sufixIconPress: () {
-                        Navigator.pop(context, latLong);
+                        Navigator.pop(context, latLongsector);
                         //Navigator.pop(context, readableAdress);
                         // textController.text =
                         //     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";

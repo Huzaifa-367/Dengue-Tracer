@@ -97,7 +97,7 @@ class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
   int? selectedSectorId;
 
   Future<List<String>> fetchSectors() async {
-    final response = await http.get(Uri.parse('$ip/GetSectors'));
+    final response = await http.get(Uri.parse('$ip/GetallSectors'));
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body) as List<dynamic>;
       final sectors = jsonData

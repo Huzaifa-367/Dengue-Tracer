@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
+import 'package:draggable_menu/draggable_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -128,7 +129,7 @@ class _DengueMapState extends State<DengueMap> {
   //
   CameraPosition cameraPosition = const CameraPosition(
     target: LatLng(33.643005, 73.077706),
-    zoom: 14.4746,
+    zoom: 16,
   );
   //
 //
@@ -186,6 +187,8 @@ class _DengueMapState extends State<DengueMap> {
                       BitmapDescriptor.hueAzure)
                   : BitmapDescriptor.defaultMarkerWithHue(
                       BitmapDescriptor.hueRed),
+              // flat: true,
+
               // flat: true,
             ),
           ),
@@ -508,43 +511,268 @@ class _DengueMapState extends State<DengueMap> {
 
   Future<void> _fetchPolygons() async {
     try {
-      final response = await Dio().get('$ip/getsectors');
+      final response = await Dio().get(loggedInUser!.role == "officer"
+          ? '$ip/GetOfficerSectors'
+          : loggedInUser!.role == "user"
+              ? '$ip/GetUserSectors'
+              : '$ip/GetallSectors');
       final body = response.data;
       if (body is List<dynamic>) {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
         // Now you can access the properties of each item in the list
         for (final item in data) {
-          final secId = item['sec_id'] as int;
-          final secName = item['sec_name'] as String;
-          final threshold = item['threshold'] as int;
-          final description = item['description'] as String;
-          final latLongs = item['latLongs'] as List<dynamic>;
-
-          var latLngs = (item['latLongs'] as List<dynamic>)
+          final secId = loggedInUser!.role == "admin"
+              ? item['sec_id']
+              : item['sector']['sec_id'] as int;
+          final secName = loggedInUser!.role == "admin"
+              ? item['sec_name']
+              : item['sector']['sec_name'] as String;
+          final threshold = loggedInUser!.role == "admin"
+              ? item['threshold']
+              : item['sector']['threshold'] as int;
+          final description = loggedInUser!.role == "admin"
+              ? item['description']
+              : item['sector']['description'] as String;
+          // final latLongs = item['sector']['latLongs'] as List<dynamic>;
+          var latLngs = (loggedInUser!.role == "admin"
+                  ? item['latLongs']
+                  : item['sector']['latLongs'] as List<dynamic>)
               .map((e) => LatLng(
                     double.parse(e.split(',')[0]),
                     double.parse(e.split(',')[1]),
                   ))
               .toList();
+
+          final userId =
+              loggedInUser!.role == "admin" ? 1 : item['user_id'] as int;
+          // final name = item['name'] as String;
+          // final email = item['email'] as String;
+          // final phoneNumber = item['phone_number'] as String;
+          final role =
+              loggedInUser!.role == "admin" ? "admin" : item['role'] as String;
+          // final homeLocation = item['home_location'] as String;
+          // final officeLocation = item['office_location'] as String;
+
           if (latLngs.isNotEmpty) {
             // Only add the polygon if the user is an admin or if the polygon is assigned to the user
-            if (loggedInUser!.role == "admin" ||
-                secId == loggedInUser!.sec_id) {
+            if (
+                // loggedInUser!.role == "admin" ||
+                userId == loggedInUser!.user_id) {
               final polygon = Polygon(
                 visible: true,
                 consumeTapEvents: true,
-                onTap: () {},
+                onTap: () {
+                  DraggableMenu.open(
+                    context,
+                    DraggableMenu(
+                      color: tbtnColor,
+                      uiType: DraggableMenuUiType.softModern,
+                      expandable: true,
+                      fastDrag: true,
+                      minimizeBeforeFastDrag: true,
+                      expandedHeight: MediaQuery.of(context).size.height * 0.72,
+                      maxHeight: MediaQuery.of(context).size.height * 0.36,
+                      child: ScrollableManager(
+                        enableExpandedScroll: true,
+                        child: Scaffold(
+                          backgroundColor: ScfColor,
+                          body: Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        "Sector Name: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: grey,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      Text(
+                                        secName,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: txtColor,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        "Threshold: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: grey,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      Text(
+                                        "$threshold",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: txtColor,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Text(
+                                    "Description",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      color: grey,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 110,
+                                    width: 450,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: ScfColor2,
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text(
+                                          description,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            color: grey,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text(
+                                    "Actions Takekn",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      color: grey,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    height: 300,
+                                    width: 400,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: ScfColor2,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ScrollConfiguration(
+                                        behavior: const ScrollBehavior(),
+                                        child: GlowingOverscrollIndicator(
+                                          axisDirection: AxisDirection.down,
+                                          color: bkColor,
+                                          child: ListView.builder(
+                                            addRepaintBoundaries: true,
+                                            itemCount: 15,
+                                            itemBuilder: (context, index) {
+                                              return Card(
+                                                color: ScfColor,
+                                                child: ListTile(
+                                                  leading: Icon(
+                                                    Icons.warning,
+                                                    color: tbtnColor,
+                                                    size: 33,
+                                                  ),
+                                                  title: Text.rich(
+                                                    TextSpan(
+                                                      text: 'Date: ',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: txtColor,
+                                                        fontSize: 13,
+                                                      ),
+                                                      children: const <
+                                                          InlineSpan>[
+                                                        TextSpan(
+                                                          text: "2022-11-10",
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: grey,
+                                                            fontSize: 13,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  subtitle: Text(
+                                                    "45576",
+                                                    //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: txtColor,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                  trailing: TextButton(
+                                                    onPressed: () {},
+                                                    child: Text(
+                                                      "View Detail",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: btnColor,
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    barrier: true,
+                  );
+                },
                 polygonId: PolygonId(secId.toString()),
-                points: latLngs,
-                strokeColor: secId == loggedInUser!.sec_id
-                    ? btnColor
-                    : const Color.fromARGB(255, 74, 216,
-                        192), // Change stroke color for logged-in user's polygon
+                points: List<LatLng>.from(latLngs), // Fix type error here
+                //points: latLngs,
+                strokeColor:
+                    // loggedInUser!.role == "admin" ||
+                    userId == loggedInUser!.user_id
+                        ? const Color.fromARGB(255, 74, 216, 192)
+                        : btnColor, // Change stroke color for logged-in user's polygon
                 strokeWidth: 1,
-                fillColor: secId == loggedInUser!.sec_id
-                    ? btnColor.withOpacity(0.2)
-                    : const Color.fromARGB(255, 74, 216, 192).withOpacity(
-                        0.2), // Change fill color for logged-in user's polygon
+                fillColor:
+                    // loggedInUser!.role == "admin" ||
+                    userId == loggedInUser!.user_id
+                        ? const Color.fromARGB(255, 74, 216, 192)
+                            .withOpacity(0.2)
+                        : btnColor.withOpacity(
+                            0.2), // Change fill color for logged-in user's polygon
               );
               setState(() {
                 _polygons.add(polygon);
@@ -1025,29 +1253,3 @@ class _DengueMapState extends State<DengueMap> {
     );
   }
 }
-
-// class _ChartData {
-//   _ChartData(this.date, this.cases);
-
-//   final DateTime date;
-//   final int cases;
-
-//   double get latitude => // Get latitude based on date
-//       // Example: latitude increases as the year progresses
-//       1.0 + (date.year - 2022) * 0.1;
-
-//   double get longitude => // Get longitude based on date
-//       // Example: longitude increases as the month progresses
-//       -1.0 - date.month * 0.1;
-// }
-
-// class _ChartData {
-//   _ChartData(this.date, this.cases);
-
-//   final DateTime date;
-//   final int cases;
-
-//   double get latitude => 1.0 + (date.year - 2022) * 0.1;
-
-//   double get longitude => -1.0 - date.month * 0.1;
-// }
