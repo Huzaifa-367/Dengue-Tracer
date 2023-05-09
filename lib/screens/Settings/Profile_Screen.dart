@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_feedback/app_feedback.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
@@ -6,12 +8,14 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/rangeslider.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
+import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
 import 'package:dengue_tracing_application/screens/Settings/AboutUs_Screen.dart';
 import 'package:dengue_tracing_application/screens/Settings/profileEdit_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
@@ -109,6 +113,8 @@ class _Profile_ScreenState extends State<Profile_Screen> {
 
   //Shared Preference End
   //User? u = loggedInUser;
+  User? u;
+  File? imageFile;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -140,7 +146,75 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                         ? imgpath + loggedInUser!.image!
                         : "https://e7.pngegg.com/pngimages/771/79/png-clipart-avatar-bootstrapcdn-graphic-designer-angularjs-avatar-child-face.png",
                   ),
+                  popupWidget: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextWidget(
+                            title: "Change Profile",
+                            txtSize: 20,
+                            txtColor: btnColor),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            XFile? file = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            if (file != null) {
+                              imageFile = File(file.path);
+                              loggedInUser!.uploadPic(imageFile!);
+                            }
 
+                            Navigator.of(context).pop();
+                            setState(() {});
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: btnColor,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            padding: const EdgeInsets.only(
+                                top: 10, right: 8, bottom: 10, left: 8),
+                            child: const TextWidget(
+                                title: "Gallery",
+                                txtSize: 15,
+                                txtColor: Colors.white),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            XFile? file = await ImagePicker().pickImage(
+                              source: ImageSource.camera,
+                            );
+                            if (file != null) {
+                              imageFile = File(file.path);
+                              loggedInUser?.uploadPic(imageFile!);
+                            }
+
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: btnColor,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            padding: const EdgeInsets.only(
+                                top: 10, right: 8, bottom: 10, left: 8),
+                            child: const TextWidget(
+                                title: "  Camera  ",
+                                txtSize: 15,
+                                txtColor: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                   userMoreInfo: TextWidget(
                     title: loggedInUser!.email ?? "",
                     txtSize: 10,

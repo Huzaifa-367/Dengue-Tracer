@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
@@ -8,11 +6,9 @@ import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:dengue_tracing_application/screens/Settings/Map_Test.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:geocoding/geocoding.dart';
 
-import '../../model/USER/usermodel.dart';
 import 'Profile_Screen.dart';
 
 class ProfileEditScreen extends StatefulWidget {
@@ -76,8 +72,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   // TextEditingController office_loccont = TextEditingController();
 
   /// Variables
-  User? u;
-  File? imageFile;
+
   bool isVisible = true;
   bool isVisible2 = true;
   @override
@@ -111,191 +106,110 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     color: btnColor,
                   ),
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  //crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 120,
-                        ),
-                        Stack(
-                          children: [
-                            //),
-                            loggedInUser!.image != null
-                                ? imageFile == null
-                                    ? CircleAvatar(
-                                        radius: 50,
-                                        backgroundImage: NetworkImage(
-                                            imgpath + loggedInUser!.image!),
-                                      )
-                                    : CircleAvatar(
-                                        radius: 50,
-                                        backgroundImage: FileImage(imageFile!),
-                                      )
-                                : const CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage: NetworkImage(
-                                        "https://e7.pngegg.com/pngimages/771/79/png-clipart-avatar-bootstrapcdn-graphic-designer-angularjs-avatar-child-face.png"),
-                                  ),
-                            Positioned(
-                              bottom: 0.2,
-                              right: 0.2,
-                              //left: 50,
-                              child: GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      actions: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            IconButton(
-                                              onPressed: (() {
-                                                Navigator.of(context).pop();
-                                              }),
-                                              icon: const Icon(Icons.cancel),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            TextWidget(
-                                                title: "Pick Image From?",
-                                                txtSize: 20,
-                                                txtColor: btnColor),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () async {
-                                                XFile? file =
-                                                    await ImagePicker()
-                                                        .pickImage(
-                                                            source: ImageSource
-                                                                .gallery);
-                                                if (file != null) {
-                                                  imageFile = File(file.path);
-                                                  loggedInUser!
-                                                      .uploadPic(imageFile!);
-                                                }
-
-                                                Navigator.of(context).pop();
-                                                setState(() {});
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: btnColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(25),
-                                                ),
-                                                padding: const EdgeInsets.only(
-                                                    top: 10,
-                                                    right: 8,
-                                                    bottom: 10,
-                                                    left: 8),
-                                                child: const TextWidget(
-                                                    title: "Gallery",
-                                                    txtSize: 15,
-                                                    txtColor: Colors.white),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                XFile? file =
-                                                    await ImagePicker()
-                                                        .pickImage(
-                                                  source: ImageSource.camera,
-                                                );
-                                                if (file != null) {
-                                                  imageFile = File(file.path);
-                                                  loggedInUser
-                                                      ?.uploadPic(imageFile!);
-                                                }
-
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: btnColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(25),
-                                                ),
-                                                padding: const EdgeInsets.only(
-                                                    top: 10,
-                                                    right: 8,
-                                                    bottom: 10,
-                                                    left: 8),
-                                                child: const TextWidget(
-                                                    title: "  Camera  ",
-                                                    txtSize: 15,
-                                                    txtColor: Colors.white),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                child: Icon(
-                                  //size: 35,
-                                  Icons.camera_alt,
-                                  size: 35,
-                                  color: btnColor,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          width: 60,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 140,
-                    ),
-                    Text(
-                      loggedInUser!.name ?? "",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                        fontSize: 25,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                  ],
-                ),
-                Text(
-                  loggedInUser!.email ?? "",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
-                ),
+                // const SizedBox(
+                //   height: 15,
+                // ),
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   //crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     Row(
+                //       children: [
+                //         const SizedBox(
+                //           width: 120,
+                //         ),
+                //         Stack(
+                //           children: [
+                //             //),
+                //             loggedInUser!.image != null
+                //                 ? imageFile == null
+                //                     ? CircleAvatar(
+                //                         radius: 50,
+                //                         backgroundImage: NetworkImage(
+                //                             imgpath + loggedInUser!.image!),
+                //                       )
+                //                     : CircleAvatar(
+                //                         radius: 50,
+                //                         backgroundImage: FileImage(imageFile!),
+                //                       )
+                //                 : const CircleAvatar(
+                //                     radius: 50,
+                //                     backgroundImage: NetworkImage(
+                //                         "https://e7.pngegg.com/pngimages/771/79/png-clipart-avatar-bootstrapcdn-graphic-designer-angularjs-avatar-child-face.png"),
+                //                   ),
+                //             Positioned(
+                //               bottom: 0.2,
+                //               right: 0.2,
+                //               //left: 50,
+                //               child: GestureDetector(
+                //                 onTap: () {
+                //                   showDialog(
+                //                     barrierDismissible: false,
+                //                     context: context,
+                //                     builder: (context) => AlertDialog(
+                //                       actions: <Widget>[
+                //                         Row(
+                //                           mainAxisAlignment:
+                //                               MainAxisAlignment.end,
+                //                           children: [
+                //                             IconButton(
+                //                               onPressed: (() {
+                //                                 Navigator.of(context).pop();
+                //                               }),
+                //                               icon: const Icon(Icons.cancel),
+                //                             ),
+                //                           ],
+                //                         ),
+                //                       ],
+                //                     ),
+                //                   );
+                //                 },
+                //                 child: Icon(
+                //                   //size: 35,
+                //                   Icons.camera_alt,
+                //                   size: 35,
+                //                   color: btnColor,
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //         const SizedBox(
+                //           width: 60,
+                //         ),
+                //       ],
+                //     )
+                //   ],
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // Row(
+                //   children: [
+                //     const SizedBox(
+                //       width: 140,
+                //     ),
+                //     Text(
+                //       loggedInUser!.name ?? "",
+                //       style: const TextStyle(
+                //         fontWeight: FontWeight.w700,
+                //         color: Colors.black,
+                //         fontSize: 25,
+                //       ),
+                //     ),
+                //     const SizedBox(
+                //       width: 20,
+                //     ),
+                //   ],
+                // ),
+                // Text(
+                //   loggedInUser!.email ?? "",
+                //   style: const TextStyle(
+                //     fontWeight: FontWeight.w400,
+                //     color: Colors.black,
+                //     fontSize: 18,
+                //   ),
+                // ),
                 const SizedBox(
                   height: 10,
                 ),
