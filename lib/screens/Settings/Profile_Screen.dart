@@ -78,7 +78,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
   // }
 
   //Shared Preference start
-  final bool _hasDengue = false;
+  // final bool _hasDengue = false;
 
   @override
   void initState() {

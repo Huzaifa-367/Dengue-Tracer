@@ -130,7 +130,7 @@ class _StatsScreenState extends State<StatsScreen> {
                           ),
                           showBadge: true,
                           ignorePointer: false,
-                          child: GestureDetector(
+                          child: InkWell(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(

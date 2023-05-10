@@ -2,7 +2,7 @@ import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/screens/Home/awareness.dart';
 import 'package:dengue_tracing_application/screens/Home/stats_screen.dart';
-import 'package:dengue_tracing_application/screens/Map/map_temporal.dart';
+import 'package:dengue_tracing_application/screens/Map/Temporal_Map.dart';
 import 'package:dengue_tracing_application/screens/Settings/Profile_Screen.dart';
 
 import 'package:flutter/material.dart';

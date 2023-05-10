@@ -25,6 +25,16 @@ const Color buttoncolor = Color(0xff3e4784);
 const Color mainFontColor = Color(0xff565c95);
 const Color arrowbgColor = Color(0xffe4e9f7);
 
+Color redopc = const Color.fromARGB(255, 216, 74, 74).withOpacity(0.2);
+Color orangeopc = const Color.fromARGB(162, 253, 148, 42).withOpacity(0.2);
+Color yellowopc = const Color.fromARGB(255, 216, 202, 74).withOpacity(0.2);
+Color greenopc = const Color.fromARGB(255, 74, 216, 192).withOpacity(0.2);
+
+Color redopcN = const Color.fromARGB(255, 216, 74, 74);
+Color orangeopcN = const Color.fromARGB(162, 253, 148, 42);
+Color yellowopcN = const Color.fromARGB(255, 216, 202, 74);
+Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
+
 String ip = 'http://192.168.105.34/FYP_Api/API/SERVER';
 String imgpath = 'http://192.168.105.34/FYP_Api/Images/';
 User? loggedInUser;

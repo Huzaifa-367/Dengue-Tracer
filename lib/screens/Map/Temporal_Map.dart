@@ -509,6 +509,40 @@ class _DengueMapState extends State<DengueMap> {
   //   }
   // }
 
+  Color getfillColor(int threshold, int totalCases) {
+    double percentage = (totalCases / threshold) * 100;
+    setState(() {
+      //
+      //
+    });
+    if (percentage >= 90) {
+      return redopc;
+    } else if (percentage >= 75) {
+      return orangeopc;
+    } else if (percentage >= 50) {
+      return yellowopc;
+    } else {
+      return greenopc;
+    }
+  }
+
+  Color getstrokeColor(int threshold, int totalCases) {
+    double percentage = (totalCases / threshold) * 100;
+    setState(() {
+      //
+      //
+    });
+    if (percentage >= 90) {
+      return redopc;
+    } else if (percentage >= 75) {
+      return orangeopc;
+    } else if (percentage >= 50) {
+      return yellowopc;
+    } else {
+      return greenopc;
+    }
+  }
+
   Future<void> _fetchPolygons() async {
     try {
       final response = await Dio().get(loggedInUser!.role == "officer"
@@ -533,6 +567,9 @@ class _DengueMapState extends State<DengueMap> {
           final description = loggedInUser!.role == "admin"
               ? item['description']
               : item['sector']['description'] as String;
+          final totalCases = loggedInUser!.role == "admin"
+              ? item['total_cases']
+              : item['sector']['total_cases'] as int;
           // final latLongs = item['sector']['latLongs'] as List<dynamic>;
           var latLngs = (loggedInUser!.role == "admin"
                   ? item['latLongs']
@@ -614,6 +651,26 @@ class _DengueMapState extends State<DengueMap> {
                                       ),
                                       Text(
                                         "$threshold",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: txtColor,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        "Total Cases: ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: grey,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      Text(
+                                        "$totalCases",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w800,
                                           color: txtColor,
@@ -760,19 +817,18 @@ class _DengueMapState extends State<DengueMap> {
                 polygonId: PolygonId(secId.toString()),
                 points: List<LatLng>.from(latLngs), // Fix type error here
                 //points: latLngs,
-                strokeColor:
-                    // loggedInUser!.role == "admin" ||
-                    userId == loggedInUser!.user_id
-                        ? const Color.fromARGB(255, 74, 216, 192)
-                        : btnColor, // Change stroke color for logged-in user's polygon
-                strokeWidth: 1,
-                fillColor:
-                    // loggedInUser!.role == "admin" ||
-                    userId == loggedInUser!.user_id
-                        ? const Color.fromARGB(255, 74, 216, 192)
-                            .withOpacity(0.2)
-                        : btnColor.withOpacity(
-                            0.2), // Change fill color for logged-in user's polygon
+                strokeColor: getstrokeColor(threshold, totalCases),
+                //loggedInUser!.role == "admin" ||
+                // userId == loggedInUser!.user_id
+                //     ? const Color.fromARGB(255, 74, 216, 192)
+                //     : btnColor, // Change stroke color for logged-in user's polygon
+                strokeWidth: 2,
+                fillColor: getfillColor(threshold, totalCases),
+                // loggedInUser!.role == "admin" ||
+                // userId == loggedInUser!.user_id
+                //     ? const Color.fromARGB(255, 74, 216, 192)
+                //         .withOpacity(0.2)
+                //     : btnColor.withOpacity(
               );
               setState(() {
                 _polygons.add(polygon);
@@ -1165,60 +1221,169 @@ class _DengueMapState extends State<DengueMap> {
                     Column(
                       children: [
                         ismoving == false
-                            ? Row(
+                            ? Column(
                                 children: [
                                   Container(
-                                    height: 30,
-                                    width: 55,
                                     decoration: BoxDecoration(
-                                      color: btnColor,
-                                      borderRadius: BorderRadius.circular(5),
+                                      borderRadius: BorderRadius.circular(3),
+                                      color: ScfColor2,
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextWidget(
-                                          title: "DAY 1",
-                                          txtSize: 10,
-                                          txtColor: ScfColor),
+                                      padding: const EdgeInsets.all(3.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 25,
+                                            width: 35,
+                                            decoration: BoxDecoration(
+                                              color: greenopcN.withOpacity(.5),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topLeft: Radius.circular(3),
+                                                bottomLeft: Radius.circular(3),
+                                              ),
+                                            ),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(2.0),
+                                              child: Center(
+                                                child: Text(
+                                                  "0>=49",
+                                                  style: TextStyle(
+                                                    fontSize: 7,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 25,
+                                            width: 35,
+                                            decoration: BoxDecoration(
+                                              color: yellowopcN.withOpacity(.5),
+                                            ),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(2.0),
+                                              child: Center(
+                                                child: Text(
+                                                  "50>=74",
+                                                  style: TextStyle(
+                                                    fontSize: 7,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 25,
+                                            width: 35,
+                                            decoration: BoxDecoration(
+                                              color: orangeopcN.withOpacity(.5),
+                                            ),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(2.0),
+                                              child: Center(
+                                                child: Text(
+                                                  "75>=100",
+                                                  style: TextStyle(
+                                                    fontSize: 7,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 25,
+                                            width: 35,
+                                            decoration: BoxDecoration(
+                                              color: redopcN.withOpacity(.5),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                topRight: Radius.circular(3),
+                                                bottomRight: Radius.circular(3),
+                                              ),
+                                            ),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(2.0),
+                                              child: Center(
+                                                child: Text(
+                                                  "90>=100",
+                                                  style: TextStyle(
+                                                    fontSize: 7,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(
-                                    width: 30,
+                                    height: 8,
                                   ),
-                                  Container(
-                                    height: 30,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      color: btnColor,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextWidget(
-                                          title: selectedDate != null
-                                              ? "$selectedDate"
-                                              : "Select A Day",
-                                          txtSize: 10,
-                                          txtColor: ScfColor),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 30,
-                                  ),
-                                  Container(
-                                    height: 30,
-                                    width: 55,
-                                    decoration: BoxDecoration(
-                                      color: btnColor,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextWidget(
-                                          title: "DAY 30",
-                                          txtSize: 10,
-                                          txtColor: ScfColor),
-                                    ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 30,
+                                        width: 55,
+                                        decoration: BoxDecoration(
+                                          color: btnColor,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextWidget(
+                                              title: "DAY 1",
+                                              txtSize: 10,
+                                              txtColor: ScfColor),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 30,
+                                      ),
+                                      Container(
+                                        height: 30,
+                                        width: 80,
+                                        decoration: BoxDecoration(
+                                          color: btnColor,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextWidget(
+                                              title: selectedDate != null
+                                                  ? "$selectedDate"
+                                                  : "Select A Day",
+                                              txtSize: 10,
+                                              txtColor: ScfColor),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 30,
+                                      ),
+                                      Container(
+                                        height: 30,
+                                        width: 55,
+                                        decoration: BoxDecoration(
+                                          color: btnColor,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: TextWidget(
+                                              title: "DAY 30",
+                                              txtSize: 10,
+                                              txtColor: ScfColor),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               )
