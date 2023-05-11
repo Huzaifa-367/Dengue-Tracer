@@ -41,14 +41,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
-  babstrap_settings_screen:
-    dependency: "direct main"
-    description:
-      name: babstrap_settings_screen
-      sha256: b35c572e362a93203dc68775d38388b69039f0d33fd37bc61fabbd54e5ec691a
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.4"
   badges:
     dependency: "direct main"
     description:
@@ -153,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      sha256: "6f07cba3f7b3448d42d015bfd3d53fe12e5b36da2423f23838efc1d5fb31a263"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.8"
   dio:
     dependency: transitive
     description:
@@ -169,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
+  easy_separator:
+    dependency: "direct main"
+    description:
+      name: easy_separator
+      sha256: "619b8add6612ba2d806219e34b59fb48d99845f466bdfdfc004321080e63e179"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   email_otp:
     dependency: "direct main"
     description:
@@ -278,6 +286,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_local_notifications:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications
+      sha256: "57d0012730780fe137260dd180e072c18a73fbeeb924cdc029c18aaa0f338d64"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.9.1"
+  flutter_local_notifications_linux:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_linux
+      sha256: b472bfc173791b59ede323661eae20f7fff0b6908fea33dd720a6ef5d576bae8
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.1"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      sha256: "21bceee103a66a53b30ea9daf677f990e5b9e89b62f222e60dd241cd08d63d3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   flutter_place_picker:
     dependency: "direct main"
     description:
@@ -872,6 +904,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.3"
+  shimmer:
+    dependency: "direct main"
+    description:
+      name: shimmer
+      sha256: "1f1009b5845a1f88f1c5630212279540486f97409e9fc3f63883e71070d107bf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -893,6 +933,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+  starlight_notification:
+    dependency: "direct main"
+    description:
+      name: starlight_notification
+      sha256: "893b5a782d1755661263fbdebbbe889c3ee783693ac9053e0a20b04a591aac24"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   stream_channel:
     dependency: transitive
     description:
@@ -965,6 +1013,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.16"
+  timezone:
+    dependency: transitive
+    description:
+      name: timezone
+      sha256: "57b35f6e8ef731f18529695bffc62f92c6189fac2e52c12d478dec1931afb66e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
   tuple:
     dependency: transitive
     description:

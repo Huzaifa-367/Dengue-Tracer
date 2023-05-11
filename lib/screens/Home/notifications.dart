@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:dengue_tracing_application/testings/Shimer.dart';
 import 'package:dengue_tracing_application/model/NOTIFICATION/notifmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:starlight_notification/starlight_notification.dart';
 
 import '../../Controller/NotificationController.dart';
 
@@ -29,6 +33,20 @@ class _NotifScreenState extends State<NotifScreen> {
 
   late authController controller;
 
+  int _counter = 0;
+  incrementCounter(authController controller) async {
+    Timer.periodic(const Duration(seconds: 60), (Timer timer) {
+      _counter++;
+      StarlightNotificationService.show(
+        StarlightNotification(
+          title: 'Alert',
+          body: 'Number of cases reached 20% of threshold',
+          // payload: '{"name":"mg mg","age":20}',
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,81 +72,100 @@ class _NotifScreenState extends State<NotifScreen> {
               ],
             ),
           ),
-          body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Consumer<authController>(
-                builder: (context, value, child) {
-                  return ListView.builder(
-                    itemCount: controller.notifitems.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: controller.notifitems[index].alert!
-                            ? bkColor
-                            : null,
-                        child: ListTile(
-                          leading: controller.notifitems[index].alert!
-                              ? Icon(
-                                  Icons.warning,
-                                  color: btnColor,
-                                  size: 35,
-                                )
-                              : Icon(
-                                  Icons.campaign_rounded,
-                                  color: btnColor,
-                                  size: 35,
-                                ),
-                          title: Text(
-                            "${controller.notifitems[index].title}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 240,
+                  width: 180,
+                  child: ShimerWidget(),
+                ),
+                SizedBox(
+                  height: 540,
+                  width: 380,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Consumer<authController>(
+                      builder: (context, value, child) {
+                        return ListView.builder(
+                          itemCount: controller.notifitems.length,
+                          itemBuilder: (context, index) {
+                            return Card(
                               color: controller.notifitems[index].alert!
-                                  ? btnColor
-                                  : txtColor,
-                              fontSize: 15,
-                            ),
-                          ),
-                          subtitle: Text(
-                            "${controller.notifitems[index].date}",
-                            //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              color: txtColor,
-                              fontSize: 12,
-                            ),
-                          ),
-                          trailing: controller.notifitems[index].alert!
-                              ? TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    "Take Action",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: controller.notifitems[index].alert!
-                                          ? btnColor
-                                          : txtColor,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                )
-                              : TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    "View Detail",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      color: controller.notifitems[index].alert!
-                                          ? btnColor
-                                          : txtColor,
-                                      fontSize: 10,
-                                    ),
+                                  ? bkColor
+                                  : null,
+                              child: ListTile(
+                                leading: controller.notifitems[index].alert!
+                                    ? Icon(
+                                        Icons.warning,
+                                        color: btnColor,
+                                        size: 35,
+                                      )
+                                    : Icon(
+                                        Icons.campaign_rounded,
+                                        color: btnColor,
+                                        size: 35,
+                                      ),
+                                title: Text(
+                                  "${controller.notifitems[index].title}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: controller.notifitems[index].alert!
+                                        ? btnColor
+                                        : txtColor,
+                                    fontSize: 15,
                                   ),
                                 ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              )),
+                                subtitle: Text(
+                                  "${controller.notifitems[index].date}",
+                                  //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: txtColor,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                trailing: controller.notifitems[index].alert!
+                                    ? TextButton(
+                                        onPressed: () {},
+                                        child: Text(
+                                          "Take Action",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: controller
+                                                    .notifitems[index].alert!
+                                                ? btnColor
+                                                : txtColor,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                      )
+                                    : TextButton(
+                                        onPressed: () {},
+                                        //  onPressed: incrementCounter(controller),
+                                        child: Text(
+                                          "View Detail",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: controller
+                                                    .notifitems[index].alert!
+                                                ? btnColor
+                                                : txtColor,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

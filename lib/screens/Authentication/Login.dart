@@ -5,7 +5,6 @@ import 'package:dengue_tracing_application/screens/Authentication/Forgot_Pass.da
 
 import 'package:dengue_tracing_application/screens/Authentication/Signup.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
-import 'package:dengue_tracing_application/testings/Refresh_Indicator.dart';
 
 import 'package:flutter/material.dart';
 
@@ -304,11 +303,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: (() {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Refresh(),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const PushNotif(),
+                      //   ),
+                      // );
                     }),
                     child: const Text(
                       "Testings",

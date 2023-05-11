@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:app_feedback/app_feedback.dart';
-import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'package:dengue_tracing_application/Global/Profile_Screen_Widgets.dart';
 import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 //import 'package:dengue_tracing_application/Global/BigUserCard.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';

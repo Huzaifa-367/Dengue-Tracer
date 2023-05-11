@@ -55,7 +55,7 @@ dependencies:
   flutter_svg: ^2.0.0+1
   custom_info_window: ^1.0.1
   expandable_datatable: ^0.0.6
-  babstrap_settings_screen: ^0.1.4
+  #babstrap_settings_screen: ^0.1.4
   url_launcher: ^6.1.10
   app_feedback: ^0.0.2
   email_otp: ^1.0.4
@@ -75,6 +75,10 @@ dependencies:
   flutter_expandable_fab: ^1.7.1
   badges: ^3.1.1
   liquid_pull_to_refresh: ^3.0.1
+  easy_separator: ^1.0.1
+  shimmer: ^2.0.0
+  starlight_notification: ^0.0.2
+  #starlight_notification: ^0.0.2s
 
   #pull_to_refresh: ^2.0.0
  

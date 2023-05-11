@@ -1,3 +1,4 @@
+import 'package:dengue_tracing_application/Global/Shimmer_List_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -58,31 +59,35 @@ class _MonthlyDataState extends State<MonthlyData> {
             )
           ],
         ),
-        SfCartesianChart(
-          primaryXAxis: CategoryAxis(
-            interval: 1,
-          ),
-          zoomPanBehavior: ZoomPanBehavior(
-            enablePanning: true,
-          ),
-          primaryYAxis: NumericAxis(
-            minimum: 0,
-            maximum: 20,
-            interval: 1,
-          ),
-          tooltipBehavior: _tooltip,
-          series: <ChartSeries<_ChartData, String>>[
-            ColumnSeries<_ChartData, String>(
-                dataSource: _chartData,
-                xValueMapper: (_ChartData data, _) => data.month.toString(),
-                yValueMapper: (_ChartData data, _) => data.cases,
-                name: 'Dengue Cases',
-                color: btnColor,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5.0),
-                    topRight: Radius.circular(5.0))),
-          ],
-        ),
+        _chartData.isEmpty
+            ? ShimmerListView(10)
+            : SfCartesianChart(
+                primaryXAxis: CategoryAxis(
+                  interval: 1,
+                ),
+                zoomPanBehavior: ZoomPanBehavior(
+                  enablePanning: true,
+                ),
+                primaryYAxis: NumericAxis(
+                  minimum: 0,
+                  maximum: 20,
+                  interval: 1,
+                ),
+                tooltipBehavior: _tooltip,
+                series: <ChartSeries<_ChartData, String>>[
+                  ColumnSeries<_ChartData, String>(
+                    dataSource: _chartData,
+                    xValueMapper: (_ChartData data, _) => data.month.toString(),
+                    yValueMapper: (_ChartData data, _) => data.cases,
+                    name: 'Dengue Cases',
+                    color: btnColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(5.0),
+                      topRight: Radius.circular(5.0),
+                    ),
+                  ),
+                ],
+              ),
       ],
     );
   }

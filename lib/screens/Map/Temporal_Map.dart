@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dengue_tracing_application/Global/Shimmer_List_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
 import 'package:draggable_menu/draggable_menu.dart';
@@ -127,9 +128,9 @@ class _DengueMapState extends State<DengueMap> {
 
   MapPickerController mapPickerController = MapPickerController();
   //
-  CameraPosition cameraPosition = const CameraPosition(
-    target: LatLng(33.643005, 73.077706),
-    zoom: 16,
+  CameraPosition cameraPosition = CameraPosition(
+    target: const LatLng(33.643005, 73.077706),
+    zoom: loggedInUser!.role == "admin" ? 14.7 : 15,
   );
   //
 //
@@ -515,11 +516,13 @@ class _DengueMapState extends State<DengueMap> {
       //
       //
     });
-    if (percentage >= 90) {
+    if (percentage >= 100) {
+      return redopcN;
+    } else if (percentage > 75 && percentage <= 100) {
       return redopc;
-    } else if (percentage >= 75) {
+    } else if (percentage > 50 && percentage <= 75) {
       return orangeopc;
-    } else if (percentage >= 50) {
+    } else if (percentage > 25 && percentage <= 50) {
       return yellowopc;
     } else {
       return greenopc;
@@ -532,14 +535,14 @@ class _DengueMapState extends State<DengueMap> {
       //
       //
     });
-    if (percentage >= 90) {
-      return redopc;
-    } else if (percentage >= 75) {
-      return orangeopc;
-    } else if (percentage >= 50) {
-      return yellowopc;
+    if (percentage > 75 && percentage <= 100) {
+      return redopcN;
+    } else if (percentage > 50 && percentage <= 75) {
+      return orangeopcN;
+    } else if (percentage > 25 && percentage <= 50) {
+      return yellowopcN;
     } else {
-      return greenopc;
+      return greenopcN;
     }
   }
 
@@ -822,7 +825,7 @@ class _DengueMapState extends State<DengueMap> {
                 // userId == loggedInUser!.user_id
                 //     ? const Color.fromARGB(255, 74, 216, 192)
                 //     : btnColor, // Change stroke color for logged-in user's polygon
-                strokeWidth: 2,
+                strokeWidth: 1,
                 fillColor: getfillColor(threshold, totalCases),
                 // loggedInUser!.role == "admin" ||
                 // userId == loggedInUser!.user_id
@@ -993,40 +996,43 @@ class _DengueMapState extends State<DengueMap> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
                           height: 150.0,
-                          child: SfCartesianChart(
-                            zoomPanBehavior: ZoomPanBehavior(
-                              enablePanning: true,
-                            ),
-                            primaryXAxis: CategoryAxis(
-                              autoScrollingMode: AutoScrollingMode.start,
-                              visibleMaximum: 5,
-                              interval: 1,
-                            ),
-                            // borderColor: ScfColor,
-                            // borderWidth: 2,
-                            //backgroundColor: ScfColor,
-                            primaryYAxis: NumericAxis(
-                              interval: 1,
-                            ),
-                            tooltipBehavior: _tooltip,
-                            series: <ChartSeries<_ChartData, String>>[
-                              FastLineSeries<_ChartData, String>(
-                                dataSource: _chartData,
-                                xValueMapper: (_ChartData data, _) => data.date,
-                                yValueMapper: (_ChartData data, _) =>
-                                    data.cases,
-                                name: 'Dengue Cases',
+                          child: _chartData.isEmpty
+                              ? ShimmerListView(6)
+                              : SfCartesianChart(
+                                  zoomPanBehavior: ZoomPanBehavior(
+                                    enablePanning: true,
+                                  ),
+                                  primaryXAxis: CategoryAxis(
+                                    autoScrollingMode: AutoScrollingMode.start,
+                                    visibleMaximum: 5,
+                                    interval: 1,
+                                  ),
+                                  // borderColor: ScfColor,
+                                  // borderWidth: 2,
+                                  //backgroundColor: ScfColor,
+                                  primaryYAxis: NumericAxis(
+                                    interval: 1,
+                                  ),
+                                  tooltipBehavior: _tooltip,
+                                  series: <ChartSeries<_ChartData, String>>[
+                                    FastLineSeries<_ChartData, String>(
+                                      dataSource: _chartData,
+                                      xValueMapper: (_ChartData data, _) =>
+                                          data.date,
+                                      yValueMapper: (_ChartData data, _) =>
+                                          data.cases,
+                                      name: 'Dengue Cases',
 
-                                color: btnColor,
+                                      color: btnColor,
 
-                                //width: .2,
-                                // borderRadius: const BorderRadius.only(
-                                //   topLeft: Radius.circular(5.0),
-                                //   topRight: Radius.circular(5.0),
-                                // ),
-                              ),
-                            ],
-                          ),
+                                      //width: .2,
+                                      // borderRadius: const BorderRadius.only(
+                                      //   topLeft: Radius.circular(5.0),
+                                      //   topRight: Radius.circular(5.0),
+                                      // ),
+                                    ),
+                                  ],
+                                ),
                         ),
                       ),
                     )
@@ -1211,7 +1217,7 @@ class _DengueMapState extends State<DengueMap> {
                     )
                   : const SizedBox(),
 
-              //Slider
+              //Slider + Color Bar
               Positioned(
                 bottom: -5,
                 left: 60,
@@ -1233,10 +1239,10 @@ class _DengueMapState extends State<DengueMap> {
                                       child: Row(
                                         children: [
                                           Container(
-                                            height: 25,
+                                            height: 30,
                                             width: 35,
                                             decoration: BoxDecoration(
-                                              color: greenopcN.withOpacity(.5),
+                                              color: greenopcN.withOpacity(.3),
                                               borderRadius:
                                                   const BorderRadius.only(
                                                 topLeft: Radius.circular(3),
@@ -1247,7 +1253,7 @@ class _DengueMapState extends State<DengueMap> {
                                               padding: EdgeInsets.all(2.0),
                                               child: Center(
                                                 child: Text(
-                                                  "0>=49",
+                                                  "25 %",
                                                   style: TextStyle(
                                                     fontSize: 7,
                                                     fontWeight: FontWeight.bold,
@@ -1257,16 +1263,16 @@ class _DengueMapState extends State<DengueMap> {
                                             ),
                                           ),
                                           Container(
-                                            height: 25,
+                                            height: 30,
                                             width: 35,
                                             decoration: BoxDecoration(
-                                              color: yellowopcN.withOpacity(.5),
+                                              color: yellowopcN.withOpacity(.3),
                                             ),
                                             child: const Padding(
                                               padding: EdgeInsets.all(2.0),
                                               child: Center(
                                                 child: Text(
-                                                  "50>=74",
+                                                  "50 %",
                                                   style: TextStyle(
                                                     fontSize: 7,
                                                     fontWeight: FontWeight.bold,
@@ -1276,16 +1282,16 @@ class _DengueMapState extends State<DengueMap> {
                                             ),
                                           ),
                                           Container(
-                                            height: 25,
+                                            height: 30,
                                             width: 35,
                                             decoration: BoxDecoration(
-                                              color: orangeopcN.withOpacity(.5),
+                                              color: orangeopcN.withOpacity(.3),
                                             ),
                                             child: const Padding(
                                               padding: EdgeInsets.all(2.0),
                                               child: Center(
                                                 child: Text(
-                                                  "75>=100",
+                                                  "75 %",
                                                   style: TextStyle(
                                                     fontSize: 7,
                                                     fontWeight: FontWeight.bold,
@@ -1295,10 +1301,10 @@ class _DengueMapState extends State<DengueMap> {
                                             ),
                                           ),
                                           Container(
-                                            height: 25,
+                                            height: 30,
                                             width: 35,
                                             decoration: BoxDecoration(
-                                              color: redopcN.withOpacity(.5),
+                                              color: redopcN.withOpacity(.3),
                                               borderRadius:
                                                   const BorderRadius.only(
                                                 topRight: Radius.circular(3),
@@ -1309,7 +1315,7 @@ class _DengueMapState extends State<DengueMap> {
                                               padding: EdgeInsets.all(2.0),
                                               child: Center(
                                                 child: Text(
-                                                  "90>=100",
+                                                  "100 %",
                                                   style: TextStyle(
                                                     fontSize: 7,
                                                     fontWeight: FontWeight.bold,

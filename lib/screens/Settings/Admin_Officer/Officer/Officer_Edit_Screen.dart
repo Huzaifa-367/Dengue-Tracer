@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
@@ -7,7 +5,6 @@ import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart' as sector;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -28,48 +25,9 @@ class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
   bool isVisible = true;
   String role = 'officer';
 
-  /// Variables
-  File? imageFile;
-
-  /// Get from gallery
-  _getFromGallery() async {
-    PickedFile? pickedFile = await ImagePicker().getImage(
-      source: ImageSource.gallery,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    setState(() {
-      imageFile = File(pickedFile!.path);
-    });
-  }
-
-  /// Get from Camera
-  _getFromCamera() async {
-    XFile? pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-
-    setState(() {
-      imageFile = File(pickedFile!.path);
-    });
-  }
-
   List<String>? officers;
   Map<String, int>? officerIds;
   int? selectedOfficerId;
-
-  Future<List<String>> fetchOfficers() async {
-    final response = await http.get(Uri.parse('http://example.com/officers'));
-
-    if (response.statusCode == 200) {
-      final officersJson = jsonDecode(response.body) as List<dynamic>;
-      final officers =
-          officersJson.map((officer) => officer['name'] as String).toList();
-
-      return officers;
-    } else {
-      throw Exception('Failed to fetch officers');
-    }
-  }
 
   Future<Map<String, int>> fetchOfficersWithIds() async {
     final response = await http.get(Uri.parse('$ip/getofficers'));

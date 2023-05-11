@@ -54,11 +54,11 @@ signUp(User u, context) async {
       snackBar(context, "Account already exsists.");
     } else {
       snackBar(context, "Your account is created successfully.");
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) {
-          return const LoginScreen();
-        },
-      ));
+      // Navigator.of(context).push(MaterialPageRoute(
+      //   builder: (context) {
+      //     return const LoginScreen();
+      //   },
+      // ));
     }
   }
 }

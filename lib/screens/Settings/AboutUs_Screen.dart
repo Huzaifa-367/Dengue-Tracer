@@ -1,6 +1,6 @@
 // ignore_for_file: camel_case_types
 
-import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
+import 'package:dengue_tracing_application/Global/Profile_Screen_Widgets.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

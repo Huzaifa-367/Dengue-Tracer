@@ -1,7 +1,6 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
-import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
+import 'package:dengue_tracing_application/Global/Shimmer_List_widget.dart';
 import 'package:dengue_tracing_application/screens/Home/notifications.dart';
-import 'package:draggable_menu/draggable_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -82,13 +81,6 @@ class _StatsScreenState extends State<StatsScreen> {
     }
   }
 
-  TextEditingController namecont = TextEditingController();
-  TextEditingController phonecont = TextEditingController();
-  TextEditingController emailcont = TextEditingController();
-  TextEditingController passwordcont = TextEditingController();
-  TextEditingController passwordcont2 = TextEditingController();
-  TextEditingController home_loccont = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     double bannerHeight = 200;
@@ -118,30 +110,39 @@ class _StatsScreenState extends State<StatsScreen> {
                           txtColor: txtColor,
                         ),
                         const SizedBox(
-                          width: 140,
+                          width: 130,
                         ),
-                        badges.Badge(
-                          badgeContent: Text(
-                            '6',
-                            style: TextStyle(
-                              color: ScfColor,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: bkColor.withOpacity(0.5),
                           ),
-                          showBadge: true,
-                          ignorePointer: false,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const NotifScreen(),
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: badges.Badge(
+                              badgeContent: Text(
+                                '6',
+                                style: TextStyle(
+                                  color: ScfColor,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                              );
-                            },
-                            child: Icon(
-                              Icons.notifications,
-                              color: btnColor,
-                              size: 35,
+                              ),
+                              showBadge: true,
+                              ignorePointer: false,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => const NotifScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.notifications,
+                                  color: btnColor,
+                                  size: 35,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -159,6 +160,7 @@ class _StatsScreenState extends State<StatsScreen> {
                       color: btnColor,
                     ),
                   ),
+                  //Date Picker Values
                   Column(
                     children: [
                       Row(
@@ -209,7 +211,7 @@ class _StatsScreenState extends State<StatsScreen> {
                         height: 15,
                       ),
                       Text(
-                        '${FromDate != null ? DateFormat('yyyy-MMM-dd').format(FromDate!) : '-'}  To  ${ToDate != null ? DateFormat('yyyy-MMM-dd').format(ToDate!) : '-'}',
+                        '${FromDate != null ? DateFormat('dd-MMM-yyyy').format(FromDate!) : DateFormat('dd-MMM-yyyy').format(DateTime.now().subtract(const Duration(days: 5)))}  To  ${ToDate != null ? DateFormat('dd-MMM-yyyy').format(ToDate!) : DateFormat('dd-MMM-yyyy').format(DateTime.now())}',
                         style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 18,
@@ -267,7 +269,7 @@ class _StatsScreenState extends State<StatsScreen> {
                       right: 5,
                     ),
                     child: SizedBox(
-                      height: 600,
+                      height: 850,
                       width: 500,
                       child: TabBarView(
                         children: [
@@ -282,98 +284,49 @@ class _StatsScreenState extends State<StatsScreen> {
                                   )
                                 ],
                               ),
-                              SfCartesianChart(
-                                //enableAxisAnimation: true,
-                                primaryXAxis: CategoryAxis(
-                                  //opposedPosition: true,
-                                  autoScrollingMode: AutoScrollingMode.end,
-                                  visibleMaximum: 5,
-                                  interval: 1,
-                                ),
-                                zoomPanBehavior: ZoomPanBehavior(
-                                  enablePanning: true,
-                                ),
-                                primaryYAxis: NumericAxis(
-                                  //numberFormat: NumberFormat('##########人'),
-
-                                  minimum: 0,
-                                  maximum: 20,
-                                  interval: 1,
-                                ),
-                                tooltipBehavior: _tooltip,
-                                series: <ChartSeries<_ChartData, String>>[
-                                  ColumnSeries<_ChartData, String>(
-                                    dataSource: _chartData,
-
-                                    // emptyPointSettings: EmptyPointSettings(
-                                    //     // Mode of empty point
-                                    //     mode: EmptyPointMode.average),
-                                    xValueMapper: (_ChartData data, _) =>
-                                        data.date.toString(),
-                                    yValueMapper: (_ChartData data, _) =>
-                                        data.cases,
-                                    name: 'Dengue Cases',
-                                    color: btnColor,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(5.0),
-                                      topRight: Radius.circular(5.0),
-                                    ),
-                                    //enableTooltip: true,
-                                  ),
-                                ],
-                              ),
-                              ButtonWidget(
-                                btnText: "Expandable ",
-                                onPress: () => DraggableMenu.open(
-                                  context,
-                                  DraggableMenu(
-                                    color: ScfColor2,
-                                    uiType: DraggableMenuUiType.softModern,
-                                    expandable: true,
-                                    fastDrag: true,
-                                    minimizeBeforeFastDrag: true,
-                                    expandedHeight:
-                                        MediaQuery.of(context).size.height *
-                                            0.72,
-                                    maxHeight:
-                                        MediaQuery.of(context).size.height *
-                                            0.36,
-                                    child: ScrollableManager(
-                                      enableExpandedScroll: true,
-                                      child: Scaffold(
-                                        body: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                "Sign Up",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: txtColor,
-                                                  fontSize: 25,
-                                                ),
-                                              ),
-                                              MyTextField(
-                                                maxlines: 1,
-                                                //siconn: Icons.email,
-                                                controller: emailcont,
-                                                hintText: "Email",
-                                                obscureText: false,
-                                                prefixIcon:
-                                                    const Icon(Icons.email),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                              _chartData.isEmpty
+                                  ? ShimmerListView(10)
+                                  : SfCartesianChart(
+                                      //enableAxisAnimation: true,
+                                      primaryXAxis: CategoryAxis(
+                                        //opposedPosition: true,
+                                        autoScrollingMode:
+                                            AutoScrollingMode.end,
+                                        visibleMaximum: 5,
+                                        interval: 1,
                                       ),
+                                      zoomPanBehavior: ZoomPanBehavior(
+                                        enablePanning: true,
+                                      ),
+                                      primaryYAxis: NumericAxis(
+                                        //numberFormat: NumberFormat('##########人'),
+
+                                        minimum: 0,
+                                        maximum: 20,
+                                        interval: 1,
+                                      ),
+                                      tooltipBehavior: _tooltip,
+                                      series: <ChartSeries<_ChartData, String>>[
+                                        ColumnSeries<_ChartData, String>(
+                                          dataSource: _chartData,
+
+                                          // emptyPointSettings: EmptyPointSettings(
+                                          //     // Mode of empty point
+                                          //     mode: EmptyPointMode.average),
+                                          xValueMapper: (_ChartData data, _) =>
+                                              data.date.toString(),
+                                          yValueMapper: (_ChartData data, _) =>
+                                              data.cases,
+                                          name: 'Dengue Cases',
+                                          color: btnColor,
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(5.0),
+                                            topRight: Radius.circular(5.0),
+                                          ),
+                                          //enableTooltip: true,
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  barrier: true,
-                                ),
-                              )
                             ],
                           ),
 
