@@ -35,15 +35,22 @@ Color orangeopcN = const Color.fromARGB(162, 253, 148, 42);
 Color yellowopcN = const Color.fromARGB(255, 216, 202, 74);
 Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
+//GLOBAL
 String ip = 'http://192.168.105.34/FYP_Api/API/SERVER';
 String imgpath = 'http://192.168.105.34/FYP_Api/Images/';
 User? loggedInUser;
 bool? isRemember = false;
+
+//MAP
+double? percentage = 0.0;
 //User? loggedInUsercopy;
 String mapapikey = "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw";
+
+//RESET
 String? otp;
 int? range;
 
+//STATS
 DateTime? FromDate;
 DateTime? ToDate;
 

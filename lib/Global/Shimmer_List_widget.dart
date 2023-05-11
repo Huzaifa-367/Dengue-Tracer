@@ -23,7 +23,7 @@ Widget ShimmerListView(int length) {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.05,
-                  height: 16.0,
+                  height: 19.0,
                   color: Colors.white,
                   margin: const EdgeInsets.only(bottom: 8.0),
                 ),
@@ -32,7 +32,7 @@ Widget ShimmerListView(int length) {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.15,
-                  height: 16.0,
+                  height: 19.0,
                   color: Colors.white,
                   margin: const EdgeInsets.only(bottom: 8.0),
                 ),
@@ -41,7 +41,7 @@ Widget ShimmerListView(int length) {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.15,
-                  height: 16.0,
+                  height: 19.0,
                   color: Colors.white,
                   margin: const EdgeInsets.only(bottom: 8.0),
                 ),
@@ -50,7 +50,7 @@ Widget ShimmerListView(int length) {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.15,
-                  height: 16.0,
+                  height: 19.0,
                   color: Colors.white,
                   margin: const EdgeInsets.only(bottom: 8.0),
                 ),
@@ -59,7 +59,7 @@ Widget ShimmerListView(int length) {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.15,
-                  height: 16.0,
+                  height: 19.0,
                   color: Colors.white,
                   margin: const EdgeInsets.only(bottom: 8.0),
                 ),
@@ -68,7 +68,7 @@ Widget ShimmerListView(int length) {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.12,
-                  height: 16.0,
+                  height: 19.0,
                   color: Colors.white,
                   margin: const EdgeInsets.only(bottom: 8.0),
                 ),
