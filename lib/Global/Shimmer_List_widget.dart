@@ -83,3 +83,41 @@ Widget ShimmerListView(int length) {
     ),
   );
 }
+
+Widget ShimmerNotificationView(int length) {
+  return ListView.builder(
+    itemCount: length,
+    itemBuilder: (context, index) {
+      return Shimmer.fromColors(
+        baseColor: bkColor,
+        highlightColor: Colors.grey[100]!,
+        period: const Duration(seconds: 3),
+        child: Column(
+          children: [
+            ListTile(
+              title: Container(
+                  height: 20,
+                  width: 10,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10))),
+              subtitle: Container(
+                  margin: const EdgeInsets.only(right: 50),
+                  height: 15,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10))),
+              leading: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                height: 50,
+                width: 50,
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}

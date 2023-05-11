@@ -625,104 +625,113 @@ class _DengueMapState extends State<DengueMap> {
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          //Sector Name
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                "Sector Name: ",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: grey,
-                                                  fontSize: 15,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Wrap(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                //Sector Name
+                                                Row(
+                                                  children: [
+                                                    const Text(
+                                                      "Sector Name: ",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: grey,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      secName,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: txtColor,
+                                                        fontSize: 13,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                              Text(
-                                                secName,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: txtColor,
-                                                  fontSize: 15,
+                                                //Threshold
+                                                Row(
+                                                  children: [
+                                                    const Text(
+                                                      "Threshold: ",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: grey,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "$threshold",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: txtColor,
+                                                        fontSize: 13,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          //Threshold
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                "Threshold: ",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: grey,
-                                                  fontSize: 15,
+                                                //Total Cases
+                                                Row(
+                                                  children: [
+                                                    const Text(
+                                                      "Total Cases: ",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: grey,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      "$totalCases",
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color: txtColor,
+                                                        fontSize: 13,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            CircularPercentIndicator(
+                                              radius: 30.0,
+                                              lineWidth: 10.0,
+                                              animation: true,
+                                              percent: (totalCases / threshold),
+                                              center: Text(
+                                                "${((totalCases / threshold) * 100).truncate()}%",
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 13.0),
                                               ),
-                                              Text(
-                                                "$threshold",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: txtColor,
-                                                  fontSize: 15,
-                                                ),
+                                              footer: TextWidget(
+                                                title: "Cases Reached",
+                                                txtSize: 12,
+                                                txtColor: txtColor,
                                               ),
-                                            ],
-                                          ),
-                                          //Total Cases
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                "Total Cases: ",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: grey,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                              Text(
-                                                "$totalCases",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: txtColor,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      CircularPercentIndicator(
-                                        radius: 40.0,
-                                        lineWidth: 10.0,
-                                        animation: true,
-                                        percent: (totalCases / threshold),
-                                        center: Text(
-                                          "${((totalCases / threshold) * 100).truncate()}%",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15.0),
+                                              circularStrokeCap:
+                                                  CircularStrokeCap.round,
+                                              progressColor: getstrokeColor(
+                                                  threshold, totalCases),
+                                            ),
+                                          ],
                                         ),
-                                        footer: TextWidget(
-                                          title: "Cases Reached",
-                                          txtSize: 12,
-                                          txtColor: txtColor,
-                                        ),
-                                        circularStrokeCap:
-                                            CircularStrokeCap.round,
-                                        progressColor: getstrokeColor(
-                                            threshold, totalCases),
-                                      ),
-                                    ],
-                                  ),
+                                      ]),
                                   const Text(
                                     "Description",
                                     style: TextStyle(
@@ -1445,11 +1454,19 @@ class _DengueMapState extends State<DengueMap> {
                             divisions: 30,
                             label: _currentSliderValue.round().toString(),
                             onChanged: (double value) {
-                              setState(() {
-                                _currentSliderValue = value;
-                                _getDengueCasesByDate(
-                                    _currentSliderValue.toInt());
-                              });
+                              setState(
+                                () {
+                                  _currentSliderValue = value;
+                                  _getDengueCasesByDate(
+                                    _currentSliderValue.toInt(),
+                                  );
+                                  // if (_currentSliderValue == 1) {
+                                  //   setState(() {
+                                  //     _getDengueUsers();
+                                  //   });
+                                  // }
+                                },
+                              );
                             },
                           ),
                         ),

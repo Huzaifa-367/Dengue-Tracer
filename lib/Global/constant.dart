@@ -36,8 +36,8 @@ Color yellowopcN = const Color.fromARGB(255, 216, 202, 74);
 Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
 //GLOBAL
-String ip = 'http://192.168.105.34/FYP_Api/API/SERVER';
-String imgpath = 'http://192.168.105.34/FYP_Api/Images/';
+String ip = 'http://192.168.133.34/FYP_Api/API/SERVER';
+String imgpath = 'http://192.168.133.34/FYP_Api/Images/';
 User? loggedInUser;
 bool? isRemember = false;
 

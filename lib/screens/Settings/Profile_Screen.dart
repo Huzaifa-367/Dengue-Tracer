@@ -180,7 +180,11 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                               borderRadius: BorderRadius.circular(25),
                             ),
                             padding: const EdgeInsets.only(
-                                top: 10, right: 8, bottom: 10, left: 8),
+                              top: 10,
+                              right: 8,
+                              bottom: 10,
+                              left: 8,
+                            ),
                             child: const TextWidget(
                                 title: "Gallery",
                                 txtSize: 15,
@@ -205,9 +209,13 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                               borderRadius: BorderRadius.circular(25),
                             ),
                             padding: const EdgeInsets.only(
-                                top: 10, right: 8, bottom: 10, left: 8),
+                              top: 10,
+                              right: 8,
+                              bottom: 10,
+                              left: 8,
+                            ),
                             child: const TextWidget(
-                                title: "  Camera  ",
+                                title: "Camera",
                                 txtSize: 15,
                                 txtColor: Colors.white),
                           ),
