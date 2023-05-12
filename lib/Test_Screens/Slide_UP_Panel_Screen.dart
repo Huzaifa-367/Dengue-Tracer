@@ -4,7 +4,7 @@
 
 import 'dart:ui';
 
-import 'package:dengue_tracing_application/Global/SlideUp_Panel.dart';
+import 'package:dengue_tracing_application/Global/Widgets/SlideUp_Panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

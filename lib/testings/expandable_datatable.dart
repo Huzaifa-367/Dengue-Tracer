@@ -3,8 +3,8 @@
 import 'dart:convert';
 
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/text_widget.dart';
-import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
+import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/txtfield_Round.dart';
 import 'package:dengue_tracing_application/testings/Model/Expandable_Model.dart';
 import 'package:expandable_datatable/expandable_datatable.dart';
 import 'package:flutter/material.dart';

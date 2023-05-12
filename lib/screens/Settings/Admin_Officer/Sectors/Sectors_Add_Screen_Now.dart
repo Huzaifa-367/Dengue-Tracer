@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
-import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
-import 'package:dengue_tracing_application/Global/button_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/GetDialogue_tester.dart';
+import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/text_widget.dart';
-import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
+import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/txtfield_Round.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart';

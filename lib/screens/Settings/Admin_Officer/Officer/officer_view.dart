@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dengue_tracing_application/Global/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
 import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/Officer_Edit_Screen.dart';
 import 'package:flutter/material.dart';
 

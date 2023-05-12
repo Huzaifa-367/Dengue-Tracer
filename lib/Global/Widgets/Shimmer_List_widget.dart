@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'constant.dart';
+import '../constant.dart';
 
 Widget ShimmerListView(int length) {
   return SizedBox(

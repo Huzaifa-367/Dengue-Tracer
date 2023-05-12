@@ -1,12 +1,11 @@
 import 'dart:io';
 
 import 'package:app_feedback/app_feedback.dart';
-import 'package:dengue_tracing_application/Global/Profile_Screen_Widgets.dart';
-import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
-//import 'package:dengue_tracing_application/Global/BigUserCard.dart';
+import 'package:dengue_tracing_application/Global/Widgets/Profile_Screen_Widgets.dart';
+import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/rangeslider.dart';
-import 'package:dengue_tracing_application/Global/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/rangeslider.dart';
+import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';

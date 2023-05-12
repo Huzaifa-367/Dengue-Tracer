@@ -1,4 +1,4 @@
-import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dio/dio.dart';

@@ -1,12 +1,12 @@
-import 'package:dengue_tracing_application/Global/Round_Icon.dart';
-import 'package:dengue_tracing_application/Global/button_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/Round_Icon.dart';
+import 'package:dengue_tracing_application/Global/Widgets/Testing_Screen.dart';
+import 'package:dengue_tracing_application/Global/Widgets/button_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/txtfield_Round.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Forgot_Pass.dart';
 
 import 'package:dengue_tracing_application/screens/Authentication/Signup.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
-import 'package:dengue_tracing_application/Testing_Screen.dart';
 
 import 'package:flutter/material.dart';
 

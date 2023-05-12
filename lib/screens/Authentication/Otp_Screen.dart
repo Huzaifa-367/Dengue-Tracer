@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/screens/Authentication/New_Pass_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';

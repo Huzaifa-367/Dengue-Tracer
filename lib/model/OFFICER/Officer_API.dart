@@ -1,4 +1,4 @@
-import 'package:dengue_tracing_application/Global/SnackBar_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/officer_view.dart';

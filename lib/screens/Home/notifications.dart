@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dengue_tracing_application/Global/Shimmer_List_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/Shimmer_List_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

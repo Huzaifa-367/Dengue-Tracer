@@ -2,7 +2,7 @@ import 'package:draggable_menu/draggable_menu.dart';
 import 'package:flutter/material.dart';
 
 import 'button_widget.dart';
-import 'constant.dart';
+import '../constant.dart';
 
 Widget expandablepage(context, String? btnTxt, List<Widget>? widgetColmunList) {
   return ButtonWidget(

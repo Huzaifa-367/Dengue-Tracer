@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
-import 'package:dengue_tracing_application/Global/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/GetDialogue_tester.dart';
+import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
-import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
+import 'package:dengue_tracing_application/Global/Widgets/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
 import 'dart:async';

@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'package:dengue_tracing_application/Global/Shimmer_List_widget.dart';
-import 'package:dengue_tracing_application/Global/circular_percent_indicator.dart';
+import 'package:dengue_tracing_application/Global/Widgets/Shimmer_List_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/circular_percent_indicator.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
+import 'package:dengue_tracing_application/Global/Widgets/textfield_Round_readonly.dart';
 import 'package:draggable_menu/draggable_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'package:dengue_tracing_application/Global/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';

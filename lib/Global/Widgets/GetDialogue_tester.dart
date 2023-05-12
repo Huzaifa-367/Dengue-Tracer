@@ -1,5 +1,5 @@
+import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/text_widget.dart';
 import 'package:flutter/material.dart';
 
 getDialogue(context, String? message) {

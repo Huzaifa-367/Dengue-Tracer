@@ -1,8 +1,8 @@
-import 'package:dengue_tracing_application/Global/button_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/text_widget.dart';
-import 'package:dengue_tracing_application/Global/textfield_Round_readonly.dart';
-import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
+import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets/textfield_Round_readonly.dart';
+import 'package:dengue_tracing_application/Global/Widgets/txtfield_Round.dart';
 import 'package:dengue_tracing_application/screens/Settings/Map_Test.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

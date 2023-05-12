@@ -1,4 +1,4 @@
-import 'package:dengue_tracing_application/Global/GetDialogue_tester.dart';
+import 'package:dengue_tracing_application/Global/Widgets/GetDialogue_tester.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 
 //'$ip/getsectors'
