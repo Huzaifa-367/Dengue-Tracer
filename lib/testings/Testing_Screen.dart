@@ -1,11 +1,13 @@
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/text_widget.dart';
-import 'package:dengue_tracing_application/testings/DropDownListExample.dart';
+import 'package:dengue_tracing_application/testings/Test_Screens/DropDownListExample.dart';
+import 'package:dengue_tracing_application/testings/Test_Screens/Place_Picker.dart';
 import 'package:flutter/material.dart';
 
 import '../Global/constant.dart';
 import '../Json_Viewer_Screen.dart';
-import 'Notify_screen.dart';
+import 'Test_Screens/Notify_screen.dart';
+import 'Test_Screens/Slide_UP_Panel_Screen.dart';
 
 class Testings_Screen extends StatefulWidget {
   const Testings_Screen({super.key});
@@ -67,13 +69,38 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                   }),
                 ),
                 ButtonWidget(
+                  btnText: "Picker Demo",
+                  onPress: (() {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PickerDemo(),
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ButtonWidget(
+                  btnText: "SlidingUp Panel",
+                  onPress: (() {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const SlidingUpPanelExample(),
+                      ),
+                    );
+                  }),
+                ),
+                ButtonWidget(
                   btnText: "///",
                   onPress: (() {
                     // Navigator.of(context).push(
                     //   MaterialPageRoute(
-                    //     builder: (context) => const DropDownListExample(),
+                    //     builder: (context) => const PickerDemo(),
                     //   ),
-                    // ); // Notify notify = Notify();
+                    // );
                   }),
                 ),
               ],

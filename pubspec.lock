@@ -800,6 +800,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.4.0"
+  place_picker:
+    dependency: "direct main"
+    description:
+      name: place_picker
+      sha256: "95a861eaffe015d5b3ae45c991e5d667009f7d1eb136b1438075e2470880509d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.0"
   platform:
     dependency: transitive
     description:
