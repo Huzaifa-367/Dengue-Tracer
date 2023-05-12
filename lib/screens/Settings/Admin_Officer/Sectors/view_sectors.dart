@@ -1,10 +1,7 @@
-import 'package:dengue_tracing_application/Global/Widgets/GetDialogue_tester.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
-
 //'$ip/getsectors'
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
 class PolygonViewer extends StatefulWidget {
   const PolygonViewer({Key? key}) : super(key: key);

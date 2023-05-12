@@ -1,7 +1,6 @@
-import 'package:dengue_tracing_application/Global/Widgets/button_widget.dart';
-import 'package:dengue_tracing_application/Global/Widgets/txtfield_Round.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
 
+
+import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:flutter/material.dart';
 
 import 'Login.dart';

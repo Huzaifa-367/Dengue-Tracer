@@ -1,7 +1,6 @@
-import 'dart:async';
 import 'dart:io';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
-import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:path_provider/path_provider.dart';

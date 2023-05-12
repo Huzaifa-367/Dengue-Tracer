@@ -1,14 +1,8 @@
-import 'dart:convert';
-
-import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/Widgets/GetDialogue_tester.dart';
-import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
-import 'package:dengue_tracing_application/Global/Widgets/textfield_Round_readonly.dart';
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
-import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:map_picker/map_picker.dart';
@@ -16,9 +10,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:http/http.dart' as http;
-
-import 'package:intl/intl.dart';
-import 'package:dio/dio.dart';
 
 class CasesMap extends StatefulWidget {
   const CasesMap({Key? key}) : super(key: key);

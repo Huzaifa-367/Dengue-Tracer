@@ -1,11 +1,9 @@
 // s
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 
-import '../Global/constant.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
 class EndpointScreen extends StatefulWidget {
   const EndpointScreen({super.key});

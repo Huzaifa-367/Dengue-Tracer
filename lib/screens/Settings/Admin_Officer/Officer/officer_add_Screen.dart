@@ -1,18 +1,13 @@
 import 'dart:io';
 
-import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
-import 'package:dengue_tracing_application/Global/Widgets/button_widget.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
-import 'package:dengue_tracing_application/Global/Widgets/txtfield_Round.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart' as sector;
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class OfficerAddScreen extends StatefulWidget {
   const OfficerAddScreen({Key? key}) : super(key: key);

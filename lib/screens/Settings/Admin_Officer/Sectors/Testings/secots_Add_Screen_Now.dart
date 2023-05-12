@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
 import 'package:http/http.dart' as http;
 

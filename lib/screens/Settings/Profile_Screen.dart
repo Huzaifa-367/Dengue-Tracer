@@ -1,11 +1,7 @@
 import 'dart:io';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
 import 'package:app_feedback/app_feedback.dart';
-import 'package:dengue_tracing_application/Global/Widgets/Profile_Screen_Widgets.dart';
-import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/Widgets/rangeslider.dart';
-import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
@@ -13,7 +9,6 @@ import 'package:dengue_tracing_application/screens/Settings/AboutUs_Screen.dart'
 import 'package:dengue_tracing_application/screens/Settings/profileEdit_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;

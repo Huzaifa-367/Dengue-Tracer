@@ -43,12 +43,11 @@
 // }
 
 // '$ip/GetSectors'
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
-import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class SectorsDrop extends StatefulWidget {
   const SectorsDrop({Key? key}) : super(key: key);

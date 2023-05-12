@@ -1,4 +1,3 @@
-import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
 import 'package:dengue_tracing_application/Test_Screens/DropDownListExample.dart';
 import 'package:dengue_tracing_application/Test_Screens/Json_Viewer_Screen.dart';
 import 'package:dengue_tracing_application/Test_Screens/Notify_screen.dart';
@@ -6,9 +5,7 @@ import 'package:dengue_tracing_application/Test_Screens/Place_Picker.dart';
 import 'package:dengue_tracing_application/Test_Screens/Slide_UP_Panel_Screen.dart';
 import 'package:flutter/material.dart';
 
-import '../constant.dart';
-import 'button_widget.dart';
-
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
 class Testings_Screen extends StatefulWidget {
   const Testings_Screen({super.key});

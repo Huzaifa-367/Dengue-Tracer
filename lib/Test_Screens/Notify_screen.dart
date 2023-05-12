@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Global/Notify.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 
 class Notify_Screen extends StatefulWidget {
   const Notify_Screen({

@@ -1,26 +1,18 @@
-import 'dart:convert';
-import 'package:dengue_tracing_application/Global/Widgets/Shimmer_List_widget.dart';
-import 'package:dengue_tracing_application/Global/Widgets/circular_percent_indicator.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/Widgets/textfield_Round_readonly.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:draggable_menu/draggable_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
-import 'dart:async';
+
 import 'package:map_picker/map_picker.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-
-import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
 
 class DengueMap extends StatefulWidget {
   const DengueMap({Key? key}) : super(key: key);

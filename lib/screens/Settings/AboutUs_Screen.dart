@@ -1,10 +1,8 @@
 // ignore_for_file: camel_case_types
 
-import 'package:dengue_tracing_application/Global/Widgets/Profile_Screen_Widgets.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class AboutUs_Screen extends StatefulWidget {

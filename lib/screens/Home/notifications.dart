@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:dengue_tracing_application/Global/Widgets/Shimmer_List_widget.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starlight_notification/starlight_notification.dart';

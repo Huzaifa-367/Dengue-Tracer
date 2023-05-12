@@ -1,10 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
-import 'package:dengue_tracing_application/Global/Widgets/button_widget.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/Widgets/textfield_Round_readonly.dart';
-import 'package:dengue_tracing_application/Global/Widgets/txtfield_Round.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Location_Picker.dart';
