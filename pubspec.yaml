@@ -78,6 +78,8 @@ dependencies:
   easy_separator: ^1.0.1
   shimmer: ^2.0.0
   starlight_notification: ^0.0.2
+  flutter_highlight: ^0.7.0
+
   #starlight_notification: ^0.0.2s
 
   #pull_to_refresh: ^2.0.0

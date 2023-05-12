@@ -1,3 +1,4 @@
+import 'package:dengue_tracing_application/Global/Round_Icon.dart';
 import 'package:dengue_tracing_application/Global/button_widget.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/Global/txtfield_Round.dart';
@@ -5,6 +6,7 @@ import 'package:dengue_tracing_application/screens/Authentication/Forgot_Pass.da
 
 import 'package:dengue_tracing_application/screens/Authentication/Signup.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
+import 'package:dengue_tracing_application/testings/Testing_Screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -303,19 +305,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: (() {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const PushNotif(),
-                      //   ),
-                      // );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const Testings_Screen(),
+                        ),
+                      );
                     }),
-                    child: const Text(
-                      "Testings",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Color.fromARGB(255, 226, 99, 99),
-                        fontSize: 15,
-                      ),
+                    child: RoundIcon(
+                      icon: Icons.settings,
+                      backgroundColor: bkColor,
+                      iconColor: btnColor,
+                      size: 35,
                     ),
                   ),
                 ],
