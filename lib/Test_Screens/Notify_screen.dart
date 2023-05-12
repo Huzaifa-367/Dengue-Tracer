@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Global/Notify.dart';
+import '../Global/Notify.dart';
 
 class Notify_Screen extends StatefulWidget {
   const Notify_Screen({

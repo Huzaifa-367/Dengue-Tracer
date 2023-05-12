@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 
-import 'Global/constant.dart';
+import '../Global/constant.dart';
 
 class EndpointScreen extends StatefulWidget {
   const EndpointScreen({super.key});
