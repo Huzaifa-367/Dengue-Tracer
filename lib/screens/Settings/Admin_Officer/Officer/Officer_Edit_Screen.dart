@@ -1,5 +1,5 @@
 import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_selector/flutter_custom_selector.dart' as sector;

@@ -1,5 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';

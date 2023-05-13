@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/github.dart';
 
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
 class EndpointScreen extends StatefulWidget {
   const EndpointScreen({super.key});

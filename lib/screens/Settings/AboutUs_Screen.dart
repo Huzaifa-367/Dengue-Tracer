@@ -1,5 +1,5 @@
 // ignore_for_file: camel_case_types
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 

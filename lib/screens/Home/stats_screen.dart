@@ -3,7 +3,7 @@ import 'package:dengue_tracing_application/screens/Home/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/model/STATS/monthlystats.dart';
 import 'package:dengue_tracing_application/model/STATS/yearlystats.dart';
 

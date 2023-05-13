@@ -1,5 +1,5 @@
 import 'package:dengue_tracing_application/Global/Packages_Path.dart';
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';

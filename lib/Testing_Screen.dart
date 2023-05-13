@@ -5,7 +5,7 @@ import 'package:dengue_tracing_application/Test_Screens/Place_Picker.dart';
 import 'package:dengue_tracing_application/Test_Screens/Slide_UP_Panel_Screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
 class Testings_Screen extends StatefulWidget {
   const Testings_Screen({super.key});

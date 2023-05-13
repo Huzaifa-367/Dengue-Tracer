@@ -1,5 +1,5 @@
 
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:flutter/material.dart';
 
 class Awareness extends StatefulWidget {

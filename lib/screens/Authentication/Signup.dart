@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
-import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 
