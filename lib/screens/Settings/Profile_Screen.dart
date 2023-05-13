@@ -1,20 +1,11 @@
-import 'dart:io';
 import 'package:dengue_tracing_application/Global/Paths.dart';
-
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
+import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 import 'package:app_feedback/app_feedback.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
-import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
-import 'package:dengue_tracing_application/screens/Settings/AboutUs_Screen.dart';
-import 'package:dengue_tracing_application/screens/Settings/profileEdit_Screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-
-import 'Admin_Officer/Officer/officer_view.dart';
-import 'Admin_Officer/Sectors/Sectors_Add_Screen_Now.dart';
 
 class Profile_Screen extends StatefulWidget {
   const Profile_Screen({super.key});

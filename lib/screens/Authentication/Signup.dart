@@ -1,15 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
-
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
-import 'package:dengue_tracing_application/screens/Authentication/Location_Picker.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:map_location_picker/map_location_picker.dart';
-
-import 'Login.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);

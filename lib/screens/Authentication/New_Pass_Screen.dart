@@ -1,11 +1,9 @@
-
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 
 import 'package:flutter/material.dart';
-
-import 'Login.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({

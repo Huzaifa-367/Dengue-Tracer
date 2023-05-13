@@ -1,7 +1,6 @@
-import 'dart:io';
 import 'package:dengue_tracing_application/Global/Paths.dart';
-
-import 'package:flutter/material.dart';
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
+import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';

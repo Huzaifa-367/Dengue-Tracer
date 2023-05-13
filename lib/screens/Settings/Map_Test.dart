@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
+import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);

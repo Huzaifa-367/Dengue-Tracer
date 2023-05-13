@@ -1,13 +1,9 @@
 import 'package:dengue_tracing_application/Global/Paths.dart';
-import 'package:custom_info_window/custom_info_window.dart';
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
+import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/material.dart';
-import 'package:map_picker/map_picker.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 
 import 'package:http/http.dart' as http;
 

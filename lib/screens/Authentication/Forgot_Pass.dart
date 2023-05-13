@@ -1,9 +1,7 @@
-
-
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:flutter/material.dart';
 
-import 'Login.dart';
 import '../../model/USER/User_API.dart';
 
 class ForgotPassword extends StatefulWidget {

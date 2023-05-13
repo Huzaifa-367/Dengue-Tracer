@@ -1,8 +1,7 @@
-import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
-import 'package:flutter/material.dart';
 //import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:dengue_tracing_application/Global/Paths.dart';
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

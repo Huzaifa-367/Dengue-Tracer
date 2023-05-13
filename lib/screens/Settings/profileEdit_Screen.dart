@@ -1,11 +1,6 @@
-import 'package:dengue_tracing_application/screens/Settings/Map_Test.dart';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dengue_tracing_application/Global/Paths.dart';
-
-import 'package:geocoding/geocoding.dart';
-
-import 'Profile_Screen.dart';
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
+import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({Key? key}) : super(key: key);

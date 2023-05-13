@@ -1,8 +1,7 @@
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:dengue_tracing_application/Testing_Screen.dart';
-import 'package:dengue_tracing_application/screens/Authentication/Forgot_Pass.dart';
 
-import 'package:dengue_tracing_application/screens/Authentication/Signup.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 
 import 'package:flutter/material.dart';

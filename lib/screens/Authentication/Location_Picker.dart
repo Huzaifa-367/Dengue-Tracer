@@ -1,15 +1,12 @@
 // ignore_for_file: library_private_types_in_public_api
-
 import 'package:dengue_tracing_application/Global/Paths.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
-import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:map_picker/map_picker.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:dio/dio.dart';
 
 class PickLocation extends StatefulWidget {
   const PickLocation({Key? key}) : super(key: key);
