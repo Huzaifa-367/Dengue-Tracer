@@ -3,7 +3,6 @@
 //    import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 export 'package:flutter/material.dart';
 
-
 // Authentication
 export 'package:dengue_tracing_application/screens/Authentication/Forgot_Pass.dart';
 export 'package:dengue_tracing_application/screens/Authentication/Location_Picker.dart';
