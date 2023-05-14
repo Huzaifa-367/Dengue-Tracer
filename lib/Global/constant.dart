@@ -3,9 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 
-
-
-
 Color tnColor = const Color.fromARGB(255, 255, 0, 17);
 Color btnColor = const Color(0XFFf85f6a);
 Color bkColor = const Color.fromARGB(255, 247, 214, 216);
@@ -40,8 +37,8 @@ Color yellowopcN = const Color.fromARGB(255, 216, 202, 74);
 Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
 //GLOBAL
-String ip = 'http://192.168.133.34/FYP_Api/API/SERVER';
-String imgpath = 'http://192.168.133.34/FYP_Api/Images/';
+String ip = 'http://192.168.184.34/FYP_Api/API/SERVER';
+String imgpath = 'http://192.168.184.34/FYP_Api/Images/';
 User? loggedInUser;
 bool? isRemember = false;
 

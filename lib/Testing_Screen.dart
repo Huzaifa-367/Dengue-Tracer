@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
 import 'Test_Screens/ExpandAble_Manu_Screen.dart';
+import 'package:dengue_tracing_application/Test_Screens/lib/flutter_staggered_animations.dart';
 
 class Testings_Screen extends StatefulWidget {
   const Testings_Screen({super.key});
@@ -101,6 +102,31 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                         builder: (context) => const Expandable_Manu_Screen(),
                       ),
                     );
+                  }),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ButtonWidget(
+                  btnText: "Staggered Animations",
+                  onPress: (() {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Staggered_animations(),
+                      ),
+                    );
+                  }),
+                ),
+                ButtonWidget(
+                  btnText: "///",
+                  onPress: (() {
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const Expandable_Manu_Screen(),
+                    //   ),
+                    // );
                   }),
                 ),
               ],

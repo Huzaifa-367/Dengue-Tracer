@@ -1,9 +1,6 @@
-import 'package:dengue_tracing_application/Global/Widgets/Shimmer_List_widget.dart';
-import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/Global/Widgets/text_widget.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class YearlyData extends StatefulWidget {
