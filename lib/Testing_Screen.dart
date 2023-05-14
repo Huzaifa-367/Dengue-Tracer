@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
+import 'Test_Screens/ExpandAble_Manu_Screen.dart';
+
 class Testings_Screen extends StatefulWidget {
   const Testings_Screen({super.key});
 
@@ -92,13 +94,13 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                   }),
                 ),
                 ButtonWidget(
-                  btnText: "///",
+                  btnText: "Expandable_Manu_Screen",
                   onPress: (() {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const PickerDemo(),
-                    //   ),
-                    // );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Expandable_Manu_Screen(),
+                      ),
+                    );
                   }),
                 ),
               ],
