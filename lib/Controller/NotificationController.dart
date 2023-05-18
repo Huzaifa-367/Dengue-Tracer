@@ -8,7 +8,7 @@ class authController extends ChangeNotifier {
   int count = 0;
   List<ItemLists> notifitems = [];
   notif() async {
-    var response = await Dio().get('$ip/ShowallNotifications');
+    var response = await Dio().get('$api/ShowallNotifications');
     if (response.statusCode == 200) {
       notifitems.clear();
       for (var item in response.data) {

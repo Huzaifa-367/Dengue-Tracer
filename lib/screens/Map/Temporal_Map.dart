@@ -71,9 +71,9 @@ class _DengueMapState extends State<DengueMap> {
       var data = jsonDecode(response.body);
       for (var item in data) {
         // Trimming the time part from the date
-        var trimmedDate = item['Date'].toString().split('T')[0];
+        var trimmedDate = item['date'].toString().split('T')[0];
 
-        _chartData.add(_ChartData(trimmedDate, item['Count']));
+        _chartData.add(_ChartData(trimmedDate, item['count']));
       }
       setState(() {});
     }

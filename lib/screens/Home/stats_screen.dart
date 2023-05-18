@@ -28,7 +28,7 @@ class _StatsScreenState extends State<StatsScreen> {
   late List<_ChartData> data;
   late TooltipBehavior _tooltip;
   final List<_ChartData> _chartData = [];
-
+  int maxCaseValue = 0;
   @override
   void initState() {
     super.initState();
@@ -37,15 +37,17 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   void _getChartData() async {
-    var response = await http.get(Uri.parse('$api/GetDengueCasesByDate'));
+    var response = await Dio().get('$api/GetDengueCasesByDate');
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      var data = response.data['cases'];
+      maxCaseValue = response.data['maxValue'];
       for (var item in data) {
         // Trimming the time part from the date
-        var trimmedDate = item['Date'].toString().split('T')[0];
+        var trimmedDate = item['date'].toString().split('T')[0];
 
-        _chartData.add(_ChartData(trimmedDate, item['Count']));
+        _chartData.add(_ChartData(trimmedDate, item['count']));
       }
+
       setState(() {});
     }
   }
@@ -297,7 +299,8 @@ class _StatsScreenState extends State<StatsScreen> {
                                         //numberFormat: NumberFormat('##########人'),
 
                                         minimum: 0,
-                                        maximum: 20,
+                                        maximum: double.parse(
+                                            maxCaseValue.toString()),
                                         interval: 1,
                                       ),
                                       tooltipBehavior: _tooltip,
