@@ -10,7 +10,7 @@ import '../../screens/Authentication/Otp_Screen.dart';
 
 login(email, password, context) async {
   var response = await Dio().get(
-    '$ip/Login?email=$email&password=$password',
+    '$api/Login?email=$email&password=$password',
   );
 
   if (response.statusCode == 200) {
@@ -41,7 +41,7 @@ login(email, password, context) async {
 signUp(User u, context) async {
   FormData data = FormData.fromMap(u.tomap());
   var response = await Dio().post(
-    '$ip/SignUp',
+    '$api/SignUp',
     data: data,
     options: Options(
       headers: {
@@ -66,7 +66,7 @@ signUp(User u, context) async {
 // Future<void> signUp(User u, context) async {
 //   final Map<String, dynamic> userData = u.tomap();
 //   try {
-//     final response = await Dio().post('$ip/NewUser', data: userData);
+//     final response = await Dio().post('$api/NewUser', data: userData);
 //     if (response.statusCode == 200) {
 //       final String message = response.data;
 //       if (message == 'Created') {
@@ -94,7 +94,7 @@ signUp(User u, context) async {
 
 reset(email, context) async {
   var response = await Dio().get(
-    '$ip/ResetPassword?email=$email',
+    '$api/ResetPassword?email=$email',
   );
   if (response.statusCode == 200) {
     //log(response.data);
@@ -116,7 +116,7 @@ reset(email, context) async {
 newpassword(User u, context) async {
   //FormData data = FormData.fromMap(ur.tomap());
   var response = await Dio()
-      .get('$ip/UpdatePassword?email=${u.email}&newpassword=${u.password}');
+      .get('$api/UpdatePassword?email=${u.email}&newpassword=${u.password}');
   if (response.statusCode == 200) {
     snackBar(
       context,
@@ -143,8 +143,8 @@ newpassword(User u, context) async {
 
 updateUserStatus(context, int userId, bool status) async {
   var response =
-      await Dio().post('$ip/UpdateUserStatus?user_id=$userId&status=$status');
-  // final String apiUrl = '$ip/UpdateUserStatus';
+      await Dio().post('$api/UpdateUserStatus?user_id=$userId&status=$status');
+  // final String apiUrl = '$api/UpdateUserStatus';
   // final response = await http.post(Uri.parse(apiUrl), body: {
   //   'user_id': userId.toString(),
   //   'status': status.toString(),
@@ -167,7 +167,7 @@ updateUserStatus(context, int userId, bool status) async {
 
 // Future<void> updateUserStatus(int userId, bool userStatus) async {
 //   final response = await http.post(
-//     Uri.parse('$ip/UpdateUserStatus'),
+//     Uri.parse('$api/UpdateUserStatus'),
 //     headers: <String, String>{
 //       'Content-Type': 'application/json; charset=UTF-8',
 //     },

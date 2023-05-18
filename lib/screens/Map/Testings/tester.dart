@@ -39,7 +39,7 @@ class _DengueMapState extends State<DengueMap> {
 
   Future<void> _getChartData() async {
     // Fetch data from API and parse into _ChartData list
-    var response = await http.get(Uri.parse('$ip/GetDengueCasesByDate'));
+    var response = await http.get(Uri.parse('$api/GetDengueCasesByDate'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       _chartData = List<_ChartData>.from(
@@ -72,7 +72,7 @@ class _DengueMapState extends State<DengueMap> {
 
   //Api to get all dengue users
   Future<void> _getDengueUsers() async {
-    final String apiUrl = '$ip/GetDengueUsers';
+    final String apiUrl = '$api/GetDengueUsers';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {

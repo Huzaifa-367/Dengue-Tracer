@@ -80,6 +80,7 @@ dependencies:
   starlight_notification: ^0.0.2
   flutter_highlight: ^0.7.0
   place_picker: ^0.10.0
+  flutter_sms: ^2.3.3
 
   #starlight_notification: ^0.0.2s
 

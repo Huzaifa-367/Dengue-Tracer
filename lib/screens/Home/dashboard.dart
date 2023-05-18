@@ -36,8 +36,6 @@ const List<TabItem> items = [
 class DashBoard extends StatefulWidget {
   const DashBoard({Key? key}) : super(key: key);
 
-  //const DashBoard({super.key});
-
   @override
   _DashBoardState createState() => _DashBoardState();
 }

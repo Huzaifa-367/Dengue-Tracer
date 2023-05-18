@@ -30,7 +30,7 @@ class _YearlyDataState extends State<YearlyData> {
   }
 
   void _getChartData() async {
-    var response = await http.get(Uri.parse('$ip/GetDengueCasesByYear'));
+    var response = await http.get(Uri.parse('$api/GetDengueCasesByYear'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       for (var item in data) {

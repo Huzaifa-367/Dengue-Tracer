@@ -36,7 +36,7 @@ class User {
   }
 
   // Future<String?> login() async {
-  //   String url = '$ip/Login?email=$email&password=$password';
+  //   String url = '$api/Login?email=$email&password=$password';
   //   Uri uri = Uri.parse(url);
   //   var response = await http.get(uri);
   //   if (response.statusCode == 200) {
@@ -67,7 +67,7 @@ class User {
   }
 
   // Future<String?> signupMutliPart() async {
-  //   String url = '$ip/NewUser';
+  //   String url = '$api/NewUser';
   //   var request = http.MultipartRequest('POST', Uri.parse(url));
   //   request.fields['role'] = role;
   //   request.fields['name'] = name;
@@ -84,7 +84,7 @@ class User {
   // }
 
   Future<String?> uploadPic(File f) async {
-    String url = '$ip/UpdateuserImage';
+    String url = '$api/UpdateuserImage';
     Uri uri = Uri.parse(url);
     var request = http.MultipartRequest('POST', uri);
     request.fields["user_id"] = user_id.toString();

@@ -58,8 +58,8 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
   }
 
   void _fetchwithsectors() async {
-    //final response = await http.get(Uri.parse('$ip/Getofficers'));
-    final response = await http.get(Uri.parse('$ip/GetOfficerSectors'));
+    //final response = await http.get(Uri.parse('$api/Getofficers'));
+    final response = await http.get(Uri.parse('$api/GetOfficerSectors'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -85,8 +85,8 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
   }
 
   void _fetchwithoutSectors() async {
-    //final response = await http.get(Uri.parse('$ip/Getofficers'));
-    final response = await http.get(Uri.parse('$ip/Getofficers'));
+    //final response = await http.get(Uri.parse('$api/Getofficers'));
+    final response = await http.get(Uri.parse('$api/Getofficers'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);

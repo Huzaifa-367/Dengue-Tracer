@@ -1,13 +1,11 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:dengue_tracing_application/screens/Home/notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/model/STATS/monthlystats.dart';
 import 'package:dengue_tracing_application/model/STATS/yearlystats.dart';
 
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:badges/badges.dart' as badges;
@@ -39,7 +37,7 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   void _getChartData() async {
-    var response = await http.get(Uri.parse('$ip/GetDengueCasesByDate'));
+    var response = await http.get(Uri.parse('$api/GetDengueCasesByDate'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       for (var item in data) {
@@ -63,7 +61,7 @@ class _StatsScreenState extends State<StatsScreen> {
     var from = FromDate!.toIso8601String().split('T')[0];
     var to = ToDate!.toIso8601String().split('T')[0];
     var response = await http
-        .get(Uri.parse('$ip/GetDengueCasesByDateRange?from=$from&to=$to'));
+        .get(Uri.parse('$api/GetDengueCasesByDateRange?from=$from&to=$to'));
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -304,7 +302,7 @@ class _StatsScreenState extends State<StatsScreen> {
                                       ),
                                       tooltipBehavior: _tooltip,
                                       series: <ChartSeries<_ChartData, String>>[
-                                        ColumnSeries<_ChartData, String>(
+                                        LineSeries<_ChartData, String>(
                                           dataSource: _chartData,
 
                                           // emptyPointSettings: EmptyPointSettings(
@@ -316,10 +314,10 @@ class _StatsScreenState extends State<StatsScreen> {
                                               data.cases,
                                           name: 'Dengue Cases',
                                           color: btnColor,
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(5.0),
-                                            topRight: Radius.circular(5.0),
-                                          ),
+                                          // borderRadius: const BorderRadius.only(
+                                          //   topLeft: Radius.circular(5.0),
+                                          //   topRight: Radius.circular(5.0),
+                                          // ),
                                           //enableTooltip: true,
                                         ),
                                       ],

@@ -53,7 +53,7 @@ class EmailOTP {
   ///Function will return true / false
   sendOTP() async {
     var url = Uri.parse(
-      '$ip/ResetPassword?email=$_userEmail',
+      '$api/ResetPassword?email=$_userEmail',
     );
     http.Response response = await http.get(url);
     try {

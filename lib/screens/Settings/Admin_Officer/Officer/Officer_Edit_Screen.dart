@@ -26,7 +26,7 @@ class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
   int? selectedOfficerId;
 
   Future<Map<String, int>> fetchOfficersWithIds() async {
-    final response = await http.get(Uri.parse('$ip/getofficers'));
+    final response = await http.get(Uri.parse('$api/getofficers'));
 
     if (response.statusCode == 200) {
       final officersJson = jsonDecode(response.body) as List<dynamic>;
@@ -51,7 +51,7 @@ class _Officer_Edit_ScreenState extends State<Officer_Edit_Screen> {
   int? selectedSectorId;
 
   Future<List<String>> fetchSectors() async {
-    final response = await http.get(Uri.parse('$ip/GetallSectors'));
+    final response = await http.get(Uri.parse('$api/GetallSectors'));
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body) as List<dynamic>;
       final sectors = jsonData

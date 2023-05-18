@@ -68,7 +68,7 @@ class _PolygonCreatorState extends State<PolygonCreator> {
     );
 
     final response = await http.post(
-      Uri.parse('$ip/SavePolygons'),
+      Uri.parse('$api/SavePolygons'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(polygonData.toJson()),
     );

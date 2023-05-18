@@ -75,7 +75,7 @@ class _CasesMapState extends State<CasesMap> {
 
   //Api to get all dengue users
   Future<void> _getDengueUsers() async {
-    final String apiUrl = '$ip/GetDengueUsers';
+    final String apiUrl = '$api/GetDengueUsers';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -104,7 +104,7 @@ class _CasesMapState extends State<CasesMap> {
   double _currentSliderValue = 1.0;
   String? selectedDate;
   Future<void> _getDengueCasesByDate(int daysToSubtract) async {
-    final apiUrl = '$ip/GetDengueUsersByDate?daysToSubtract=$daysToSubtract';
+    final apiUrl = '$api/GetDengueUsersByDate?daysToSubtract=$daysToSubtract';
     final response = await http.get(Uri.parse(apiUrl));
 
     final now = DateTime.now();
@@ -133,7 +133,7 @@ class _CasesMapState extends State<CasesMap> {
   final Set<Polygon> _polygons = {};
   Future<void> _fetchPolygons() async {
     try {
-      final response = await Dio().get('$ip/getsectors');
+      final response = await Dio().get('$api/getsectors');
       //final body = response.data;
       final body = response.data;
       if (body is List<dynamic>) {

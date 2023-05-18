@@ -7,7 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as loc;
 
 getDengueUsers() async {
-  var response = await Dio().get('$ip/GetDengueUsers');
+  var response = await Dio().get('$api/GetDengueUsers');
 
   if (response.statusCode == 200) {
     final List<dynamic> data = jsonDecode(response.data);

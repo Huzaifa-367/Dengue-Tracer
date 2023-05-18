@@ -72,7 +72,7 @@ class _PolygonSaverState extends State<PolygonSaver> {
     // Send the HTTP request
     try {
       final Response response =
-          await Dio().post('$ip/SavePolygons', data: requestBody);
+          await Dio().post('$api/SavePolygons', data: requestBody);
 
       // Check if the request was successful
       if (response.statusCode == 200) {
@@ -94,7 +94,7 @@ class _PolygonSaverState extends State<PolygonSaver> {
 
   Future<void> _fetchPolygons() async {
     try {
-      final response = await Dio().get('$ip/GetAllSectors');
+      final response = await Dio().get('$api/GetAllSectors');
       //final body = response.data;
       final body = response.data;
       if (body is List<dynamic>) {

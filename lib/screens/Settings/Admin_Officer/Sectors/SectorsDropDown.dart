@@ -60,7 +60,7 @@ class _SectorsDropState extends State<SectorsDrop> {
   List<String>? selectedDataString;
 
   Future<List<String>> fetchSectors() async {
-    final response = await http.get(Uri.parse('$ip/GetSectors'));
+    final response = await http.get(Uri.parse('$api/GetSectors'));
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body) as List<dynamic>;
       final sectors = jsonData

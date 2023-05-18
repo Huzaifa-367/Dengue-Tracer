@@ -23,7 +23,7 @@ class _PolygonViewerState extends State<PolygonViewer> {
 
   Future<void> _fetchPolygons() async {
     try {
-      final response = await Dio().get('$ip/getsectors');
+      final response = await Dio().get('$api/getsectors');
       //final body = response.data;
       final body = response.data;
       if (body is List<dynamic>) {

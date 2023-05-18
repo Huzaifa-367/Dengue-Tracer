@@ -9,6 +9,7 @@ import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
 import 'Test_Screens/ExpandAble_Manu_Screen.dart';
 import 'package:dengue_tracing_application/Test_Screens/lib/flutter_staggered_animations.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 class Testings_Screen extends StatefulWidget {
   const Testings_Screen({super.key});
@@ -95,7 +96,7 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                   }),
                 ),
                 ButtonWidget(
-                  btnText: "Expandable_Manu_Screen",
+                  btnText: "Expandable_Manu",
                   onPress: (() {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -120,14 +121,23 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                   }),
                 ),
                 ButtonWidget(
-                  btnText: "///",
-                  onPress: (() {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const Expandable_Manu_Screen(),
-                    //   ),
-                    // );
-                  }),
+                  btnText: "Send SMS",
+                  onPress: () async {
+                    String message = "This is a test message!";
+                    List<String> recipients = ["+923203608044"];
+
+                    try {
+                      String result = await sendSMS(
+                        
+                        message: message,
+                        recipients: recipients,
+                        sendDirect: true,
+                      );
+                      print(result);
+                    } catch (error) {
+                      print(error);
+                    }
+                  },
                 ),
               ],
             ),

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 AddOfficer(User u, context) async {
   FormData data = FormData.fromMap(u.tomap());
-  var response = await Dio().post('$ip/CreateOfficerAndAssignSector',
+  var response = await Dio().post('$api/CreateOfficerAndAssignSector',
       data: data,
       options: Options(headers: {
         "Content-Type": "application/json",
@@ -30,7 +30,7 @@ UpdateOfficerSector(
     int? selectedSectorId, int? selectedofficerId, context) async {
   //FormData data = FormData.fromMap(u.tomap());
   var response = await Dio().post(
-      '$ip/AssignOfficerSectors?sec_id=$selectedSectorId&user_id=$selectedofficerId');
+      '$api/AssignOfficerSectors?sec_id=$selectedSectorId&user_id=$selectedofficerId');
   // data: data,
   // options: Options(headers: {
   //   "Content-Type": "application/json",

@@ -70,7 +70,7 @@ class _PickLocationState extends State<PickLocation> {
 
   Future<void> _fetchPolygons() async {
     try {
-      final response = await Dio().get('$ip/getallsectors');
+      final response = await Dio().get('$api/getallsectors');
       final body = response.data;
       if (body is List<dynamic>) {
         final data = body.map((item) => item as Map<String, dynamic>).toList();

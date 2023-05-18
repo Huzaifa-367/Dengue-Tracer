@@ -19,7 +19,7 @@ class _EndpointScreenState extends State<EndpointScreen> {
 
   Future<void> _fetchData() async {
     try {
-      Response response = await Dio().get("$ip/${_endpointController.text}");
+      Response response = await Dio().get("$api/${_endpointController.text}");
       setState(() {
         _jsonData = const JsonEncoder.withIndent('    ').convert(response.data);
         _tableData = List<Map<String, dynamic>>.from(response.data);

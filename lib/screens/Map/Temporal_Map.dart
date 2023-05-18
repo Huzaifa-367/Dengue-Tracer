@@ -66,7 +66,7 @@ class _DengueMapState extends State<DengueMap> {
   ];
 
   void _getChartData() async {
-    var response = await http.get(Uri.parse('$ip/GetDengueCasesByDate'));
+    var response = await http.get(Uri.parse('$api/GetDengueCasesByDate'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       for (var item in data) {
@@ -128,7 +128,7 @@ class _DengueMapState extends State<DengueMap> {
 
   //Api to get all dengue users
   // Future<void> _getDengueUsers() async {
-  //   final String apiUrl = '$ip/GetDengueUsers';
+  //   final String apiUrl = '$api/GetDengueUsers';
   //   final response = await http.get(Uri.parse(apiUrl));
 
   //   if (response.statusCode == 200) {
@@ -154,7 +154,7 @@ class _DengueMapState extends State<DengueMap> {
   //   }
   // }
   Future<void> _getDengueUsers() async {
-    final String apiUrl = '$ip/GetDengueUsers';
+    final String apiUrl = '$api/GetDengueUsers';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -189,7 +189,7 @@ class _DengueMapState extends State<DengueMap> {
   double _currentSliderValue = 1.0;
   String? selectedDate;
   Future<void> _getDengueCasesByDate(int daysToSubtract) async {
-    final apiUrl = '$ip/GetDengueUsersByDate?daysToSubtract=$daysToSubtract';
+    final apiUrl = '$api/GetDengueUsersByDate?daysToSubtract=$daysToSubtract';
     final response = await http.get(Uri.parse(apiUrl));
 
     final now = DateTime.now();
@@ -217,7 +217,7 @@ class _DengueMapState extends State<DengueMap> {
 
   // Future<void> _fetchPolygons() async {
   //   try {
-  //     final response = await Dio().get('$ip/getsectors');
+  //     final response = await Dio().get('$api/getsectors');
   //     //final body = response.data;
   //     final body = response.data;
   //     if (body is List<dynamic>) {
@@ -262,7 +262,7 @@ class _DengueMapState extends State<DengueMap> {
 
   // Future<void> _fetchPolygons() async {
   //   try {
-  //     final response = await Dio().get('$ip/getsectors');
+  //     final response = await Dio().get('$api/getsectors');
   //     final body = response.data;
   //     if (body is List<dynamic>) {
   //       final data = body.map((item) => item as Map<String, dynamic>).toList();
@@ -535,10 +535,10 @@ class _DengueMapState extends State<DengueMap> {
   Future<void> _fetchPolygons() async {
     try {
       final response = await Dio().get(loggedInUser!.role == "officer"
-          ? '$ip/GetOfficerSectors'
+          ? '$api/GetOfficerSectors'
           : loggedInUser!.role == "user"
-              ? '$ip/GetUserSectors'
-              : '$ip/GetallSectors');
+              ? '$api/GetUserSectors'
+              : '$api/GetallSectors');
       final body = response.data;
       if (body is List<dynamic>) {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
@@ -588,270 +588,295 @@ class _DengueMapState extends State<DengueMap> {
               final polygon = Polygon(
                 visible: true,
                 consumeTapEvents: true,
-                onTap: () {
-                  DraggableMenu.open(
-                    context,
-                    DraggableMenu(
-                      color: tbtnColor,
-                      uiType: DraggableMenuUiType.softModern,
-                      expandable: true,
-                      fastDrag: true,
-                      minimizeBeforeFastDrag: true,
-                      expandedHeight: MediaQuery.of(context).size.height * 0.72,
-                      maxHeight: MediaQuery.of(context).size.height * 0.36,
-                      child: ScrollableManager(
-                        enableExpandedScroll: true,
-                        child: Scaffold(
-                          backgroundColor: ScfColor,
-                          body: Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                onTap: loggedInUser!.role != "user"
+                    ? () {
+                        DraggableMenu.open(
+                          context,
+                          DraggableMenu(
+                            color: tbtnColor,
+                            uiType: DraggableMenuUiType.softModern,
+                            expandable: true,
+                            fastDrag: true,
+                            minimizeBeforeFastDrag: true,
+                            expandedHeight:
+                                MediaQuery.of(context).size.height * 0.72,
+                            maxHeight:
+                                MediaQuery.of(context).size.height * 0.36,
+                            child: ScrollableManager(
+                              enableExpandedScroll: true,
+                              child: Scaffold(
+                                backgroundColor: ScfColor,
+                                body: Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      // mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Wrap(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                //Sector Name
-                                                Row(
-                                                  children: [
-                                                    const Text(
-                                                      "Sector Name: ",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: grey,
-                                                        fontSize: 15,
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Wrap(
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      //Sector Name
+                                                      Row(
+                                                        children: [
+                                                          const Text(
+                                                            "Sector Name: ",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              color: grey,
+                                                              fontSize: 15,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            secName,
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              color: txtColor,
+                                                              fontSize: 13,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      secName,
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: txtColor,
-                                                        fontSize: 13,
+                                                      //Threshold
+                                                      Row(
+                                                        children: [
+                                                          const Text(
+                                                            "Threshold: ",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              color: grey,
+                                                              fontSize: 15,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "$threshold",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              color: txtColor,
+                                                              fontSize: 13,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                //Threshold
-                                                Row(
-                                                  children: [
-                                                    const Text(
-                                                      "Threshold: ",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: grey,
-                                                        fontSize: 15,
+                                                      //Total Cases
+                                                      Row(
+                                                        children: [
+                                                          const Text(
+                                                            "Total Cases: ",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              color: grey,
+                                                              fontSize: 15,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "$totalCases",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              color: txtColor,
+                                                              fontSize: 13,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  CircularPercentIndicator(
+                                                    radius: 30.0,
+                                                    lineWidth: 10.0,
+                                                    animation: true,
+                                                    percent: (totalCases /
+                                                        threshold),
+                                                    center: Text(
+                                                      "${((totalCases / threshold) * 100).truncate()}%",
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 13.0),
                                                     ),
-                                                    Text(
-                                                      "$threshold",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: txtColor,
-                                                        fontSize: 13,
-                                                      ),
+                                                    footer: TextWidget(
+                                                      title: "Cases Reached",
+                                                      txtSize: 12,
+                                                      txtColor: txtColor,
                                                     ),
-                                                  ],
-                                                ),
-                                                //Total Cases
-                                                Row(
-                                                  children: [
-                                                    const Text(
-                                                      "Total Cases: ",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: grey,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "$totalCases",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: txtColor,
-                                                        fontSize: 13,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              width: 8,
-                                            ),
-                                            CircularPercentIndicator(
-                                              radius: 30.0,
-                                              lineWidth: 10.0,
-                                              animation: true,
-                                              percent: (totalCases / threshold),
-                                              center: Text(
-                                                "${((totalCases / threshold) * 100).truncate()}%",
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 13.0),
+                                                    circularStrokeCap:
+                                                        CircularStrokeCap.round,
+                                                    progressColor:
+                                                        getstrokeColor(
+                                                            threshold,
+                                                            totalCases),
+                                                  ),
+                                                ],
                                               ),
-                                              footer: TextWidget(
-                                                title: "Cases Reached",
-                                                txtSize: 12,
-                                                txtColor: txtColor,
-                                              ),
-                                              circularStrokeCap:
-                                                  CircularStrokeCap.round,
-                                              progressColor: getstrokeColor(
-                                                  threshold, totalCases),
-                                            ),
-                                          ],
-                                        ),
-                                      ]),
-                                  const Text(
-                                    "Description",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      color: grey,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 110,
-                                    width: 450,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: ScfColor2,
-                                    ),
-                                    child: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Text(
-                                          description,
-                                          style: const TextStyle(
+                                            ]),
+                                        const Text(
+                                          "Description",
+                                          style: TextStyle(
                                             fontWeight: FontWeight.w800,
                                             color: grey,
-                                            fontSize: 12,
+                                            fontSize: 15,
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  const Text(
-                                    "Actions Takekn",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      color: grey,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    height: 300,
-                                    width: 400,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: ScfColor2,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ScrollConfiguration(
-                                        behavior: const ScrollBehavior(),
-                                        child: GlowingOverscrollIndicator(
-                                          axisDirection: AxisDirection.down,
-                                          color: bkColor,
-                                          child: ListView.builder(
-                                            addRepaintBoundaries: true,
-                                            itemCount: 15,
-                                            itemBuilder: (context, index) {
-                                              return Card(
-                                                color: ScfColor,
-                                                child: ListTile(
-                                                  leading: Icon(
-                                                    Icons.warning,
-                                                    color: tbtnColor,
-                                                    size: 33,
-                                                  ),
-                                                  title: Text.rich(
-                                                    TextSpan(
-                                                      text: 'Date: ',
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: txtColor,
-                                                        fontSize: 13,
-                                                      ),
-                                                      children: const <
-                                                          InlineSpan>[
-                                                        TextSpan(
-                                                          text: "2022-11-10",
+                                        Container(
+                                          height: 110,
+                                          width: 450,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: ScfColor2,
+                                          ),
+                                          child: SingleChildScrollView(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Text(
+                                                description,
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w800,
+                                                  color: grey,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        const Text(
+                                          "Actions Takekn",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            color: grey,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          height: 300,
+                                          width: 400,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: ScfColor2,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: ScrollConfiguration(
+                                              behavior: const ScrollBehavior(),
+                                              child: GlowingOverscrollIndicator(
+                                                axisDirection:
+                                                    AxisDirection.down,
+                                                color: bkColor,
+                                                child: ListView.builder(
+                                                  addRepaintBoundaries: true,
+                                                  itemCount: 15,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Card(
+                                                      color: ScfColor,
+                                                      child: ListTile(
+                                                        leading: Icon(
+                                                          Icons.warning,
+                                                          color: tbtnColor,
+                                                          size: 33,
+                                                        ),
+                                                        title: Text.rich(
+                                                          TextSpan(
+                                                            text: 'Date: ',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: txtColor,
+                                                              fontSize: 13,
+                                                            ),
+                                                            children: const <
+                                                                InlineSpan>[
+                                                              TextSpan(
+                                                                text:
+                                                                    "2022-11-10",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: grey,
+                                                                  fontSize: 13,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        subtitle: Text(
+                                                          "45576",
+                                                          //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
                                                           style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight.w600,
-                                                            color: grey,
-                                                            fontSize: 13,
+                                                                FontWeight.w400,
+                                                            color: txtColor,
+                                                            fontSize: 12,
                                                           ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  subtitle: Text(
-                                                    "45576",
-                                                    //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: txtColor,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                  trailing: TextButton(
-                                                    onPressed: () {},
-                                                    child: Text(
-                                                      "View Detail",
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: btnColor,
-                                                        fontSize: 12,
+                                                        ),
+                                                        trailing: TextButton(
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                            "View Detail",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color: btnColor,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
+                                                    );
+                                                  },
                                                 ),
-                                              );
-                                            },
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    barrier: true,
-                  );
-                },
+                          barrier: true,
+                        );
+                      }
+                    : () {},
                 polygonId: PolygonId(secId.toString()),
                 points: List<LatLng>.from(latLngs), // Fix type error here
                 //points: latLngs,
@@ -882,7 +907,7 @@ class _DengueMapState extends State<DengueMap> {
 
   // Future<void> _fetchPolygons() async {
   //   try {
-  //     final response = await Dio().get('$ip/getsectors');
+  //     final response = await Dio().get('$api/getsectors');
   //     final body = response.data;
   //     if (body is List<dynamic>) {
   //       final data = body.map((item) => item as Map<String, dynamic>).toList();
@@ -931,7 +956,7 @@ class _DengueMapState extends State<DengueMap> {
 //   final prefs = await SharedPreferences.getInstance();
 //   final userId = prefs.getInt('user_id');
 //   if (userId != null) {
-//     final response = await Dio().get('$ip/getuser/$userId');
+//     final response = await Dio().get('$api/getuser/$userId');
 //     final body = response.data;
 //     if (body is Map<String, dynamic>) {
 //       return User.fromJson(body);
