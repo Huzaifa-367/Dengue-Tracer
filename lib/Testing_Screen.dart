@@ -11,6 +11,8 @@ import 'Test_Screens/ExpandAble_Manu_Screen.dart';
 import 'package:dengue_tracing_application/Test_Screens/lib/flutter_staggered_animations.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 
+import 'Test_Screens/Stats_MultiAxis.dart';
+
 class Testings_Screen extends StatefulWidget {
   const Testings_Screen({super.key});
 
@@ -128,7 +130,6 @@ class _Testings_ScreenState extends State<Testings_Screen> {
 
                     try {
                       String result = await sendSMS(
-                        
                         message: message,
                         recipients: recipients,
                         sendDirect: true,
@@ -137,6 +138,31 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                     } catch (error) {
                       print(error);
                     }
+                  },
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ButtonWidget(
+                  btnText: "Stats_MultiAxex",
+                  onPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Stats_MultiAxex(),
+                      ),
+                    );
+                  },
+                ),
+                ButtonWidget(
+                  btnText: "///",
+                  onPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Stats_MultiAxex(),
+                      ),
+                    );
                   },
                 ),
               ],

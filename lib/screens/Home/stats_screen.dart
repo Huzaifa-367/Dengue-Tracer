@@ -302,7 +302,7 @@ class _StatsScreenState extends State<StatsScreen> {
                                       ),
                                       tooltipBehavior: _tooltip,
                                       series: <ChartSeries<_ChartData, String>>[
-                                        LineSeries<_ChartData, String>(
+                                        ColumnSeries<_ChartData, String>(
                                           dataSource: _chartData,
 
                                           // emptyPointSettings: EmptyPointSettings(
@@ -314,10 +314,10 @@ class _StatsScreenState extends State<StatsScreen> {
                                               data.cases,
                                           name: 'Dengue Cases',
                                           color: btnColor,
-                                          // borderRadius: const BorderRadius.only(
-                                          //   topLeft: Radius.circular(5.0),
-                                          //   topRight: Radius.circular(5.0),
-                                          // ),
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(5.0),
+                                            topRight: Radius.circular(5.0),
+                                          ),
                                           //enableTooltip: true,
                                         ),
                                       ],
