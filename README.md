@@ -1,8 +1,8 @@
 # Dengue Tracer
 
-[![GitHub Stars](https://img.shields.io/github/stars/your-username/dengue-tracer.svg?style=flat-square&logo=github&colorB=green&label=stars)](https://github.com/your-username/dengue-tracer/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/your-username/dengue-tracer.svg?style=flat-square&logo=github&colorB=blue&label=forks)](https://github.com/your-username/dengue-tracer/network)
-[![GitHub License](https://img.shields.io/github/license/your-username/dengue-tracer.svg?style=flat-square&logo=github&colorB=gray&label=license)](https://github.com/your-username/dengue-tracer/blob/main/LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/LarsKhan/dengue-tracer.svg?style=flat-square&logo=github&colorB=green&label=stars)](https://github.com/your-username/dengue-tracer/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/LarsKhan/dengue-tracer.svg?style=flat-square&logo=github&colorB=blue&label=forks)](https://github.com/your-username/dengue-tracer/network)
+[![GitHub License](https://img.shields.io/github/license/LarsKhan/dengue-tracer.svg?style=flat-square&logo=github&colorB=gray&label=license)](https://github.com/your-username/dengue-tracer/blob/main/LICENSE)
 
 Dengue Tracer is a Flutter project aimed at tracking and managing dengue cases in a specific area. It provides a comprehensive solution to monitor and control the spread of dengue fever.
 
@@ -23,8 +23,8 @@ Dengue Tracer offers a powerful toolset to combat dengue outbreaks effectively. 
 
 To get started with Dengue Tracer, follow these steps:
 
-1. :octocat: Clone the repository: `git clone https://github.com/your-username/dengue-tracer.git`
-2. :file_folder: Navigate to the project directory: `cd dengue-tracer`
+1. :octocat: Clone the repository: `git clone https://github.com/LarsKhan/Dengue-Tracer.git`
+2. :file_folder: Navigate to the project directory: `cd Dengue-Tracer`
 3. :inbox_tray: Install dependencies: `flutter pub get`
 4. :running_man: Run the application: `flutter run`
 
