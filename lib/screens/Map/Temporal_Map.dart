@@ -41,6 +41,7 @@ class _DengueMapState extends State<DengueMap> {
 
   Set<Marker> _markers = {};
   final List<_ChartData> _chartData = [];
+  int maxCaseValue = 0;
   List<dynamic> _users = [];
   late TooltipBehavior _tooltip;
 
@@ -66,15 +67,17 @@ class _DengueMapState extends State<DengueMap> {
   ];
 
   void _getChartData() async {
-    var response = await http.get(Uri.parse('$api/GetDengueCasesByDate'));
+    var response = await Dio().get('$api/GetDengueCasesByDate');
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      var data = response.data['cases'];
+      maxCaseValue = response.data['maxValue'];
       for (var item in data) {
         // Trimming the time part from the date
         var trimmedDate = item['date'].toString().split('T')[0];
 
         _chartData.add(_ChartData(trimmedDate, item['count']));
       }
+
       setState(() {});
     }
   }
@@ -1064,7 +1067,8 @@ class _DengueMapState extends State<DengueMap> {
                                   ),
                                   primaryXAxis: CategoryAxis(
                                     autoScrollingMode: AutoScrollingMode.start,
-                                    visibleMaximum: 5,
+                                    visibleMaximum:
+                                        double.parse(maxCaseValue.toString()),
                                     interval: 1,
                                   ),
                                   // borderColor: ScfColor,

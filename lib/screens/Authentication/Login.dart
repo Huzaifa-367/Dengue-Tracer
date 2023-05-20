@@ -4,8 +4,6 @@ import 'package:dengue_tracing_application/Testing_Screen.dart';
 
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 
-import 'package:flutter/material.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -36,34 +34,36 @@ class _LoginScreenState extends State<LoginScreen> {
 //handle remember me function
   void handleRemeberme(bool value) {
     isRemember = value;
-    SharedPreferences.getInstance().then(
-      (prefs) {
-        prefs.setBool("remember_me", value);
-        prefs.setString('email', emailcont.text);
-        prefs.setString('password', passwordcont.text);
-      },
-    );
-    setState(() {
-      isRemember = value;
-    });
+    if (isRemember == true) {
+      SharedPreferences.getInstance().then(
+        (prefs) {
+          prefs.setBool("remember_me", value);
+          prefs.setString('email', emailcont.text);
+          prefs.setString('password', passwordcont.text);
+        },
+      );
+      setState(() {
+        isRemember = value;
+      });
+    }
   }
 
 //load email and password
   void loadUserEmailPassword() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var email = prefs.getString("email") ?? "";
-      var password = prefs.getString("password") ?? "";
+      savedEmail = prefs.getString("email") ?? "";
+      savedPassword = prefs.getString("password") ?? "";
       var remeberMe = prefs.getBool("remember_me") ?? false;
 
-      if (remeberMe) {
+      if (remeberMe && savedEmail != "") {
         setState(
           () {
             isRemember = true;
           },
         );
-        emailcont.text = email;
-        passwordcont.text = password;
+        // emailcont = savedEmail as TextEditingController;
+        // passwordcont = savedPassword as TextEditingController;
       }
     } catch (e) {
       print(e);
@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onChanged: (value) {
                             setState(
                               () {
-                                isRemember = value;
+                                isRemember = !value;
                                 handleRemeberme(value);
                               },
                             );
@@ -235,35 +235,67 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      height: 50,
-                      width: 300,
-                      child: ButtonWidget(
-                        btnText: "Login",
-                        onPress: (() async {
-                          {
-                            await login(
-                                emailcont.text, passwordcont.text, context);
-                            // User u = User();
-                            // u.email = emailcont.text;
-                            // u.password = passwordcont.text;
-                            // String? response = await u.login();
-                            // if (response == null) {
-                            //   //show alert of error
-                            // } else if (response == "\"false\"") {
-                            //   //show alert invalued email password
-                            // } else {
-                            //   dynamic map = jsonDecode(response);
-                            //   //String role = map["role"].toLowerCase();
-                            //   String email = map["email"];
-                            //   String password = map['password'];
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: 50,
+                          width: 250,
+                          child: ButtonWidget(
+                            btnText: "Login",
+                            onPress: (() async {
+                              {
+                                await login(
+                                    savedEmail == ""
+                                        ? emailcont.text
+                                        : savedEmail,
+                                    savedPassword == ""
+                                        ? passwordcont.text
+                                        : savedPassword,
+                                    isRemember,
+                                    context);
+                                // User u = User();
+                                // u.email = emailcont.text;
+                                // u.password = passwordcont.text;
+                                // String? response = await u.login();
+                                // if (response == null) {
+                                //   //show alert of error
+                                // } else if (response == "\"false\"") {
+                                //   //show alert invalued email password
+                                // } else {
+                                //   dynamic map = jsonDecode(response);
+                                //   //String role = map["role"].toLowerCase();
+                                //   String email = map["email"];
+                                //   String password = map['password'];
 
-                            //   User u = User.fromMap(map);
-                            //setState(() {});
-                          }
-                          // }
-                        }),
-                      ),
+                                //   User u = User.fromMap(map);
+                                //setState(() {});
+                              }
+                              // }
+                            }),
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () async {
+                            isRemember == true
+                                ? await login(
+                                    savedEmail == ""
+                                        ? emailcont.text
+                                        : savedEmail,
+                                    savedPassword == ""
+                                        ? passwordcont.text
+                                        : savedPassword,
+                                    isRemember,
+                                    context)
+                                : snackBar(
+                                    context, "Remember Me is not active.");
+                          },
+                          icon: const Icon(
+                            Icons.fingerprint_rounded,
+                            size: 45,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(

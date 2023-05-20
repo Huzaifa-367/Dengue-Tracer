@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
@@ -8,35 +10,122 @@ import '../../Global/constant.dart';
 import '../../screens/Home/dashboard.dart';
 import '../../screens/Authentication/Otp_Screen.dart';
 
-login(email, password, context) async {
-  var response = await Dio().get(
-    '$api/Login?email=$email&password=$password',
-  );
+import 'package:local_auth/local_auth.dart';
 
-  if (response.statusCode == 200) {
-    //log(response.data);
-    if (response.data != 'false') {
-      final List<dynamic> dataList = response.data;
+final LocalAuthentication _auth = LocalAuthentication();
 
-      // Parse the first item in the list as a Map
-      final Map<String, dynamic> dataMap = dataList.first;
+Future<bool> _authenticateWithFingerprint() async {
+  bool authenticated = false;
 
-      // Create a new User object from the map
-      loggedInUser = User.fromMap(dataMap);
+  bool isFingerprintAvailable = await _auth.canCheckBiometrics;
 
-      // Navigate to dashboard screen with loggedInUser data
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const DashBoard(),
-        ),
-      );
+  if (isFingerprintAvailable) {
+    authenticated = await _auth.authenticate(
+      localizedReason: 'Scan your fingerprint to log in',
+      options: const AuthenticationOptions(
+        useErrorDialogs: true,
+        stickyAuth: true,
+        sensitiveTransaction: true,
+      ),
+    );
+  }
+
+  return authenticated;
+}
+
+login(email, password, isremember, context) async {
+  try {
+    if (isremember == true) {
+      bool authenticated = await _authenticateWithFingerprint();
+      if (authenticated) {
+        var response = await Dio().get(
+          '$api/Login?email=$email&password=$password',
+        );
+
+        if (response.statusCode == 200) {
+          //log(response.data);
+          if (response.data != 'false') {
+            // Save the email and password to shared preferences
+            final List<dynamic> dataList = response.data;
+            // Parse the first item in the list as a Map
+            final Map<String, dynamic> dataMap = dataList.first;
+            // Create a new User object from the map
+            loggedInUser = User.fromMap(dataMap);
+            // Navigate to dashboard screen with loggedInUser data
+            _proceedToDashboard(context);
+          } else {
+            snackBar(context, "Incorrect Email or Password.");
+          }
+        } else {
+          snackBar(context, "Failed to connect to the server.");
+        }
+      } else {
+        snackBar(context, "Fingerprint Authentication is not saved.");
+      }
     } else {
-      snackBar(context, "Incorrect Email or Password.");
+      var response = await Dio().get(
+        '$api/Login?email=$email&password=$password',
+      );
+
+      if (response.statusCode == 200) {
+        //log(response.data);
+        if (response.data != 'false') {
+          // Save the email and password to shared preferences
+          final List<dynamic> dataList = response.data;
+          // Parse the first item in the list as a Map
+          final Map<String, dynamic> dataMap = dataList.first;
+          // Create a new User object from the map
+          loggedInUser = User.fromMap(dataMap);
+          // Navigate to dashboard screen with loggedInUser data
+          _proceedToDashboard(context);
+        } else {
+          snackBar(context, "Incorrect Email or Password.");
+        }
+      } else {
+        snackBar(context, "Failed to connect to the server.");
+      }
     }
-  } else {
-    return null;
+  } catch (e) {
+    snackBar(context, "An error occurred: ");
   }
 }
+
+void _proceedToDashboard(BuildContext context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => const DashBoard(),
+    ),
+  );
+}
+// login(email, password, isremember, context) async {
+//   var response = await Dio().get(
+//     '$api/Login?email=$email&password=$password',
+//   );
+
+//   if (response.statusCode == 200) {
+//     //log(response.data);
+//     if (response.data != 'false') {
+//       final List<dynamic> dataList = response.data;
+
+//       // Parse the first item in the list as a Map
+//       final Map<String, dynamic> dataMap = dataList.first;
+
+//       // Create a new User object from the map
+//       loggedInUser = User.fromMap(dataMap);
+
+//       // Navigate to dashboard screen with loggedInUser data
+//       Navigator.of(context).push(
+//         MaterialPageRoute(
+//           builder: (context) => const DashBoard(),
+//         ),
+//       );
+//     } else {
+//       snackBar(context, "Incorrect Email or Password.");
+//     }
+//   } else {
+//     return null;
+//   }
+// }
 
 signUp(User u, context) async {
   FormData data = FormData.fromMap(u.tomap());
@@ -182,3 +271,4 @@ updateUserStatus(context, int userId, bool status) async {
 //     throw Exception('Failed to update user status');
 //   }
 // }
+

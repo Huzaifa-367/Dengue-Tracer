@@ -81,6 +81,8 @@ dependencies:
   flutter_highlight: ^0.7.0
   place_picker: ^0.10.0
   flutter_sms: ^2.3.3
+  local_auth: ^2.1.6
+  draggable_customized_btn_navy_bar: ^1.0.1+2
 
   #starlight_notification: ^0.0.2s
 

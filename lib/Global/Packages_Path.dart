@@ -20,4 +20,6 @@ export 'package:pluto_grid/pluto_grid.dart';
 //
 export 'package:shared_preferences/shared_preferences.dart';
 //
+export 'package:local_auth/local_auth.dart';
+//
 export 'package:flutter/cupertino.dart';

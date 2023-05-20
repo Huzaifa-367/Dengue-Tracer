@@ -42,7 +42,14 @@ String api = 'http://$ip/FYP_Api/API/SERVER';
 String imgpath = 'http://$ip//FYP_Api/Images/';
 User? loggedInUser;
 bool? isRemember = false;
-
+//
+//
+String? savedEmail;
+String? savedPassword;
+bool? isfingerprint = false;
+bool? isfinger;
+//
+//
 //MAP
 double? percentage = 0.0;
 //User? loggedInUsercopy;
@@ -83,3 +90,9 @@ const kPrimaryColor = Color(0xFF6F35A5);
 const kPrimaryLightColor = Color(0xFFF1E6FF);
 
 const double defaultPadding = 16.0;
+
+
+
+
+
+

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
+import 'Test_Screens/Dragable_Navigation_Bar.dart';
 import 'Test_Screens/ExpandAble_Manu_Screen.dart';
 import 'package:dengue_tracing_application/Test_Screens/lib/flutter_staggered_animations.dart';
 import 'package:flutter_sms/flutter_sms.dart';
@@ -156,11 +157,12 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                   },
                 ),
                 ButtonWidget(
-                  btnText: "///",
+                  btnText: "Drabable_Nav_Bar",
                   onPress: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const Stats_MultiAxex(),
+                        builder: (context) =>
+                            const Drabable_Navigation_Bar_Screen(),
                       ),
                     );
                   },

@@ -1,6 +1,5 @@
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
-import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../model/USER/User_API.dart';
@@ -24,7 +23,7 @@ class _Otp_ScreenState extends State<Otp_Screen> {
   // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
-  bool hasError = false;
+  bool? hasError = false;
   String currentText = "";
   final formKey = GlobalKey<FormState>();
 
@@ -201,7 +200,7 @@ class _Otp_ScreenState extends State<Otp_Screen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Text(
-                      hasError ? "*Please fill up all the cells properly" : "",
+                      hasError! ? "*Please fill up all the cells properly" : "",
                       style: const TextStyle(
                         color: Colors.red,
                         fontSize: 12,
@@ -267,7 +266,9 @@ class _Otp_ScreenState extends State<Otp_Screen> {
                           if (currentText.length != 6 || currentText != otp) {
                             errorController!.add(ErrorAnimationType
                                 .shake); // Triggering error shake animation
-                            setState(() => hasError = true);
+                            setState(() {
+                              hasError = true;
+                            });
                           } else {
                             hasError = false;
                             snackBar(context, "OTP Verified!!");
