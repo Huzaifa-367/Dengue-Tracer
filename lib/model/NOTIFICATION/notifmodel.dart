@@ -1,16 +1,35 @@
-class ItemLists {
-  String? title;
-  bool? alert;
-  String? description;
+class LocItemLists {
+  int? status;
+  bool? type;
+
   String? date;
-  ItemLists({
-    required this.title,
-    this.description,
-    required this.alert,
+  LocItemLists({
+    required this.status,
     required this.date,
+    this.type,
   });
 }
 
+class ItemLists {
+  int? status;
+  int? user_id;
+  int? sec_id;
+  String? sec_name;
+  int? percnt;
+  bool? type;
+
+  String? date;
+  ItemLists({
+    required this.status,
+    this.user_id,
+    this.sec_id,
+    this.sec_name,
+    required this.date,
+    this.type,
+    this.percnt,
+  });
+}
+  
 // List<ItemLists> notifitems = [
 //   ItemLists(
 //     title: 'Cases are at peek',

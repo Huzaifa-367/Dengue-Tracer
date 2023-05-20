@@ -248,7 +248,7 @@ updateUserStatus(context, int userId, bool status) async {
   } else {
     snackBar(
       context,
-      "Failed!",
+      "Failed to update your status!",
     );
     //throw Exception('Failed to update user status.');
   }

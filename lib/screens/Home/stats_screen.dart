@@ -1,5 +1,6 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
-import 'package:dengue_tracing_application/screens/Home/notifications.dart';
+import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
+import 'package:dengue_tracing_application/screens/Home/notification.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
@@ -34,6 +35,7 @@ class _StatsScreenState extends State<StatsScreen> {
     super.initState();
     _tooltip = TooltipBehavior(enable: true);
     _getChartData();
+    fetchNotifications(loggedInUser!.user_id, 0);
   }
 
   void _getChartData() async {
@@ -118,7 +120,9 @@ class _StatsScreenState extends State<StatsScreen> {
                             padding: const EdgeInsets.all(3.0),
                             child: badges.Badge(
                               badgeContent: Text(
-                                '6',
+                                loggedInUser!.role == "user"
+                                    ? '$totalnotif'
+                                    : '$sectorBasedCount',
                                 style: TextStyle(
                                   color: ScfColor,
                                   fontWeight: FontWeight.w500,
@@ -130,7 +134,8 @@ class _StatsScreenState extends State<StatsScreen> {
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => const NotifScreen(),
+                                      builder: (context) =>
+                                          const NotificationScreen(),
                                     ),
                                   );
                                 },

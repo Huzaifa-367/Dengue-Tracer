@@ -3,6 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 
+import '../model/NOTIFICATION/notifmodel.dart';
+
 Color tnColor = const Color.fromARGB(255, 255, 0, 17);
 Color btnColor = const Color(0XFFf85f6a);
 Color bkColor = const Color.fromARGB(255, 247, 214, 216);
@@ -41,9 +43,11 @@ String? ip = "192.168.10.86";
 String api = 'http://$ip/FYP_Api/API/SERVER';
 String imgpath = 'http://$ip//FYP_Api/Images/';
 User? loggedInUser;
+
+//Login
 bool? isRemember = false;
 //
-//
+//Login
 String? savedEmail;
 String? savedPassword;
 bool? isfingerprint = false;
@@ -63,6 +67,21 @@ int? range;
 DateTime? FromDate;
 DateTime? ToDate;
 
+//
+//
+//Notifications
+List<ItemLists>? locnotifitems = [];
+List<ItemLists>? notifitems = [];
+// List<dynamic>? locationBased;
+// List<dynamic>? sectorBased;
+int? locationBasedCount;
+int? sectorBasedCount;
+int? totalnotif;
+
+///
+///
+///
+//Maps
 List<Marker> markers = [];
 // class Constants {
 //   static const Color primaryColor = Color(0xffFBFBFB);
@@ -90,9 +109,3 @@ const kPrimaryColor = Color(0xFF6F35A5);
 const kPrimaryLightColor = Color(0xFFF1E6FF);
 
 const double defaultPadding = 16.0;
-
-
-
-
-
-
