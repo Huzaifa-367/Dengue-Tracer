@@ -35,7 +35,6 @@ class _StatsScreenState extends State<StatsScreen> {
     super.initState();
     _tooltip = TooltipBehavior(enable: true);
     _getChartData();
-    fetchNotifications(loggedInUser!.user_id, 0);
   }
 
   void _getChartData() async {

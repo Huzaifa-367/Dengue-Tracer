@@ -243,33 +243,32 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: ButtonWidget(
                             btnText: "Login",
                             onPress: (() async {
-                              {
-                                await login(
-                                    savedEmail == ""
-                                        ? emailcont.text
-                                        : savedEmail,
-                                    savedPassword == ""
-                                        ? passwordcont.text
-                                        : savedPassword,
-                                    isRemember,
-                                    context);
-                                // User u = User();
-                                // u.email = emailcont.text;
-                                // u.password = passwordcont.text;
-                                // String? response = await u.login();
-                                // if (response == null) {
-                                //   //show alert of error
-                                // } else if (response == "\"false\"") {
-                                //   //show alert invalued email password
-                                // } else {
-                                //   dynamic map = jsonDecode(response);
-                                //   //String role = map["role"].toLowerCase();
-                                //   String email = map["email"];
-                                //   String password = map['password'];
+                              emailcont.text != ""
+                                  ? await login(
+                                      emailcont.text,
+                                      passwordcont.text,
+                                      isRemember,
+                                      context,
+                                    )
+                                  : snackBar(context,
+                                      "Please enter email & password!");
+                              // User u = User();
+                              // u.email = emailcont.text;
+                              // u.password = passwordcont.text;
+                              // String? response = await u.login();
+                              // if (response == null) {
+                              //   //show alert of error
+                              // } else if (response == "\"false\"") {
+                              //   //show alert invalued email password
+                              // } else {
+                              //   dynamic map = jsonDecode(response);
+                              //   //String role = map["role"].toLowerCase();
+                              //   String email = map["email"];
+                              //   String password = map['password'];
 
-                                //   User u = User.fromMap(map);
-                                //setState(() {});
-                              }
+                              //   User u = User.fromMap(map);
+                              //setState(() {});
+
                               // }
                             }),
                           ),
@@ -277,16 +276,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Spacer(),
                         IconButton(
                           onPressed: () async {
-                            isRemember == true
+                            isRemember == true && savedEmail != ""
                                 ? await login(
-                                    savedEmail == ""
-                                        ? emailcont.text
-                                        : savedEmail,
-                                    savedPassword == ""
-                                        ? passwordcont.text
-                                        : savedPassword,
+                                    savedEmail,
+                                    savedPassword,
                                     isRemember,
-                                    context)
+                                    context,
+                                  )
                                 : snackBar(
                                     context, "Remember Me is not active.");
                           },

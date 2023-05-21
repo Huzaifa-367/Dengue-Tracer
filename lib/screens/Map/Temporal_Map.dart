@@ -1,6 +1,7 @@
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Packages_Path.dart';
+import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -32,10 +33,14 @@ class _DengueMapState extends State<DengueMap> {
   void initState() {
     super.initState();
     _tooltip = TooltipBehavior(enable: true);
-    getGeoLocationPosition();
-    _getDengueUsers();
     _getChartData();
+    getGeoLocationPosition();
     _fetchPolygons();
+    _getDengueUsers();
+    
+    Timer.periodic(const Duration(minutes: 60), (Timer timer) {
+      fetchNotifications(loggedInUser!.user_id, 0);
+    });
     // loadDengueCases();
   }
 

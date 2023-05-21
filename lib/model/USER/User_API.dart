@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
+import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
 import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dio/dio.dart';
@@ -53,6 +54,7 @@ login(email, password, isremember, context) async {
             loggedInUser = User.fromMap(dataMap);
             // Navigate to dashboard screen with loggedInUser data
             _proceedToDashboard(context);
+            fetchNotifications(loggedInUser!.user_id, 0);
           } else {
             snackBar(context, "Incorrect Email or Password.");
           }

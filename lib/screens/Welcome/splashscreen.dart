@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     controller?.forward();
-
+  
     Timer(
       const Duration(seconds: 3),
       () => Navigator.of(context).pushReplacement(
