@@ -2,8 +2,6 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dengue_tracing_application/Global/constant.dart';
 import 'package:dengue_tracing_application/model/NOTIFICATION/notifmodel.dart';
 import 'package:dio/dio.dart';
-import 'package:crypto/crypto.dart';
-import 'dart:convert';
 
 fetchNotifications(int userId, int radius) async {
   try {
@@ -62,32 +60,13 @@ void scheduleNotifications(List<ItemLists> notifitems) async {
         summary: 'Alert!',
         title: "${item.sec_name}",
         criticalAlert: true,
-        body: "Dengue reached ${item.percnt}",
+        body: "Dengue reached ${item.percnt} % of threshold.",
         displayOnBackground: true,
         displayOnForeground: true,
         wakeUpScreen: true,
         notificationLayout: NotificationLayout.BigPicture,
-        bigPicture:
-            'https://www.nea.gov.sg/images/default-source/dengue-zika/denguecampaign-wpfb-v2.jpg',
+        bigPicture: 'http://$ip//FYP_Api/Images/campaign.jpg',
       ),
     );
-
-    // Schedule the notification
-    // await AwesomeNotifications().createNotification(content: content);
   }
-}
-
-// Generate a unique id based on item properties
-int generateNotificationId(ItemLists item) {
-  // Concatenate the item properties to create a unique string
-  String uniqueString = '${item.user_id}_${item.type}';
-
-  // Generate the MD5 hash of the unique string
-  var bytes = utf8.encode(uniqueString);
-  var digest = md5.convert(bytes);
-
-  // Convert the MD5 hash to an integer
-  int notificationId = int.parse(digest.toString(), radix: 16);
-
-  return notificationId;
 }

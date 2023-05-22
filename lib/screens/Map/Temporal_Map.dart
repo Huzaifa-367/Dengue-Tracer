@@ -627,6 +627,7 @@ class _DengueMapState extends State<DengueMap> {
                 consumeTapEvents: true,
                 onTap: loggedInUser!.role != "user"
                     ? () {
+                        _SectorchartData.clear();
                         _getSectorChartData(secId);
                         DraggableMenu.open(
                           context,
@@ -841,8 +842,9 @@ class _DengueMapState extends State<DengueMap> {
                                                     ChartSeries<
                                                         _SectorChartData,
                                                         String>>[
-                                                  ColumnSeries<_SectorChartData,
-                                                      String>(
+                                                  //ColumnSeries<_SectorChartData,
+                                                  FastLineSeries<
+                                                      _SectorChartData, String>(
                                                     dataSource:
                                                         _SectorchartData,
 
@@ -860,13 +862,13 @@ class _DengueMapState extends State<DengueMap> {
                                                             data.casess,
                                                     name: 'Dengue Cases',
                                                     color: btnColor,
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(5.0),
-                                                      topRight:
-                                                          Radius.circular(5.0),
-                                                    ),
+                                                    // borderRadius:
+                                                    //     const BorderRadius.only(
+                                                    //   topLeft:
+                                                    //       Radius.circular(5.0),
+                                                    //   topRight:
+                                                    //       Radius.circular(5.0),
+                                                    // ),
                                                     //enableTooltip: true,
                                                   ),
                                                 ],
