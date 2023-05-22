@@ -14,9 +14,25 @@ export 'package:dengue_tracing_application/screens/Authentication/Signup.dart';
 //Home
 export 'package:dengue_tracing_application/screens/Home/awareness.dart';
 export 'package:dengue_tracing_application/screens/Home/dashboard.dart';
-export 'package:dengue_tracing_application/screens/Home/notifications.dart';
-export 'package:dengue_tracing_application/screens/Home/stats_screen.dart';
+export 'package:dengue_tracing_application/screens/Home/notifications_old.dart';
+export 'package:dengue_tracing_application/screens/Home/Stats_main_screen.dart';
 //
+
+//Stats
+export 'package:dengue_tracing_application/screens/Home/Stats/Stats_All_Sector.dart';
+export 'package:dengue_tracing_application/screens/Home/Stats/Stats_By_Sector.dart';
+export 'package:dengue_tracing_application/screens/Home/Stats_All_admin_officer.dart';
+//Stast/Tabs
+export 'package:dengue_tracing_application/model/STATS/monthlystats.dart';
+export 'package:dengue_tracing_application/model/STATS/yearlystats.dart';
+
+export 'package:dengue_tracing_application/model/STATS/Stats_Sector_Monthly.dart';
+export 'package:dengue_tracing_application/model/STATS/Stats_Sector_Yearly.dart';
+
+//
+//Notification
+export 'package:dengue_tracing_application/screens/Home/notification.dart';
+
 //Home
 // export 'package:dengue_tracing_application/screens/Map/Temporal_Map.dart';
 // export 'package:dengue_tracing_application/screens/Map/Testings/Dengue_Map.dart';

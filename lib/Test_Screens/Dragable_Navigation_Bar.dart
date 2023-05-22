@@ -168,7 +168,7 @@ class Drabable_Navigation_Bar_ScreenState
             urlAsset: 'assets/dash-logo.png',
             backgroundColor: const Color(0xFFFFD107));
       case 'item-2':
-        return const StatsScreen();
+        return const Stats_All_Sectors();
       // return FlutterPage(
       //     key: UniqueKey(),
       //     title: 'FAVORITOS',

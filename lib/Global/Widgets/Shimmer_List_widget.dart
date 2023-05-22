@@ -6,7 +6,7 @@ import '../constant.dart';
 Widget ShimmerListView(int length) {
   return SizedBox(
     height: 280,
-    width: 580,
+    width: 550,
     child: Shimmer.fromColors(
       baseColor: bkColor,
       highlightColor: Colors.grey[100]!,

@@ -1,21 +1,15 @@
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
-import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
-import 'package:dengue_tracing_application/screens/Home/notification.dart';
-import 'package:flutter/material.dart';
-
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
-import 'package:dengue_tracing_application/model/STATS/monthlystats.dart';
-import 'package:dengue_tracing_application/model/STATS/yearlystats.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:badges/badges.dart' as badges;
 
-class StatsScreen extends StatefulWidget {
-  const StatsScreen({Key? key}) : super(key: key);
+class StatsBySectorScreen extends StatefulWidget {
+  const StatsBySectorScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatsScreen> createState() => _StatsScreenState();
+  State<StatsBySectorScreen> createState() => _StatsBySectorScreenState();
 }
 
 class _ChartData {
@@ -25,7 +19,7 @@ class _ChartData {
   final int cases;
 }
 
-class _StatsScreenState extends State<StatsScreen> {
+class _StatsBySectorScreenState extends State<StatsBySectorScreen> {
   late List<_ChartData> data;
   late TooltipBehavior _tooltip;
   final List<_ChartData> _chartData = [];
@@ -38,7 +32,8 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   void _getChartData() async {
-    var response = await Dio().get('$api/GetDengueCasesByDate');
+    var response = await Dio()
+        .get('$api/GetDengueCasesBySectorDate?sec_id=${loggedInUser!.sec_id}');
     if (response.statusCode == 200) {
       var data = response.data['cases'];
       maxCaseValue = response.data['maxValue'];
@@ -93,74 +88,6 @@ class _StatsScreenState extends State<StatsScreen> {
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8.0,
-                      right: 15,
-                      left: 10,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextWidget(
-                          title: "Cases Report",
-                          txtSize: 25,
-                          txtColor: txtColor,
-                        ),
-                        const SizedBox(
-                          width: 130,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: bkColor.withOpacity(0.5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: badges.Badge(
-                              badgeContent: Text(
-                                loggedInUser!.role == "user"
-                                    ? '$totalnotif'
-                                    : '$sectorBasedCount',
-                                style: TextStyle(
-                                  color: ScfColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              showBadge: true,
-                              ignorePointer: false,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const NotificationScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Icon(
-                                  Icons.notifications,
-                                  color: btnColor,
-                                  size: 35,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8.0,
-                      right: 8.0,
-                      bottom: 8.0,
-                    ),
-                    child: Divider(
-                      thickness: 2,
-                      color: btnColor,
-                    ),
-                  ),
                   //Date Picker Values
                   Column(
                     children: [
@@ -334,8 +261,8 @@ class _StatsScreenState extends State<StatsScreen> {
 
                           //chart_screen(),
                           //DailyData(),
-                          const MonthlyData(),
-                          const YearlyData(),
+                          const Stats_Sector_Monthly(),
+                          const Stats_Sector_Yearly(),
                         ],
                       ),
                     ),

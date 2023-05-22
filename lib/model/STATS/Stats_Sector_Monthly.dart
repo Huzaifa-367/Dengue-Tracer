@@ -2,11 +2,11 @@ import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class MonthlyData extends StatefulWidget {
-  const MonthlyData({Key? key}) : super(key: key);
+class Stats_Sector_Monthly extends StatefulWidget {
+  const Stats_Sector_Monthly({Key? key}) : super(key: key);
 
   @override
-  State<MonthlyData> createState() => _MonthlyDataState();
+  State<Stats_Sector_Monthly> createState() => _Stats_Sector_MonthlyState();
 }
 
 class _ChartData {
@@ -16,7 +16,7 @@ class _ChartData {
   final int cases;
 }
 
-class _MonthlyDataState extends State<MonthlyData> {
+class _Stats_Sector_MonthlyState extends State<Stats_Sector_Monthly> {
   late List<_ChartData> data;
   late TooltipBehavior _tooltip;
   final List<_ChartData> _chartData = [];
@@ -30,16 +30,15 @@ class _MonthlyDataState extends State<MonthlyData> {
 
   int maxCaseValue = 0;
   void _getChartData() async {
-    var response = await Dio().get('$api/GetDengueCasesByMonth');
+    var response = await Dio()
+        .get('$api/GetDengueCasesBySectorMonth?sec_id=${loggedInUser!.sec_id}');
     if (response.statusCode == 200) {
       var data = response.data['cases'];
       maxCaseValue = response.data['maxValue'];
       for (var item in data) {
         // Trimming the time part from the date
-        var all = item['date'].toString().split('T')[0];
-        var year = all.split('-')[0];
-        var month = all.split('-')[1];
-        var trimmedDate = "$year-$month";
+        var trimmedDate = item['date'].toString().split('T')[0];
+
         _chartData.add(_ChartData(trimmedDate, item['count']));
       }
 

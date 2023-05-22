@@ -28,16 +28,24 @@ class _ChartData {
   final int cases;
 }
 
+class _SectorChartData {
+  _SectorChartData(this.datee, this.casess);
+
+  final String datee;
+  final int casess;
+}
+
 class _DengueMapState extends State<DengueMap> {
   @override
   void initState() {
     super.initState();
     _tooltip = TooltipBehavior(enable: true);
+    _tooltip2 = TooltipBehavior(enable: true);
     _getChartData();
     getGeoLocationPosition();
     _fetchPolygons();
     _getDengueUsers();
-    
+    fetchNotifications(loggedInUser!.user_id, 0);
     Timer.periodic(const Duration(minutes: 60), (Timer timer) {
       fetchNotifications(loggedInUser!.user_id, 0);
     });
@@ -46,6 +54,7 @@ class _DengueMapState extends State<DengueMap> {
 
   Set<Marker> _markers = {};
   final List<_ChartData> _chartData = [];
+
   int maxCaseValue = 0;
   List<dynamic> _users = [];
   late TooltipBehavior _tooltip;
@@ -539,6 +548,26 @@ class _DengueMapState extends State<DengueMap> {
     }
   }
 
+  final List<_SectorChartData> _SectorchartData = [];
+  late TooltipBehavior _tooltip2;
+  int maxCaseValuesec = 0;
+  void _getSectorChartData(int secId) async {
+    var response =
+        await Dio().get('$api/GetDengueCasesBySectorDate?sec_id=$secId');
+    if (response.statusCode == 200) {
+      var data = response.data['cases'];
+      maxCaseValuesec = response.data['maxValue'];
+      for (var item in data) {
+        // Trimming the time part from the date
+        var trimmedDate = item['date'].toString().split('T')[0];
+
+        _SectorchartData.add(_SectorChartData(trimmedDate, item['count']));
+      }
+
+      setState(() {});
+    }
+  }
+
   final Set<Polygon> _polygons = {};
   Future<void> _fetchPolygons() async {
     try {
@@ -598,6 +627,7 @@ class _DengueMapState extends State<DengueMap> {
                 consumeTapEvents: true,
                 onTap: loggedInUser!.role != "user"
                     ? () {
+                        _getSectorChartData(secId);
                         DraggableMenu.open(
                           context,
                           DraggableMenu(
@@ -770,6 +800,77 @@ class _DengueMapState extends State<DengueMap> {
                                             ),
                                           ),
                                         ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            TextWidget(
+                                              title: "No. Of Cases",
+                                              txtSize: 15,
+                                              txtColor: txtColor,
+                                            )
+                                          ],
+                                        ),
+                                        _SectorchartData.isEmpty
+                                            ? ShimmerListView(5)
+                                            : SfCartesianChart(
+                                                //enableAxisAnimation: true,
+                                                primaryXAxis: CategoryAxis(
+                                                  //opposedPosition: true,
+                                                  autoScrollingMode:
+                                                      AutoScrollingMode.end,
+                                                  visibleMaximum: 5,
+                                                  interval: 1,
+                                                ),
+                                                zoomPanBehavior:
+                                                    ZoomPanBehavior(
+                                                  enablePanning: true,
+                                                ),
+                                                primaryYAxis: NumericAxis(
+                                                  //numberFormat: NumberFormat('##########人'),
+
+                                                  minimum: 0,
+                                                  maximum: double.parse(
+                                                      maxCaseValuesec
+                                                          .toString()),
+                                                  interval: 1,
+                                                ),
+                                                tooltipBehavior: _tooltip2,
+                                                series: <
+                                                    ChartSeries<
+                                                        _SectorChartData,
+                                                        String>>[
+                                                  ColumnSeries<_SectorChartData,
+                                                      String>(
+                                                    dataSource:
+                                                        _SectorchartData,
+
+                                                    // emptyPointSettings: EmptyPointSettings(
+                                                    //     // Mode of empty point
+                                                    //     mode: EmptyPointMode.average),
+                                                    xValueMapper:
+                                                        (_SectorChartData data,
+                                                                _) =>
+                                                            data.datee
+                                                                .toString(),
+                                                    yValueMapper:
+                                                        (_SectorChartData data,
+                                                                _) =>
+                                                            data.casess,
+                                                    name: 'Dengue Cases',
+                                                    color: btnColor,
+                                                    borderRadius:
+                                                        const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(5.0),
+                                                      topRight:
+                                                          Radius.circular(5.0),
+                                                    ),
+                                                    //enableTooltip: true,
+                                                  ),
+                                                ],
+                                              ),
                                         const SizedBox(
                                           height: 10,
                                         ),

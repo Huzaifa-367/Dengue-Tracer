@@ -1,11 +1,8 @@
 import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
-import 'package:dengue_tracing_application/screens/Home/awareness.dart';
-import 'package:dengue_tracing_application/screens/Home/stats_screen.dart';
 import 'package:dengue_tracing_application/screens/Map/Temporal_Map.dart';
-import 'package:dengue_tracing_application/screens/Settings/Profile_Screen.dart';
 
-import 'package:flutter/material.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 
 const List<TabItem> items = [
@@ -48,7 +45,9 @@ class _DashBoardState extends State<DashBoard> {
   List<Widget> screens = [
     //const CasesMap(),
     const DengueMap(),
-    const StatsScreen(),
+    loggedInUser!.role == "user"
+        ? const Stats_Main_Screen()
+        : const Stats_All_admin_officer(),
     const Awareness(),
     const Profile_Screen(),
   ];

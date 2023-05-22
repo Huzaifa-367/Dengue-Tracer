@@ -1,7 +1,6 @@
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:http/http.dart' as http;
 
 class YearlyData extends StatefulWidget {
   const YearlyData({Key? key}) : super(key: key);
@@ -29,16 +28,22 @@ class _YearlyDataState extends State<YearlyData> {
     _getChartData();
   }
 
+  int maxCaseValue = 0;
   void _getChartData() async {
-    var response = await http.get(Uri.parse('$api/GetDengueCasesByYear'));
+    var response = await Dio().get('$api/GetDengueCasesByYear');
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      var data = response.data['cases'];
+      maxCaseValue = response.data['maxValue'];
       for (var item in data) {
         // Trimming the time part from the date
-        var trimmedDate = item['Year'].toString().split('T')[0];
+        var all = item['date'].toString().split('T')[0];
+        var year = all.split('-')[0];
+        //var month = all.split('-')[1];
+        var trimmedDate = year;
 
-        _chartData.add(_ChartData(trimmedDate, item['Count']));
+        _chartData.add(_ChartData(trimmedDate, item['count']));
       }
+
       setState(() {});
     }
   }
@@ -67,7 +72,7 @@ class _YearlyDataState extends State<YearlyData> {
                 ),
                 primaryYAxis: NumericAxis(
                   minimum: 0,
-                  maximum: 50,
+                  maximum: double.parse(maxCaseValue.toString()),
                   interval: 1,
                 ),
                 tooltipBehavior: _tooltip,

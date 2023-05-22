@@ -69,6 +69,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8.0,
+                      right: 8.0,
+                      //bottom: 8.0,
+                    ),
+                    child: Divider(
+                      thickness: 2,
+                      color: btnColor,
+                    ),
+                  ),
                   SizedBox(
                     height: 940,
                     width: 500,
