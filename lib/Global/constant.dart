@@ -39,7 +39,7 @@ Color yellowopcN = const Color.fromARGB(255, 216, 202, 74);
 Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
 //GLOBAL
-String? ip = "192.168.10.86";
+String? ip = "192.168.184.34";
 String api = 'http://$ip/FYP_Api/API/SERVER';
 String imgpath = 'http://$ip//FYP_Api/Images/';
 User? loggedInUser;

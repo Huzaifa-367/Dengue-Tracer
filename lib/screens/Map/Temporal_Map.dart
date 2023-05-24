@@ -627,7 +627,9 @@ class _DengueMapState extends State<DengueMap> {
                 consumeTapEvents: true,
                 onTap: loggedInUser!.role != "user"
                     ? () {
-                        _SectorchartData.clear();
+                        setState(() {
+                          _SectorchartData.clear();
+                        });
                         _getSectorChartData(secId);
                         DraggableMenu.open(
                           context,
