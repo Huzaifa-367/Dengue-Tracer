@@ -63,12 +63,9 @@ bool? isfinger;
 double? percentage = 0.0;
 //User? loggedInUsercopy;
 String mapapikey = "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw";
-String placesapikey = "AIzaSyC4ROPfl3Pl-cq301ysofPDTeHWjgvtd_M";
 //
 // place search
 PredictionModel? prediction;
-
-
 
 //RESET
 String? otp;
