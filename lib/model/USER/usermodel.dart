@@ -5,6 +5,8 @@ import 'package:dengue_tracing_application/Global/constant.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../MAP/Map_API.dart';
+
 class User {
   String? name, phone_number, email, password, role, home_location;
   //,office_location;
@@ -15,6 +17,8 @@ class User {
   DateTime? endDate;
   int? sec_id;
   late int user_id;
+  //officer
+  var sectors;
   User();
   User.fromMap(Map<String, dynamic> map) {
     sec_id = map['sec_id'];
@@ -29,10 +33,22 @@ class User {
     phone_number = map["phone_number"];
     sec_name = map['sec_name'];
     sec_description = map['description'];
+    //User
     startDate =
         map['startdate'] != null ? DateTime.parse(map['startdate']) : null;
     status = map['status'];
     endDate = map['enddate'] != null ? DateTime.parse(map['enddate']) : null;
+    //officer
+    List<Sectors> sectorsList = [];
+    if (map['sectors'] != null) {
+      var sectorsData = map['sectors'];
+      if (sectorsData is List) {
+        for (var sectorData in sectorsData) {
+          sectorsList.add(Sectors.fromMap(sectorData));
+        }
+      }
+    }
+    sectors = sectorsList;
   }
 
   // Future<String?> login() async {

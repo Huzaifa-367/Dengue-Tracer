@@ -48,8 +48,10 @@ export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Office
 export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/officer_add_Screen.dart';
 export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/Officer_Edit_Screen.dart';
 export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/officer_view.dart';
+// export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/Location_Verify_Map.dart';
+
 //Settins/Admin_Officer/Sectors
-export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Sectors/Sectors_Add_Screen_Now.dart';
+export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Sectors/Sectors_Add_Screen.dart';
 export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Sectors/SectorsDropDown.dart';
 export 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Sectors/view_sectors.dart';
 //Settins/Admin_Officer/Sectors/Testings

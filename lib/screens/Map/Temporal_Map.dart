@@ -126,7 +126,7 @@ class _DengueMapState extends State<DengueMap> {
   //
   GoogleMapController? _control;
   //
-  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+  //final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
   //
 
   MapPickerController mapPickerController = MapPickerController();
@@ -137,9 +137,10 @@ class _DengueMapState extends State<DengueMap> {
   );
   //
 //
+
   var addressController = TextEditingController();
   //
-
+  bool? isSearched = false;
   // List<dynamic> _users = [];
   // Set<Marker> _markers = {};
 
@@ -170,6 +171,7 @@ class _DengueMapState extends State<DengueMap> {
   //     throw Exception('Failed to fetch dengue users.');
   //   }
   // }
+
   Future<void> _getDengueUsers() async {
     final String apiUrl = '$api/GetDengueUsers';
     final response = await http.get(Uri.parse(apiUrl));
@@ -1077,6 +1079,25 @@ class _DengueMapState extends State<DengueMap> {
 //   }
 //   return null;
 // }
+
+  Widget _line({required String title, required String subTitle}) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: "$title: ",
+            style: const TextStyle(
+                fontWeight: FontWeight.w800, color: Colors.black, fontSize: 20),
+          ),
+          TextSpan(
+            text: " $subTitle",
+            style: const TextStyle(color: Colors.black, fontSize: 15),
+          ),
+        ],
+      ),
+    );
+  }
+
   bool? ismoving = false;
   @override
   Widget build(BuildContext context) {
@@ -1102,14 +1123,19 @@ class _DengueMapState extends State<DengueMap> {
                   //indoorViewEnabled: true,
                   //liteModeEnabled: true,
                   buildingsEnabled: true,
-                  //zoomGesturesEnabled: true,
                   myLocationEnabled: true,
                   zoomControlsEnabled: false,
+                  zoomGesturesEnabled: true, //enable Zoom in, out on map
                   // hide location button
                   myLocationButtonEnabled: true,
                   // mapToolbarEnabled: true,
                   //trafficEnabled: true,
                   mapType: MapType.normal,
+
+                  markers: _markers,
+                  //polygons: getPolygons(context),
+                  polygons: _polygons,
+
                   //  camera position
                   initialCameraPosition: cameraPosition,
                   onMapCreated: (GoogleMapController controller) {
@@ -1118,9 +1144,6 @@ class _DengueMapState extends State<DengueMap> {
                     _customInfoWindowController.googleMapController =
                         controller;
                   },
-                  markers: _markers,
-                  //polygons: getPolygons(context),
-                  polygons: _polygons,
 
                   onCameraMoveStarted: () {
                     // notify map is moving
@@ -1135,6 +1158,7 @@ class _DengueMapState extends State<DengueMap> {
                     this.cameraPosition = cameraPosition;
                     _customInfoWindowController.onCameraMove!();
                   },
+
                   onCameraIdle: () async {
                     // notify map stopped moving
                     mapPickerController.mapFinishedMoving!();
@@ -1154,6 +1178,8 @@ class _DengueMapState extends State<DengueMap> {
                   },
                 ),
               ),
+              //
+              //Stats Chart
               ismoving! == false
                   ? Positioned(
                       top: 60,
@@ -1216,24 +1242,51 @@ class _DengueMapState extends State<DengueMap> {
               ////
               /////
               // //My Address Field
-              //My Address Field
+              //My Address Field +Search
               Positioned(
                 top: MediaQuery.of(context).viewPadding.top + 10,
                 width: MediaQuery.of(context).size.width - 70,
                 height: 150,
                 left: 15,
-                child: MyTextField_ReadOnly(
-                  maxlines: 1,
-                  readonly: true,
-                  controller: addressController,
-                  hintText: "Location",
+                child: SizedBox(
+                  width: 270,
+                  child: MyTextField_ReadOnly(
+                    maxlines: 1,
+                    readonly: true,
+                    controller: addressController,
+                    hintText: "Location",
 
-                  sufixIconPress: () {
-                    addressController.text =
-                        "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
-                  },
-                  //prefixIcon: const Icon(Icons.map),
-                  sufixIcon: Icons.arrow_forward_rounded,
+                    sufixIconPress: () {
+                      // addressController.text =
+                      //     "${cameraPosition.target.latitude}, ${cameraPosition.target.longitude}";
+                      setState(() {
+                        prediction = null;
+                      });
+
+                      AwesomePlaceSearch(
+                        context: context,
+                        key: mapapikey,
+                        onTap: (value) async {
+                          final va = await value;
+                          setState(() {
+                            prediction = va;
+                            // isSearched = true;
+                            _control
+                                ?.animateCamera(CameraUpdate.newCameraPosition(
+                              CameraPosition(
+                                target: LatLng(prediction!.latitude!,
+                                    prediction!.longitude!),
+                                zoom: 13.8,
+                              ),
+                              //17 is new zoom level
+                            ));
+                          });
+                        },
+                      ).show();
+                    },
+                    //prefixIcon: const Icon(Icons.map),
+                    sufixIcon: Icons.search_rounded,
+                  ),
                 ),
               ),
 

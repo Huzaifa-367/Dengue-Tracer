@@ -60,6 +60,42 @@ class Sector {
   }
 }
 
+class Sectors {
+  String? sec_name, sec_description;
+
+  int? sec_id;
+
+  //officer
+  var sectors;
+  Sectors();
+  Sectors.fromMap(Map<String, dynamic> map) {
+    sec_id = map['sec_id'];
+    sec_name = map['sec_name'];
+    sec_description = map['description'];
+    
+    //officer
+    List<Sectors> sectorsList = [];
+    if (map['sectors'] != null) {
+      var sectorsData = map['sectors'];
+      if (sectorsData is List) {
+        for (var sectorData in sectorsData) {
+          sectorsList.add(Sectors.fromMap(sectorData));
+        }
+      }
+    }
+    sectors = sectorsList;
+  }
+
+  Map<String, dynamic> tomap() {
+    return <String, dynamic>{
+      'sec_id': sec_id,
+
+      // "sec_name": sec_name,
+      // "description": sec_description,
+    };
+  }
+}
+
 Future<Position> getGeoLocationPosition() async {
   bool serviceEnabled;
   LocationPermission permission;

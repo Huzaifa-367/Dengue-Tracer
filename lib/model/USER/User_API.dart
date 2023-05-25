@@ -1,21 +1,18 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Widgets/SnackBar_widget.dart';
 import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
-import 'package:dengue_tracing_application/screens/Authentication/Login.dart';
 import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 import '../../Global/constant.dart';
-import '../../screens/Home/dashboard.dart';
-import '../../screens/Authentication/Otp_Screen.dart';
 
 import 'package:local_auth/local_auth.dart';
 
 final LocalAuthentication _auth = LocalAuthentication();
 
-Future<bool> _authenticateWithFingerprint() async {
+Future<bool> authenticateWithFingerprint() async {
   bool authenticated = false;
 
   bool isFingerprintAvailable = await _auth.canCheckBiometrics;
@@ -37,7 +34,7 @@ Future<bool> _authenticateWithFingerprint() async {
 login(email, password, isremember, context) async {
   try {
     if (isremember == true) {
-      bool authenticated = await _authenticateWithFingerprint();
+      bool authenticated = await authenticateWithFingerprint();
       if (authenticated) {
         var response = await Dio().get(
           '$api/Login?email=$email&password=$password',
@@ -154,6 +151,31 @@ signUp(User u, context) async {
   }
 }
 
+profileUpdate(User u, context) async {
+  FormData data = FormData.fromMap(u.tomap());
+  var response = await Dio().post(
+    '$api/ProfileUpdate',
+    data: data,
+    options: Options(
+      headers: {
+        "Content-Type": "application/json",
+      },
+    ),
+  );
+  if (response.statusCode == 200) {
+    if (response.data == "Failed") {
+      snackBar(context, "Failed to update your profile.");
+    } else {
+      snackBar(context, "Your Profile is updated successfully.");
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const Profile_Screen(),
+        ),
+      );
+      snackBar(context, "Please Re-login to view updates.");
+    }
+  }
+}
 // Future<void> signUp(User u, context) async {
 //   final Map<String, dynamic> userData = u.tomap();
 //   try {

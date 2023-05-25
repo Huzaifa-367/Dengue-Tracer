@@ -1,10 +1,13 @@
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets/Button_Widget_Api.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Testing_Screen.dart';
-
+import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../model/USER/usermodel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -71,6 +74,97 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   //Shared Preference End
+
+  bool isLoading = false;
+
+  Future<void> login(String email, String password, bool isRemember,
+      BuildContext context) async {
+    // Your login logic here
+    try {
+      if (isRemember == true) {
+        bool authenticated = await authenticateWithFingerprint();
+        if (authenticated) {
+          var response = await Dio().get(
+            '$api/Login?email=$email&password=$password',
+          );
+
+          if (response.statusCode == 200) {
+            //log(response.data);
+            if (response.data != 'false') {
+              // Save the email and password to shared preferences
+              final List<dynamic> dataList = response.data;
+              // Parse the first item in the list as a Map
+              final Map<String, dynamic> dataMap = dataList.first;
+              // Create a new User object from the map
+              loggedInUser = User.fromMap(dataMap);
+              // Navigate to dashboard screen with loggedInUser data
+              _proceedToDashboard(context);
+              fetchNotifications(loggedInUser!.user_id, 0);
+            } else {
+              snackBar(context, "Incorrect Email or Password.");
+            }
+          } else {
+            snackBar(context, "Failed to connect to the server.");
+          }
+        } else {
+          snackBar(context, "Fingerprint Authentication is not saved.");
+        }
+      } else {
+        var response = await Dio().get(
+          '$api/Login?email=$email&password=$password',
+        );
+
+        if (response.statusCode == 200) {
+          //log(response.data);
+          if (response.data != 'false') {
+            // Save the email and password to shared preferences
+            final List<dynamic> dataList = response.data;
+            // Parse the first item in the list as a Map
+            final Map<String, dynamic> dataMap = dataList.first;
+            // Create a new User object from the map
+            loggedInUser = User.fromMap(dataMap);
+            // Navigate to dashboard screen with loggedInUser data
+            _proceedToDashboard(context);
+          } else {
+            snackBar(context, "Incorrect Email or Password.");
+          }
+        } else {
+          snackBar(context, "Failed to connect to the server.");
+        }
+      }
+    } catch (e) {
+      snackBar(context, "An error occurred: ");
+    }
+    // This is just a placeholder
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      isLoading = false;
+    });
+
+    // Navigate to the next screen or show a snackbar
+  }
+
+  void _proceedToDashboard(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const DashBoard(),
+      ),
+    );
+  }
+
+  Future<void> loginWithLoadingAnimation() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    // Call the login function or API
+    await login(emailcont.text, passwordcont.text, isRemember!, context);
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -240,37 +334,44 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 50,
                           width: 250,
-                          child: ButtonWidget(
+                          // child: ButtonWidget(
+
+                          //   btnText: "Login",
+                          //   onPress: (() async {
+                          //     emailcont.text != ""
+                          //         ? await login(
+                          //             emailcont.text,
+                          //             passwordcont.text,
+                          //             isRemember,
+                          //             context,
+                          //           )
+                          //         : snackBar(context,
+                          //             "Please enter email & password!");
+                          //     // User u = User();
+                          //     // u.email = emailcont.text;
+                          //     // u.password = passwordcont.text;
+                          //     // String? response = await u.login();
+                          //     // if (response == null) {
+                          //     //   //show alert of error
+                          //     // } else if (response == "\"false\"") {
+                          //     //   //show alert invalued email password
+                          //     // } else {
+                          //     //   dynamic map = jsonDecode(response);
+                          //     //   //String role = map["role"].toLowerCase();
+                          //     //   String email = map["email"];
+                          //     //   String password = map['password'];
+
+                          //     //   User u = User.fromMap(map);
+                          //     //setState(() {});
+
+                          //     // }
+                          //   }),
+                          // ),
+
+                          child: ButtonApiWidget(
                             btnText: "Login",
-                            onPress: (() async {
-                              emailcont.text != ""
-                                  ? await login(
-                                      emailcont.text,
-                                      passwordcont.text,
-                                      isRemember,
-                                      context,
-                                    )
-                                  : snackBar(context,
-                                      "Please enter email & password!");
-                              // User u = User();
-                              // u.email = emailcont.text;
-                              // u.password = passwordcont.text;
-                              // String? response = await u.login();
-                              // if (response == null) {
-                              //   //show alert of error
-                              // } else if (response == "\"false\"") {
-                              //   //show alert invalued email password
-                              // } else {
-                              //   dynamic map = jsonDecode(response);
-                              //   //String role = map["role"].toLowerCase();
-                              //   String email = map["email"];
-                              //   String password = map['password'];
-
-                              //   User u = User.fromMap(map);
-                              //setState(() {});
-
-                              // }
-                            }),
+                            onPress: loginWithLoadingAnimation,
+                            isloading: isLoading,
                           ),
                         ),
                         const Spacer(),
@@ -278,9 +379,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () async {
                             isRemember == true && savedEmail != ""
                                 ? await login(
-                                    savedEmail,
-                                    savedPassword,
-                                    isRemember,
+                                    savedEmail!,
+                                    savedPassword!,
+                                    isRemember!,
                                     context,
                                   )
                                 : snackBar(

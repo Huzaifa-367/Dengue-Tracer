@@ -1,3 +1,4 @@
+import 'package:awesome_place_search/awesome_place_search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -39,11 +40,15 @@ Color yellowopcN = const Color.fromARGB(255, 216, 202, 74);
 Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
 //GLOBAL
-String? ip = "192.168.184.34";
+//Ahsan Mobile
+//const String ip = "192.168.184.34";
+// PTCL-5G
+const String ip = "192.168.10.86";
+//
 String api = 'http://$ip/FYP_Api/API/SERVER';
 String imgpath = 'http://$ip//FYP_Api/Images/';
 User? loggedInUser;
-
+var apiresponse;
 //Login
 bool? isRemember = false;
 //
@@ -58,6 +63,12 @@ bool? isfinger;
 double? percentage = 0.0;
 //User? loggedInUsercopy;
 String mapapikey = "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw";
+String placesapikey = "AIzaSyC4ROPfl3Pl-cq301ysofPDTeHWjgvtd_M";
+//
+// place search
+PredictionModel? prediction;
+
+
 
 //RESET
 String? otp;

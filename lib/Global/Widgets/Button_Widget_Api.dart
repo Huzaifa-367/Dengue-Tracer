@@ -1,14 +1,12 @@
-import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:flutter/material.dart';
+import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
+import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
-import 'Loading_Animation.dart';
-
-class ButtonWidget extends StatelessWidget {
+class ButtonApiWidget extends StatefulWidget {
   final String btnText;
   final VoidCallback onPress;
   bool? isloading = false;
 
-  ButtonWidget({
+  ButtonApiWidget({
     Key? key,
     required this.btnText,
     required this.onPress,
@@ -16,24 +14,29 @@ class ButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _ButtonApiWidgetState createState() => _ButtonApiWidgetState();
+}
+
+class _ButtonApiWidgetState extends State<ButtonApiWidget> {
+  @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPress,
+      onPressed: widget.isloading == true ? null : widget.onPress,
       style: ElevatedButton.styleFrom(
         shadowColor: const Color.fromARGB(255, 237, 137, 144),
-        //primary: Theme.of(context).secondaryHeaderColor,
         backgroundColor: btnColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
         ),
       ),
-      child: isloading == true
+      child: widget.isloading == true
           ? const SpinKitWave(
+              size: 20,
               color: Colors.white,
               type: SpinKitWaveType.start,
             )
           : Text(
-              btnText.toUpperCase(),
+              widget.btnText.toUpperCase(),
               style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w900,

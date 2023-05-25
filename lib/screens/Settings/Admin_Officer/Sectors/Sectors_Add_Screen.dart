@@ -45,6 +45,19 @@ class _PolygonSaverState extends State<PolygonSaver> {
     });
   }
 
+  void _removeLastPoint() {
+    if (_currentPolygon.isNotEmpty) {
+      setState(() {
+        _currentPolygon.removeLast();
+        final List<Marker> markerList = _markers.toList();
+        markerList.removeLast();
+        _markers.clear();
+        _markers.addAll(markerList);
+        _updatePolygons();
+      });
+    }
+  }
+
   void _updatePolygons() {
     final Polygon newPolygon = Polygon(
       polygonId: PolygonId(_currentPolygon.toString()),
@@ -335,17 +348,28 @@ class _PolygonSaverState extends State<PolygonSaver> {
           ),
         ],
       ),
-      floatingActionButton: Stack(
-        children: [
-          Positioned(
-            bottom: 20,
-            left: 140,
-            child: ButtonWidget(
-              btnText: _isDrawing ? "Drawing" : "Add New",
-              onPress: _toggleDrawing,
+      floatingActionButton: SizedBox(
+        height: 80,
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 20,
+              right: 80,
+              child: ButtonWidget(
+                onPress: _removeLastPoint,
+                btnText: 'Undo',
+              ),
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 20,
+              left: 100,
+              child: ButtonWidget(
+                btnText: _isDrawing ? "Drawing" : "Add New",
+                onPress: _toggleDrawing,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
