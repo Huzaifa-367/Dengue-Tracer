@@ -316,8 +316,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         ),
                       );
                       setState(() {
-                        final LocSecid = LocId.split('-');
-                        home_loccont.text = LocSecid[0];
+                        String? LocSecid = LocId.split('-');
+                        home_loccont.text = LocSecid![0];
                         sec_id = LocSecid[1] == "You,re not in our Sectors."
                             ? null
                             : int.parse(LocSecid[1]);
@@ -348,6 +348,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           //u.role = role;
                           u.name = namecont.text;
                           u.email = emailcont.text;
+                          u.role = loggedInUser!.role;
                           u.phone_number = phonecont.text;
                           u.password = passwordcont.text;
                           u.home_location = home_loccont.text;

@@ -2,10 +2,9 @@
 
 import 'dart:io';
 import 'package:dengue_tracing_application/Global/constant.dart';
+import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 
 import 'package:http/http.dart' as http;
-
-import '../MAP/Map_API.dart';
 
 class User {
   String? name, phone_number, email, password, role, home_location;
@@ -38,17 +37,21 @@ class User {
         map['startdate'] != null ? DateTime.parse(map['startdate']) : null;
     status = map['status'];
     endDate = map['enddate'] != null ? DateTime.parse(map['enddate']) : null;
-    //officer
-    List<Sectors> sectorsList = [];
-    if (map['sectors'] != null) {
-      var sectorsData = map['sectors'];
-      if (sectorsData is List) {
-        for (var sectorData in sectorsData) {
-          sectorsList.add(Sectors.fromMap(sectorData));
+
+    if (role == "officer") {
+      //officer
+      //Needs Working
+      List<Sectors> sectorsList = [];
+      if (map['sectors'] != null) {
+        var sectorsData = map['sectors'];
+        if (sectorsData is List) {
+          for (var sectorData in sectorsData) {
+            sectorsList.add(Sectors.fromMap(sectorData));
+          }
         }
       }
+      sectors = sectorsList;
     }
-    sectors = sectorsList;
   }
 
   // Future<String?> login() async {

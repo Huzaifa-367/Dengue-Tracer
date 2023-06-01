@@ -1,4 +1,6 @@
 import 'package:awesome_place_search/awesome_place_search.dart';
+//
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -40,6 +42,9 @@ Color yellowopcN = const Color.fromARGB(255, 216, 202, 74);
 Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
 //GLOBAL
+//Xperia 5 II
+//const String ip = "192.168.251.34";
+//
 //Ahsan Mobile
 //const String ip = "192.168.184.34";
 // PTCL-5G
@@ -62,7 +67,7 @@ bool? isfinger;
 //MAP
 double? percentage = 0.0;
 //User? loggedInUsercopy;
-String mapapikey = "AIzaSyDdb1AI9QsduWLWJs-Dx4_MaPL3VO4XPdw";
+String mapapikey = "AIzaSyCvhbfvGx_1tXHprSZ4RTUfxySdtM9u0uo";
 //
 // place search
 PredictionModel? prediction;
@@ -117,3 +122,41 @@ const kPrimaryColor = Color(0xFF6F35A5);
 const kPrimaryLightColor = Color(0xFFF1E6FF);
 
 const double defaultPadding = 16.0;
+
+class Constants {
+  // Name
+  static String appName = "Rhinestone";
+
+  // Material Design Color
+  static Color lightPrimary = const Color(0xfffcfcff);
+  static Color lightAccent = const Color(0xFF3B72FF);
+  static Color lightBackground = const Color(0xfffcfcff);
+
+  static Color darkPrimary = Colors.black;
+  static Color darkAccent = const Color(0xFF3B72FF);
+  static Color darkBackground = Colors.black;
+
+  static Color grey = const Color(0xff707070);
+  static Color textPrimary = const Color(0xFF486581);
+  static Color textDark = const Color(0xFF102A43);
+
+  static Color backgroundColor = const Color(0xFFF5F5F7);
+
+  // Green
+  static Color darkGreen = const Color(0xFF3ABD6F);
+  static Color lightGreen = const Color(0xFFA1ECBF);
+
+  // Yellow
+  static Color darkYellow = const Color(0xFF3ABD6F);
+  static Color lightYellow = const Color(0xFFFFDA7A);
+
+  // Blue
+  static Color darkBlue = const Color(0xFF3B72FF);
+  static Color lightBlue = const Color(0xFF3EC6FF);
+
+  // Orange
+  static Color darkOrange = const Color(0xFFFFB74D);
+
+  static double headerHeight = 228.5;
+  static double paddingSide = 30.0;
+}

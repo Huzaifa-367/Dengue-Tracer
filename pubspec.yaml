@@ -46,7 +46,7 @@ dependencies:
   syncfusion_flutter_datagrid: ^20.4.49
   flutter_custom_selector: ^0.0.3
   scrollable_table_view: ^1.0.1
-  google_maps_flutter: ^2.2.3
+  google_maps_flutter: ^2.2.8
   #google_maps_place_picker_mb: ^3.0.1
   permission_handler: ^10.2.0
   image_picker: ^0.8.6+1
@@ -85,6 +85,8 @@ dependencies:
   draggable_customized_btn_navy_bar: ^1.0.1+2
   awesome_notifications: ^0.6.19
   awesome_place_search: ^1.0.8
+  
+  #awesome_place_search: ^1.0.8
 
   #starlight_notification: ^0.0.2s
 

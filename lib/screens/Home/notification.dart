@@ -94,69 +94,65 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               ? ListView.builder(
                                   itemCount: notifitems!.length,
                                   itemBuilder: (context, index) {
-                                    return loggedInUser!.user_id ==
-                                                notifitems![index].user_id &&
-                                            loggedInUser!.sec_id ==
-                                                notifitems![index].sec_id
-                                        ? Card(
-                                            color: notifitems![index].percnt !=
-                                                        null &&
-                                                    notifitems![index].type!
-                                                ? bkColor
-                                                : null,
-                                            child: ListTile(
-                                              leading: notifitems![index].type!
-                                                  ? Icon(
-                                                      Icons.warning,
-                                                      color: btnColor,
-                                                      size: 35,
-                                                    )
-                                                  : Icon(
-                                                      Icons.campaign_rounded,
-                                                      color: btnColor,
-                                                      size: 35,
-                                                    ),
-                                              title: Text(
-                                                notifitems![index].percnt !=
-                                                        null
-                                                    ? "Cases reached ${notifitems![index].percnt}% in Sector: ${notifitems![index].sec_name}."
-                                                    : "New case in your range.",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  color:
-                                                      notifitems![index].type!
-                                                          ? btnColor
-                                                          : txtColor,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                              subtitle: Text(
-                                                "${notifitems![index].date}",
-                                                //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
-                                                  color: txtColor,
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                              trailing: TextButton(
-                                                onPressed: () {},
-                                                //  onPressed: incrementCounter(controller),
-                                                child: Text(
-                                                  "View Detail",
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    color:
-                                                        notifitems![index].type!
-                                                            ? btnColor
-                                                            : txtColor,
-                                                    fontSize: 10,
+                                    return Card(
+                                      color: notifitems![index].percnt !=
+                                                  null &&
+                                              notifitems![index].percnt! >= 75
+                                          ? bkColor
+                                          : null,
+                                      child: ListTile(
+                                        leading:
+                                            notifitems![index].percnt != null
+                                                ? Icon(
+                                                    Icons.warning,
+                                                    color: btnColor,
+                                                    size: 35,
+                                                  )
+                                                : Icon(
+                                                    Icons.campaign_rounded,
+                                                    color: btnColor,
+                                                    size: 35,
                                                   ),
-                                                ),
-                                              ),
+                                        title: Text(
+                                          notifitems![index].percnt != null
+                                              ? "Cases reached ${notifitems![index].percnt}% in Sector: ${notifitems![index].sec_name}."
+                                              : "New case in your range.",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: notifitems![index].percnt !=
+                                                    null
+                                                ? btnColor
+                                                : txtColor,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          "${notifitems![index].date}",
+                                          //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            color: txtColor,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        trailing: TextButton(
+                                          onPressed: () {},
+                                          //  onPressed: incrementCounter(controller),
+                                          child: Text(
+                                            "View Detail",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color:
+                                                  notifitems![index].percnt !=
+                                                          null
+                                                      ? btnColor
+                                                      : txtColor,
+                                              fontSize: 10,
                                             ),
-                                          )
-                                        : const SizedBox();
+                                          ),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 )
                               : ListView.builder(
@@ -197,7 +193,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             fontSize: 12,
                                           ),
                                         ),
-                                        trailing: notifitems![index].type!
+                                        trailing: notifitems![index].type! ==
+                                                true
                                             ? TextButton(
                                                 onPressed: () {
                                                   Navigator.of(context).push(

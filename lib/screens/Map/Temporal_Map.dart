@@ -45,9 +45,9 @@ class _DengueMapState extends State<DengueMap> {
     getGeoLocationPosition();
     _fetchPolygons();
     _getDengueUsers();
-    fetchNotifications(loggedInUser!.user_id, 0);
-    Timer.periodic(const Duration(minutes: 60), (Timer timer) {
-      fetchNotifications(loggedInUser!.user_id, 0);
+    fetchNotifications(loggedInUser!.user_id, 2);
+    Timer.periodic(const Duration(minutes: 30), (Timer timer) {
+      fetchNotifications(loggedInUser!.user_id, 2);
     });
     // loadDengueCases();
   }
@@ -81,18 +81,25 @@ class _DengueMapState extends State<DengueMap> {
   ];
 
   void _getChartData() async {
+    _chartData.clear();
     var response = await Dio().get('$api/GetDengueCasesByDate');
     if (response.statusCode == 200) {
       var data = response.data['cases'];
       maxCaseValue = response.data['maxValue'];
       for (var item in data) {
         // Trimming the time part from the date
-        var trimmedDate = item['date'].toString().split('T')[0];
 
+        //var trimmedDate = item['date'].toString().split('T')[0];
+
+        var all = item['date'].toString().split('T')[0];
+        //var year = all.split('-')[0];
+        var month = all.split('-')[1];
+        var date = all.split('-')[2];
+        var trimmedDate = "$date-$month";
+        // var trimmedDate = date;
         _chartData.add(_ChartData(trimmedDate, item['count']));
       }
-
-      setState(() {});
+      //  setState(() {});
     }
   }
 
@@ -522,9 +529,9 @@ class _DengueMapState extends State<DengueMap> {
     });
     if (percentage! >= 100) {
       return redopcN;
-    } else if (percentage! > 75 && percentage! <= 100) {
+    } else if (percentage! >= 80 && percentage! <= 100) {
       return redopc;
-    } else if (percentage! > 50 && percentage! <= 75) {
+    } else if (percentage! > 50 && percentage! <= 80) {
       return orangeopc;
     } else if (percentage! > 25 && percentage! <= 50) {
       return yellowopc;
@@ -535,13 +542,13 @@ class _DengueMapState extends State<DengueMap> {
 
   Color getstrokeColor(threshold, totalCases) {
     final value = (totalCases / threshold) * 100;
-    setState(() {
-      //
-      //
-    });
-    if (value > 75 && value <= 100) {
+    // setState(() {
+    //   //
+    //   //
+    // });
+    if (value >= 80 && value <= 100) {
       return redopcN;
-    } else if (value > 50 && value <= 75) {
+    } else if (value > 50 && value <= 79) {
       return orangeopcN;
     } else if (value > 25 && value <= 50) {
       return yellowopcN;
@@ -553,7 +560,7 @@ class _DengueMapState extends State<DengueMap> {
   final List<_SectorChartData> _SectorchartData = [];
   late TooltipBehavior _tooltip2;
   int maxCaseValuesec = 0;
-  void _getSectorChartData(int secId) async {
+  _getSectorChartData(int secId) async {
     var response =
         await Dio().get('$api/GetDengueCasesBySectorDate?sec_id=$secId');
     if (response.statusCode == 200) {
@@ -565,8 +572,6 @@ class _DengueMapState extends State<DengueMap> {
 
         _SectorchartData.add(_SectorChartData(trimmedDate, item['count']));
       }
-
-      setState(() {});
     }
   }
 
@@ -629,365 +634,397 @@ class _DengueMapState extends State<DengueMap> {
                 consumeTapEvents: true,
                 onTap: loggedInUser!.role != "user"
                     ? () {
-                        setState(() {
-                          _SectorchartData.clear();
-                        });
-                        _getSectorChartData(secId);
+                        _SectorchartData.clear();
+
                         DraggableMenu.open(
                           context,
                           DraggableMenu(
-                            color: tbtnColor,
-                            uiType: DraggableMenuUiType.softModern,
-                            expandable: true,
-                            fastDrag: true,
-                            minimizeBeforeFastDrag: true,
-                            expandedHeight:
-                                MediaQuery.of(context).size.height * 0.72,
-                            maxHeight:
-                                MediaQuery.of(context).size.height * 0.36,
-                            child: ScrollableManager(
-                              enableExpandedScroll: true,
-                              child: Scaffold(
-                                backgroundColor: ScfColor,
-                                body: Padding(
-                                  padding: const EdgeInsets.all(18.0),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      // mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Wrap(
+                              color: tbtnColor,
+                              uiType: DraggableMenuUiType.softModern,
+                              expandable: true,
+                              fastDrag: true,
+                              minimizeBeforeFastDrag: true,
+                              expandedHeight:
+                                  MediaQuery.of(context).size.height * 0.72,
+                              maxHeight:
+                                  MediaQuery.of(context).size.height * 0.36,
+                              child: FutureBuilder(
+                                future: _getSectorChartData(secId),
+                                builder: (context, snapshot) =>
+                                    ScrollableManager(
+                                  enableExpandedScroll: true,
+                                  child: Scaffold(
+                                    backgroundColor: ScfColor,
+                                    body: Padding(
+                                      padding: const EdgeInsets.all(18.0),
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          // mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                  Wrap(
                                                     children: [
-                                                      //Sector Name
-                                                      Row(
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
-                                                          const Text(
-                                                            "Sector Name: ",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              color: grey,
-                                                              fontSize: 15,
-                                                            ),
+                                                          //Sector Name
+                                                          Row(
+                                                            children: [
+                                                              const Text(
+                                                                "Sector Name: ",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  color: grey,
+                                                                  fontSize: 15,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                secName,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  color:
+                                                                      txtColor,
+                                                                  fontSize: 13,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          Text(
-                                                            secName,
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              color: txtColor,
-                                                              fontSize: 13,
-                                                            ),
+                                                          //Threshold
+                                                          Row(
+                                                            children: [
+                                                              const Text(
+                                                                "Threshold: ",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  color: grey,
+                                                                  fontSize: 15,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "$threshold",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  color:
+                                                                      txtColor,
+                                                                  fontSize: 13,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          //Total Cases
+                                                          Row(
+                                                            children: [
+                                                              const Text(
+                                                                "Total Cases: ",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  color: grey,
+                                                                  fontSize: 15,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "$totalCases",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  color:
+                                                                      txtColor,
+                                                                  fontSize: 13,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
-                                                      //Threshold
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            "Threshold: ",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              color: grey,
-                                                              fontSize: 15,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "$threshold",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              color: txtColor,
-                                                              fontSize: 13,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                      const SizedBox(
+                                                        width: 8,
                                                       ),
-                                                      //Total Cases
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            "Total Cases: ",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              color: grey,
-                                                              fontSize: 15,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "$totalCases",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                              color: txtColor,
-                                                              fontSize: 13,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                      CircularPercentIndicator(
+                                                        radius: 30.0,
+                                                        lineWidth: 10.0,
+                                                        animation: true,
+                                                        percent: (totalCases /
+                                                            threshold),
+                                                        center: Text(
+                                                          "${((totalCases / threshold) * 100).truncate()}%",
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      13.0),
+                                                        ),
+                                                        footer: TextWidget(
+                                                          title:
+                                                              "Cases Reached",
+                                                          txtSize: 12,
+                                                          txtColor: txtColor,
+                                                        ),
+                                                        circularStrokeCap:
+                                                            CircularStrokeCap
+                                                                .round,
+                                                        progressColor:
+                                                            getstrokeColor(
+                                                                threshold,
+                                                                totalCases),
                                                       ),
                                                     ],
                                                   ),
-                                                  const SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  CircularPercentIndicator(
-                                                    radius: 30.0,
-                                                    lineWidth: 10.0,
-                                                    animation: true,
-                                                    percent: (totalCases /
-                                                        threshold),
-                                                    center: Text(
-                                                      "${((totalCases / threshold) * 100).truncate()}%",
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 13.0),
-                                                    ),
-                                                    footer: TextWidget(
-                                                      title: "Cases Reached",
-                                                      txtSize: 12,
-                                                      txtColor: txtColor,
-                                                    ),
-                                                    circularStrokeCap:
-                                                        CircularStrokeCap.round,
-                                                    progressColor:
-                                                        getstrokeColor(
-                                                            threshold,
-                                                            totalCases),
-                                                  ),
-                                                ],
+                                                ]),
+                                            const Text(
+                                              "Description",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                color: grey,
+                                                fontSize: 15,
                                               ),
-                                            ]),
-                                        const Text(
-                                          "Description",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            color: grey,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 110,
-                                          width: 450,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: ScfColor2,
-                                          ),
-                                          child: SingleChildScrollView(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Text(
-                                                description,
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  color: grey,
-                                                  fontSize: 12,
+                                            ),
+                                            Container(
+                                              height: 110,
+                                              width: 450,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: ScfColor2,
+                                              ),
+                                              child: SingleChildScrollView(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: Text(
+                                                    description,
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      color: grey,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          children: [
-                                            TextWidget(
-                                              title: "No. Of Cases",
-                                              txtSize: 15,
-                                              txtColor: txtColor,
-                                            )
-                                          ],
-                                        ),
-                                        _SectorchartData.isEmpty
-                                            ? ShimmerListView(5)
-                                            : SfCartesianChart(
-                                                //enableAxisAnimation: true,
-                                                primaryXAxis: CategoryAxis(
-                                                  //opposedPosition: true,
-                                                  autoScrollingMode:
-                                                      AutoScrollingMode.end,
-                                                  visibleMaximum: 5,
-                                                  interval: 1,
-                                                ),
-                                                zoomPanBehavior:
-                                                    ZoomPanBehavior(
-                                                  enablePanning: true,
-                                                ),
-                                                primaryYAxis: NumericAxis(
-                                                  //numberFormat: NumberFormat('##########人'),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                TextWidget(
+                                                  title: "No. Of Cases",
+                                                  txtSize: 15,
+                                                  txtColor: txtColor,
+                                                )
+                                              ],
+                                            ),
+                                            _SectorchartData.isEmpty
+                                                ? ShimmerListView(5)
+                                                : SfCartesianChart(
+                                                    //enableAxisAnimation: true,
+                                                    primaryXAxis: CategoryAxis(
+                                                      //opposedPosition: true,
+                                                      autoScrollingMode:
+                                                          AutoScrollingMode.end,
+                                                      visibleMaximum: 5,
+                                                      interval: 1,
+                                                    ),
+                                                    zoomPanBehavior:
+                                                        ZoomPanBehavior(
+                                                      enablePanning: true,
+                                                    ),
+                                                    primaryYAxis: NumericAxis(
+                                                      //numberFormat: NumberFormat('##########人'),
 
-                                                  minimum: 0,
-                                                  maximum: double.parse(
-                                                      maxCaseValuesec
-                                                          .toString()),
-                                                  interval: 1,
-                                                ),
-                                                tooltipBehavior: _tooltip2,
-                                                series: <
-                                                    ChartSeries<
-                                                        _SectorChartData,
-                                                        String>>[
-                                                  //ColumnSeries<_SectorChartData,
-                                                  FastLineSeries<
-                                                      _SectorChartData, String>(
-                                                    dataSource:
-                                                        _SectorchartData,
+                                                      minimum: 0,
+                                                      maximum: double.parse(
+                                                          maxCaseValuesec
+                                                              .toString()),
+                                                      interval: 1,
+                                                    ),
+                                                    tooltipBehavior: _tooltip2,
+                                                    series: <
+                                                        ChartSeries<
+                                                            _SectorChartData,
+                                                            String>>[
+                                                      //ColumnSeries<_SectorChartData,
+                                                      FastLineSeries<
+                                                          _SectorChartData,
+                                                          String>(
+                                                        dataSource:
+                                                            _SectorchartData,
 
-                                                    // emptyPointSettings: EmptyPointSettings(
-                                                    //     // Mode of empty point
-                                                    //     mode: EmptyPointMode.average),
-                                                    xValueMapper:
-                                                        (_SectorChartData data,
-                                                                _) =>
-                                                            data.datee
-                                                                .toString(),
-                                                    yValueMapper:
-                                                        (_SectorChartData data,
-                                                                _) =>
-                                                            data.casess,
-                                                    name: 'Dengue Cases',
-                                                    color: btnColor,
-                                                    // borderRadius:
-                                                    //     const BorderRadius.only(
-                                                    //   topLeft:
-                                                    //       Radius.circular(5.0),
-                                                    //   topRight:
-                                                    //       Radius.circular(5.0),
-                                                    // ),
-                                                    //enableTooltip: true,
+                                                        // emptyPointSettings: EmptyPointSettings(
+                                                        //     // Mode of empty point
+                                                        //     mode: EmptyPointMode.average),
+                                                        xValueMapper:
+                                                            (_SectorChartData
+                                                                        data,
+                                                                    _) =>
+                                                                data.datee
+                                                                    .toString(),
+                                                        yValueMapper:
+                                                            (_SectorChartData
+                                                                        data,
+                                                                    _) =>
+                                                                data.casess,
+                                                        name: 'Dengue Cases',
+                                                        color: btnColor,
+                                                        // borderRadius:
+                                                        //     const BorderRadius.only(
+                                                        //   topLeft:
+                                                        //       Radius.circular(5.0),
+                                                        //   topRight:
+                                                        //       Radius.circular(5.0),
+                                                        // ),
+                                                        //enableTooltip: true,
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            const Text(
+                                              "Actions Takekn",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w800,
+                                                color: grey,
+                                                fontSize: 15,
                                               ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        const Text(
-                                          "Actions Takekn",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            color: grey,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                          height: 300,
-                                          width: 400,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: ScfColor2,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: ScrollConfiguration(
-                                              behavior: const ScrollBehavior(),
-                                              child: GlowingOverscrollIndicator(
-                                                axisDirection:
-                                                    AxisDirection.down,
-                                                color: bkColor,
-                                                child: ListView.builder(
-                                                  addRepaintBoundaries: true,
-                                                  itemCount: 15,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return Card(
-                                                      color: ScfColor,
-                                                      child: ListTile(
-                                                        leading: Icon(
-                                                          Icons.warning,
-                                                          color: tbtnColor,
-                                                          size: 33,
-                                                        ),
-                                                        title: Text.rich(
-                                                          TextSpan(
-                                                            text: 'Date: ',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: txtColor,
-                                                              fontSize: 13,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Container(
+                                              height: 300,
+                                              width: 400,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: ScfColor2,
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: ScrollConfiguration(
+                                                  behavior:
+                                                      const ScrollBehavior(),
+                                                  child:
+                                                      GlowingOverscrollIndicator(
+                                                    axisDirection:
+                                                        AxisDirection.down,
+                                                    color: bkColor,
+                                                    child: ListView.builder(
+                                                      addRepaintBoundaries:
+                                                          true,
+                                                      itemCount: 15,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Card(
+                                                          color: ScfColor,
+                                                          child: ListTile(
+                                                            leading: Icon(
+                                                              Icons.warning,
+                                                              color: tbtnColor,
+                                                              size: 33,
                                                             ),
-                                                            children: const <
-                                                                InlineSpan>[
+                                                            title: Text.rich(
                                                               TextSpan(
-                                                                text:
-                                                                    "2022-11-10",
+                                                                text: 'Date: ',
                                                                 style:
                                                                     TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
-                                                                  color: grey,
+                                                                  color:
+                                                                      txtColor,
                                                                   fontSize: 13,
                                                                 ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        subtitle: Text(
-                                                          "45576",
-                                                          //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color: txtColor,
-                                                            fontSize: 12,
-                                                          ),
-                                                        ),
-                                                        trailing: TextButton(
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            "View Detail",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color: btnColor,
-                                                              fontSize: 12,
+                                                                children: const <
+                                                                    InlineSpan>[
+                                                                  TextSpan(
+                                                                    text:
+                                                                        "2022-11-10",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color:
+                                                                          grey,
+                                                                      fontSize:
+                                                                          13,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            subtitle: Text(
+                                                              "45576",
+                                                              //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: txtColor,
+                                                                fontSize: 12,
+                                                              ),
+                                                            ),
+                                                            trailing:
+                                                                TextButton(
+                                                              onPressed: () {},
+                                                              child: Text(
+                                                                "View Detail",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  color:
+                                                                      btnColor,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
+                              )),
                           barrier: true,
                         );
                       }
@@ -1080,23 +1117,23 @@ class _DengueMapState extends State<DengueMap> {
 //   return null;
 // }
 
-  Widget _line({required String title, required String subTitle}) {
-    return RichText(
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: "$title: ",
-            style: const TextStyle(
-                fontWeight: FontWeight.w800, color: Colors.black, fontSize: 20),
-          ),
-          TextSpan(
-            text: " $subTitle",
-            style: const TextStyle(color: Colors.black, fontSize: 15),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _line({required String title, required String subTitle}) {
+  //   return RichText(
+  //     text: TextSpan(
+  //       children: [
+  //         TextSpan(
+  //           text: "$title: ",
+  //           style: const TextStyle(
+  //               fontWeight: FontWeight.w800, color: Colors.black, fontSize: 20),
+  //         ),
+  //         TextSpan(
+  //           text: " $subTitle",
+  //           style: const TextStyle(color: Colors.black, fontSize: 15),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   bool? ismoving = false;
   @override
@@ -1518,7 +1555,7 @@ class _DengueMapState extends State<DengueMap> {
                                               padding: EdgeInsets.all(2.0),
                                               child: Center(
                                                 child: Text(
-                                                  "75 %",
+                                                  "80 %",
                                                   style: TextStyle(
                                                     fontSize: 7,
                                                     fontWeight: FontWeight.bold,

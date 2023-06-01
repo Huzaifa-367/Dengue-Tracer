@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
+import 'Test_Screens/Card_Styles_Screen.dart';
 import 'Test_Screens/Dragable_Navigation_Bar.dart';
 import 'Test_Screens/ExpandAble_Manu_Screen.dart';
 import 'package:dengue_tracing_application/Test_Screens/lib/flutter_staggered_animations.dart';
@@ -165,6 +166,31 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                             const Drabable_Navigation_Bar_Screen(),
                       ),
                     );
+                  },
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ButtonWidget(
+                  btnText: "Card_Styles_Screen",
+                  onPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Card_Styles_Screen(),
+                      ),
+                    );
+                  },
+                ),
+                ButtonWidget(
+                  btnText: "MapLocPicker",
+                  onPress: () {
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const MapLocPicker(),
+                    //  ),
+                    // );
                   },
                 ),
               ],

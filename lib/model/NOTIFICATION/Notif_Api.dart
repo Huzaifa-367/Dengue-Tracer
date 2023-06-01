@@ -47,7 +47,7 @@ fetchNotifications(int userId, int radius) async {
     }
   } catch (e) {
     // Handle Dio errors
-    throw Exception('An error occurred: $e');
+    //throw Exception('An error occurred: $e');
   }
 }
 
