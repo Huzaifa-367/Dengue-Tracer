@@ -588,7 +588,7 @@ class _DengueMapState extends State<DengueMap> {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
         // Now you can access the properties of each item in the list
         for (final item in data) {
-          final secId = loggedInUser!.role == "admin"
+          secId = loggedInUser!.role == "admin"
               ? item['sec_id']
               : item['sector']['sec_id'] as int;
           final secName = loggedInUser!.role == "admin"

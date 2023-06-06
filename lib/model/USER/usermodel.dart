@@ -2,10 +2,34 @@
 
 import 'dart:io';
 import 'package:dengue_tracing_application/Global/constant.dart';
-import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 
 import 'package:http/http.dart' as http;
 
+class OfficerSectors {
+  int? sec_id;
+  String? sec_name, sec_description;
+
+  //officer
+  OfficerSectors();
+  OfficerSectors.fromMap(Map<String, dynamic> map) {
+    sec_id = map['sec_id'];
+    sec_name = map['sec_name'];
+    sec_description = map['description'];
+  }
+
+  Map<String, dynamic> tomap() {
+    return <String, dynamic>{
+      'sec_id': sec_id,
+
+      // "sec_name": sec_name,
+      // "description": sec_description,
+    };
+  }
+}
+
+//
+//
+//
 class User {
   String? name, phone_number, email, password, role, home_location;
   //,office_location;
@@ -41,12 +65,12 @@ class User {
     if (role == "officer") {
       //officer
       //Needs Working
-      List<Sectors> sectorsList = [];
+      List<OfficerSectors> sectorsList = [];
       if (map['sectors'] != null) {
         var sectorsData = map['sectors'];
         if (sectorsData is List) {
           for (var sectorData in sectorsData) {
-            sectorsList.add(Sectors.fromMap(sectorData));
+            sectorsList.add(OfficerSectors.fromMap(sectorData));
           }
         }
       }

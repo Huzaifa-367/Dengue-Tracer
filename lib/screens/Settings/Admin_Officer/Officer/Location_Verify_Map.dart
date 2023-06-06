@@ -3,6 +3,7 @@ import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
+import 'package:dengue_tracing_application/model/USER/usermodel.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:map_picker/map_picker.dart';
@@ -117,7 +118,7 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
         // Now you can access the properties of each item in the list
         for (final item in data) {
-          final secId = loggedInUser!.role == "admin"
+           secId = loggedInUser!.role == "admin"
               ? item['sec_id']
               : item['sector']['sec_id'] as int;
           final secName = loggedInUser!.role == "admin"
@@ -159,14 +160,16 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
                 userId == loggedInUser!.user_id) {
               percentage = (totalCases / threshold) * 100;
               final polygon = Polygon(
-                visible: true,
-                consumeTapEvents: true,
-                polygonId: PolygonId(secId.toString()),
-                points: List<LatLng>.from(latLngs), // Fix type error here
-                strokeColor: getstrokeColor(threshold, totalCases),
-                strokeWidth: 1,
-                fillColor: getfillColor(threshold, totalCases),
-              );
+                  visible: true,
+                  consumeTapEvents: true,
+                  polygonId: PolygonId(secId.toString()),
+                  points: List<LatLng>.from(latLngs), // Fix type error here
+                  strokeColor: getstrokeColor(threshold, totalCases),
+                  strokeWidth: 1,
+                  fillColor: getfillColor(threshold, totalCases),
+                  onTap: () {
+                    isOfficerInSector(secId);
+                  });
               setState(() {
                 _polygons.add(polygon);
               });
@@ -221,6 +224,18 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
     }
 
     return isInside;
+  }
+
+  bool isOfficerInSector(int sectorId) {
+    if (loggedInUser!.role == "officer") {
+      // Check if the officer's assigned sectors contain the provided sectorId
+      if (loggedInUser!.sectors != null && loggedInUser!.sectors is List) {
+        List<OfficerSectors> officerSectors =
+            List<OfficerSectors>.from(loggedInUser!.sectors);
+        return officerSectors.any((sector) => sector.sec_id == sectorId);
+      }
+    }
+    return false;
   }
 
   var home_loccont = TextEditingController();
@@ -327,7 +342,7 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
 
                       sufixIconPress: () {
                         bool isInSector = loggedInUser!.sectors
-                            .any((sector) => sector.secId == sectorId);
+                            .any((sector) => sector.secId == sectorId as int);
                         if (isInSector) {
                           snackBar(context, "You are in your sector.");
                         } else {

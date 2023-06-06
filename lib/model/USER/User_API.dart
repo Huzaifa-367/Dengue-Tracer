@@ -89,6 +89,69 @@ login(email, password, isremember, context) async {
   }
 }
 
+login2(email, password, isremember, context) async {
+  try {
+    if (isremember == true) {
+      bool authenticated = await authenticateWithFingerprint();
+      if (authenticated) {
+        var response = await Dio().get(
+          '$api/Login2?email=$email&password=$password',
+        );
+
+        if (response.statusCode == 200) {
+          //log(response.data);
+          if (response.data != 'false') {
+            final dynamic responseData = response.data;
+
+            if (responseData['role'] == 'officer') {
+              final Map<String, dynamic> dataMap = responseData;
+              loggedInUser = User.fromMap(dataMap);
+              _proceedToDashboard(context);
+            } else {
+              final List<dynamic> dataList = responseData;
+              final Map<String, dynamic> dataMap = dataList.first;
+              loggedInUser = User.fromMap(dataMap);
+              _proceedToDashboard(context);
+            }
+            snackBar(context, "Incorrect Email or Password.");
+          }
+        } else {
+          snackBar(context, "Failed to connect to the server.");
+        }
+      } else {
+        snackBar(context, "Fingerprint Authentication is not saved.");
+      }
+    } else {
+      var response = await Dio().get(
+        '$api/Login2?email=$email&password=$password',
+      );
+
+      if (response.statusCode == 200) {
+        //log(response.data);
+        if (response.data != 'false') {
+          final dynamic responseData = response.data;
+
+          if (responseData['role'] == 'officer') {
+            final Map<String, dynamic> dataMap = responseData;
+            loggedInUser = User.fromMap(dataMap);
+            _proceedToDashboard(context);
+          } else {
+            final List<dynamic> dataList = responseData;
+            final Map<String, dynamic> dataMap = dataList.first;
+            loggedInUser = User.fromMap(dataMap);
+            _proceedToDashboard(context);
+          }
+          snackBar(context, "Incorrect Email or Password.");
+        }
+      } else {
+        snackBar(context, "Failed to connect to the server.");
+      }
+    }
+  } catch (e) {
+    snackBar(context, "An error occurred: ");
+  }
+}
+
 void _proceedToDashboard(BuildContext context) {
   Navigator.of(context).push(
     MaterialPageRoute(
