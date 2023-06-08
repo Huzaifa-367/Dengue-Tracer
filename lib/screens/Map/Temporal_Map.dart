@@ -906,6 +906,10 @@ class _DengueMapState extends State<DengueMap> {
                                             const SizedBox(
                                               height: 10,
                                             ),
+                                            Divider(
+                                              thickness: 2,
+                                              color: btnColor,
+                                            ),
                                             const Text(
                                               "Actions Takekn",
                                               style: TextStyle(
