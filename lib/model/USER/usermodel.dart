@@ -62,20 +62,20 @@ class User {
     status = map['status'];
     endDate = map['enddate'] != null ? DateTime.parse(map['enddate']) : null;
 
-    if (role == "officer") {
-      //officer
-      //Needs Working
-      List<OfficerSectors> sectorsList = [];
-      if (map['sectors'] != null) {
-        var sectorsData = map['sectors'];
-        if (sectorsData is List) {
-          for (var sectorData in sectorsData) {
-            sectorsList.add(OfficerSectors.fromMap(sectorData));
-          }
-        }
-      }
-      sectors = sectorsList;
-    }
+    // if (role == "officer") {
+    //   //officer
+    //   //Needs Working
+    //   List<OfficerSectors> sectorsList = [];
+    //   if (map['sectors'] != null) {
+    //     var sectorsData = map['sectors'];
+    //     if (sectorsData is List) {
+    //       for (var sectorData in sectorsData) {
+    //         sectorsList.add(OfficerSectors.fromMap(sectorData));
+    //       }
+    //     }
+    //   }
+    //   sectors = sectorsList;
+    // }
   }
 
   // Future<String?> login() async {
@@ -145,18 +145,42 @@ class User {
   }
 }
 
-// class UserReset {
-//   late String email, newpassword;
+///
+///
+///
+///
+class Officer {
+  int userId;
+  String name;
+  String email;
+  String phoneNumber;
+  String role;
+  List<String> sectors;
 
-//   UserReset();
-//   UserReset.fromMap(Map<String, dynamic> map) {
-//     email = map["email"];
-//     newpassword = map["password"];
-//   }
-//   Map<String, dynamic> tomap() {
-//     return <String, dynamic>{
-//       'email': email,
-//       'password': newpassword,
-//     };
-//   }
-// }
+  Officer({
+    required this.userId,
+    required this.name,
+    required this.email,
+    required this.phoneNumber,
+    required this.role,
+    required this.sectors,
+  });
+}
+
+class Sector {
+  int secId;
+  String secName;
+  int threshold;
+  String description;
+  List<String> latLongs;
+  int totalCases;
+
+  Sector({
+    required this.secId,
+    required this.secName,
+    required this.threshold,
+    required this.description,
+    required this.latLongs,
+    required this.totalCases,
+  });
+}

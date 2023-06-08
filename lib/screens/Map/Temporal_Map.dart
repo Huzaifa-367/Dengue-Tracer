@@ -1,6 +1,7 @@
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Packages_Path.dart';
+import 'package:dengue_tracing_application/model/MAP/Temp_Map_Api.dart';
 import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -85,7 +86,7 @@ class _DengueMapState extends State<DengueMap> {
     var response = await Dio().get('$api/GetDengueCasesByDate');
     if (response.statusCode == 200) {
       var data = response.data['cases'];
-      maxCaseValue = response.data['maxValue'];
+      maxCaseValue = response.data['maxValue'] - 3;
       for (var item in data) {
         // Trimming the time part from the date
 
@@ -588,7 +589,7 @@ class _DengueMapState extends State<DengueMap> {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
         // Now you can access the properties of each item in the list
         for (final item in data) {
-          secId = loggedInUser!.role == "admin"
+          final secId = loggedInUser!.role == "admin"
               ? item['sec_id']
               : item['sector']['sec_id'] as int;
           final secName = loggedInUser!.role == "admin"
@@ -927,89 +928,111 @@ class _DengueMapState extends State<DengueMap> {
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: ScrollConfiguration(
-                                                  behavior:
-                                                      const ScrollBehavior(),
-                                                  child:
-                                                      GlowingOverscrollIndicator(
-                                                    axisDirection:
-                                                        AxisDirection.down,
-                                                    color: bkColor,
-                                                    child: ListView.builder(
-                                                      addRepaintBoundaries:
-                                                          true,
-                                                      itemCount: 15,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return Card(
-                                                          color: ScfColor,
-                                                          child: ListTile(
-                                                            leading: Icon(
-                                                              Icons.warning,
-                                                              color: tbtnColor,
-                                                              size: 33,
-                                                            ),
-                                                            title: Text.rich(
-                                                              TextSpan(
-                                                                text: 'Date: ',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
+                                                child: FutureBuilder(
+                                                  future: fetchActions(
+                                                      secId, context),
+                                                  builder:
+                                                      (context, snapshot) =>
+                                                          ScrollConfiguration(
+                                                    behavior:
+                                                        const ScrollBehavior(),
+                                                    child:
+                                                        GlowingOverscrollIndicator(
+                                                      axisDirection:
+                                                          AxisDirection.down,
+                                                      color: bkColor,
+                                                      child: Actionitems!
+                                                              .isEmpty
+                                                          ? ShimmerNotificationView(
+                                                              20)
+                                                          : ListView.builder(
+                                                              addRepaintBoundaries:
+                                                                  true,
+                                                              itemCount:
+                                                                  Actionitems!
+                                                                      .length,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                return Card(
                                                                   color:
-                                                                      txtColor,
-                                                                  fontSize: 13,
-                                                                ),
-                                                                children: const <
-                                                                    InlineSpan>[
-                                                                  TextSpan(
-                                                                    text:
-                                                                        "2022-11-10",
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
+                                                                      ScfColor,
+                                                                  child:
+                                                                      ListTile(
+                                                                    leading:
+                                                                        Icon(
+                                                                      Icons
+                                                                          .warning,
                                                                       color:
-                                                                          grey,
-                                                                      fontSize:
-                                                                          13,
+                                                                          tbtnColor,
+                                                                      size: 33,
                                                                     ),
-                                                                  )
-                                                                ],
-                                                              ),
+                                                                    title: Text
+                                                                        .rich(
+                                                                      TextSpan(
+                                                                        text:
+                                                                            'Date: ',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          color:
+                                                                              txtColor,
+                                                                          fontSize:
+                                                                              13,
+                                                                        ),
+                                                                        children: <
+                                                                            InlineSpan>[
+                                                                          TextSpan(
+                                                                            text:
+                                                                                "${Actionitems![index].date}",
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontWeight: FontWeight.w600,
+                                                                              color: grey,
+                                                                              fontSize: 13,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    // subtitle:
+                                                                    //     Text(
+                                                                    //   "45576",
+                                                                    //   //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
+                                                                    //   style:
+                                                                    //       TextStyle(
+                                                                    //     fontWeight:
+                                                                    //         FontWeight
+                                                                    //             .w400,
+                                                                    //     color:
+                                                                    //         txtColor,
+                                                                    //     fontSize:
+                                                                    //         12,
+                                                                    //   ),
+                                                                    // ),
+                                                                    trailing:
+                                                                        TextButton(
+                                                                      onPressed:
+                                                                          () {},
+                                                                      child:
+                                                                          Text(
+                                                                        "View Detail",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.w400,
+                                                                          color:
+                                                                              btnColor,
+                                                                          fontSize:
+                                                                              12,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
                                                             ),
-                                                            subtitle: Text(
-                                                              "45576",
-                                                              //"${notifitems[index].datetime!.day}-${notifitems[index].datetime!.month}-${notifitems[index].datetime!.year}",
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: txtColor,
-                                                                fontSize: 12,
-                                                              ),
-                                                            ),
-                                                            trailing:
-                                                                TextButton(
-                                                              onPressed: () {},
-                                                              child: Text(
-                                                                "View Detail",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color:
-                                                                      btnColor,
-                                                                  fontSize: 12,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
                                                     ),
                                                   ),
                                                 ),
@@ -1240,14 +1263,15 @@ class _DengueMapState extends State<DengueMap> {
                                   ),
                                   primaryXAxis: CategoryAxis(
                                     autoScrollingMode: AutoScrollingMode.start,
-                                    visibleMaximum:
-                                        double.parse(maxCaseValue.toString()),
+                                    visibleMaximum: 30,
                                     interval: 1,
                                   ),
                                   // borderColor: ScfColor,
                                   // borderWidth: 2,
                                   //backgroundColor: ScfColor,
                                   primaryYAxis: NumericAxis(
+                                    visibleMaximum:
+                                        double.parse(maxCaseValue.toString()),
                                     interval: 1,
                                   ),
                                   tooltipBehavior: _tooltip,

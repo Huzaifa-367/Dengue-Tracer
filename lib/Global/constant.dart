@@ -1,4 +1,5 @@
 import 'package:awesome_place_search/awesome_place_search.dart';
+import 'package:dengue_tracing_application/model/MAP/Temp_Map_Api.dart';
 //
 
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
 //GLOBAL
 //Xperia 5 II
-const String ip = "192.168.251.34";
+const String ip = "192.168.232.34";
 //
 //Ahsan Mobile
 //const String ip = "192.168.184.34";
@@ -71,6 +72,8 @@ String mapapikey = "AIzaSyCvhbfvGx_1tXHprSZ4RTUfxySdtM9u0uo";
 //
 // place search
 PredictionModel? prediction;
+//Temporal MAP
+List<ActionLists>? Actionitems = [];
 
 //RESET
 String? otp;
@@ -97,7 +100,8 @@ int? totalnotif;
 /////
 ///Officer Verify Map
 ///
-var secId;
+//var secId = 0;
+bool? isWithinSector = false;
 //Maps
 List<Marker> markers = [];
 // class Constants {

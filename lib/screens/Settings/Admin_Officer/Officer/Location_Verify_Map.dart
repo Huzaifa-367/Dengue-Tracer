@@ -1,13 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
+import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
-import 'package:custom_info_window/custom_info_window.dart';
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
-import 'package:dengue_tracing_application/model/USER/usermodel.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dengue_tracing_application/model/OFFICER/Officer_API.dart';
 import 'package:flutter/material.dart';
-import 'package:map_picker/map_picker.dart';
-import 'package:geocoding/geocoding.dart';
 
 class Location_Verify_Map extends StatefulWidget {
   const Location_Verify_Map({Key? key}) : super(key: key);
@@ -103,7 +100,7 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
     }
   }
 
-  String? sectorId;
+  int? sectorId;
   final Set<Polygon> _polygons = {};
 
   Future<void> _fetchPolygons() async {
@@ -118,7 +115,7 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
         // Now you can access the properties of each item in the list
         for (final item in data) {
-           secId = loggedInUser!.role == "admin"
+          final secId = loggedInUser!.role == "admin"
               ? item['sec_id']
               : item['sector']['sec_id'] as int;
           final secName = loggedInUser!.role == "admin"
@@ -168,7 +165,8 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
                   strokeWidth: 1,
                   fillColor: getfillColor(threshold, totalCases),
                   onTap: () {
-                    isOfficerInSector(secId);
+                    //
+                    //
                   });
               setState(() {
                 _polygons.add(polygon);
@@ -182,7 +180,7 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
     }
   }
 
-  String checkSectorLocation(String latLong, Set<Polygon> polygons) {
+  int checkSectorLocation(String latLong, Set<Polygon> polygons) {
     final List<String> latLongList = latLong.split(',');
     final double latitude = double.parse(latLongList[0]);
     final double longitude = double.parse(latLongList[1]);
@@ -190,11 +188,12 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
     for (Polygon polygon in polygons) {
       if (isPointInPolygon(polygon.points, latitude, longitude)) {
         // Use the polygon ID as the sector ID
-        return polygon.polygonId.value;
+
+        return int.parse(polygon.polygonId.value);
       }
     }
 
-    return 'You,re not in our Sectors.';
+    return 0;
   }
 
   bool isPointInPolygon(
@@ -226,22 +225,58 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
     return isInside;
   }
 
-  bool isOfficerInSector(int sectorId) {
-    if (loggedInUser!.role == "officer") {
-      // Check if the officer's assigned sectors contain the provided sectorId
-      if (loggedInUser!.sectors != null && loggedInUser!.sectors is List) {
-        List<OfficerSectors> officerSectors =
-            List<OfficerSectors>.from(loggedInUser!.sectors);
-        return officerSectors.any((sector) => sector.sec_id == sectorId);
+  bool _isOfficerWithinSector(LatLng location, List<LatLng> sectorCoordinates) {
+    // Use point-in-polygon algorithm to check if the location is within the sector
+    int i = 0, j;
+    bool isWithin = false;
+    int polygonLength = sectorCoordinates.length;
+
+    for (j = polygonLength - 1; i < polygonLength; i++) {
+      if ((sectorCoordinates[i].latitude < location.latitude &&
+              sectorCoordinates[j].latitude >= location.latitude ||
+          sectorCoordinates[j].latitude < location.latitude &&
+              sectorCoordinates[i].latitude >= location.latitude)) {
+        if (sectorCoordinates[i].longitude +
+                (location.latitude - sectorCoordinates[i].latitude) /
+                    (sectorCoordinates[j].latitude -
+                        sectorCoordinates[i].latitude) *
+                    (sectorCoordinates[j].longitude -
+                        sectorCoordinates[i].longitude) <
+            location.longitude) {
+          isWithin = !isWithin;
+        }
       }
+      j = i;
     }
-    return false;
+
+    return isWithin;
   }
 
-  var home_loccont = TextEditingController();
-  var latLong;
-  var latLongsector;
-  var readableAdress;
+  void isOfficerInSector(int sectorId) {
+    // Check if officer's location is within the assigned sector
+    final List<String> latLongList = latLong!.split(',');
+    final double latitude = double.parse(latLongList[0]);
+    final double longitude = double.parse(latLongList[1]);
+    LatLng officerLocation = LatLng(latitude, longitude);
+    List<LatLng> sectorCoordinates = _polygons
+        .firstWhere((polygon) => polygon.polygonId.value == sectorId.toString())
+        .points;
+
+    isWithinSector = _isOfficerWithinSector(officerLocation, sectorCoordinates);
+
+    if (isWithinSector!) {
+      snackBar(context, 'Officer is within their assigned sector.');
+      //print('Officer is within their assigned sector.');
+    } else {
+      snackBar(context, 'Officer is not within their assigned sector.');
+      //print('Officer is not within their assigned sector.');
+    }
+  }
+
+  var homeLoccont = TextEditingController();
+  String? latLong;
+  String? latLongsector;
+  String? readableAdress;
   //
   //
   @override
@@ -289,7 +324,7 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
                   onCameraMoveStarted: () {
                     // notify map is moving
                     mapPickerController.mapMoving!();
-                    home_loccont.text = "checking ...";
+                    homeLoccont.text = "checking ...";
                   },
                   onCameraMove: (cameraPosition) {
                     this.cameraPosition = cameraPosition;
@@ -312,15 +347,25 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
                     readableAdress =
                         '${placemarks.first.name},${placemarks.first.subLocality}, ${placemarks.first.locality}, ${placemarks.first.country}';
 
-                    home_loccont.text =
+                    homeLoccont.text =
                         '${placemarks.first.name},${placemarks.first.subLocality}, ${placemarks.first.locality}, ${placemarks.first.country}';
                     //'${placemarks.first.name}, ${placemarks.first.postalCode}, ${placemarks.first.subLocality}, ${placemarks.first.locality}, ${placemarks.first.administrativeArea}, ${placemarks.first.country}';
 
                     setState(() {
-                      sectorId = checkSectorLocation(latLong, _polygons);
+                      sectorId = checkSectorLocation(latLong!, _polygons);
+                      int? officer;
+                      try {
+                        officer = sectorId;
+                      } catch (e) {
+                        print('Failed to parse sectorId: $e');
+                      }
+                      if (officer != null) {
+                        isOfficerInSector(officer);
+                      }
                       latLongsector =
                           "${cameraPosition.target.latitude},${cameraPosition.target.longitude}-$sectorId";
-                      print(sectorId);
+                      //print(sectorId);
+                      isOfficerInSector(sectorId!);
                     });
                   },
                 ),
@@ -337,21 +382,20 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
                     MyTextField_ReadOnly(
                       maxlines: 1,
                       readonly: true,
-                      controller: home_loccont,
+                      controller: homeLoccont,
                       hintText: "Location",
 
                       sufixIconPress: () {
-                        bool isInSector = loggedInUser!.sectors
-                            .any((sector) => sector.secId == sectorId as int);
-                        if (isInSector) {
-                          snackBar(context, "You are in your sector.");
+                        if (isWithinSector!) {
+                          TakeAction(sectorId, context);
+                          //snackBar(context, "You are in your sector.");
                         } else {
                           snackBar(context, "You need to be in your sector.");
                         }
                       },
 
                       //prefixIcon: const Icon(Icons.map),
-                      sufixIcon: Icons.arrow_forward_rounded,
+                      sufixIcon: CupertinoIcons.shield,
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -364,7 +408,9 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextWidget(
-                          title: "Sector ID: $sectorId",
+                          title: sectorId == 0
+                              ? "You are not in any sector."
+                              : "Sector ID: $sectorId",
                           txtSize: 13,
                           txtColor: txtColor,
                         ),

@@ -48,3 +48,13 @@ UpdateOfficerSector(
     }
   }
 }
+
+TakeAction(int? secId, context) async {
+  var response = await Dio().post('$api/TakeAction?sec_id=$secId');
+  if (response.statusCode == 200) {
+    if (response.data == "Created") {
+      snackBar(context, "Action Taken Successfully.");
+      Navigator.of(context).pop();
+    }
+  }
+}
