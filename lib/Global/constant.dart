@@ -42,9 +42,11 @@ Color orangeopcN = const Color.fromARGB(162, 253, 148, 42);
 Color yellowopcN = const Color.fromARGB(255, 216, 202, 74);
 Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
+TextEditingController ipcontroller = TextEditingController();
 //GLOBAL
 //Xperia 5 II
-const String ip = "192.168.229.34";
+
+String ip = "192.168.229.34";
 //
 //Ahsan Mobile
 //const String ip = "192.168.184.34";
@@ -101,7 +103,7 @@ int? totalnotif;
 ///Officer Verify Map
 ///
 //var secId = 0;
-bool? isWithinSector = false;
+
 //Maps
 List<Marker> markers = [];
 // class Constants {

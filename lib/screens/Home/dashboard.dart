@@ -2,7 +2,6 @@ import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/screens/Map/Temporal_Map-Backup.dart';
-import 'package:dengue_tracing_application/screens/Map/Temporal_Map.dart';
 
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 

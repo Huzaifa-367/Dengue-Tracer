@@ -1,6 +1,5 @@
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
-import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/Location_Verify_Map.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -198,13 +197,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                 loggedInUser!.role == "officer"
                                             ? TextButton(
                                                 onPressed: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const Location_Verify_Map(),
-                                                      //builder: (context) => const MapScreen(),
-                                                    ),
-                                                  );
+                                                  // Navigator.of(context).push(
+                                                  //   MaterialPageRoute(
+                                                  //     builder: (context) =>
+                                                  //          Location_Verify_Map(),
+                                                  //     //builder: (context) => const MapScreen(),
+                                                  //   ),
+                                                  // );
+
+                                                  //
+                                                  //
+                                                  //
+                                                  ////
+                                                  ///
+                                                  ///
+                                                  ///
+                                                  ///
                                                   // () async {
                                                   //   var LocId =
                                                   //       await Navigator.of(

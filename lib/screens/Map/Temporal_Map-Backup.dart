@@ -611,20 +611,20 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
   late TooltipBehavior _tooltip2;
   int maxCaseValuesec = 0;
   _getSectorChartData(int secId) async {
-    try{
-    var response =
-        await Dio().get('$api/GetDengueCasesBySectorDate?sec_id=$secId');
-    if (response.statusCode == 200) {
-      var data = response.data['cases'];
-      maxCaseValuesec = response.data['maxValue'];
-      for (var item in data) {
-        // Trimming the time part from the date
-        var trimmedDate = item['date'].toString().split('T')[0];
+    try {
+      var response =
+          await Dio().get('$api/GetDengueCasesBySectorDate?sec_id=$secId');
+      if (response.statusCode == 200) {
+        var data = response.data['cases'];
+        maxCaseValuesec = response.data['maxValue'];
+        for (var item in data) {
+          // Trimming the time part from the date
+          var trimmedDate = item['date'].toString().split('T')[0];
 
-        _SectorchartData.add(_SectorChartData(trimmedDate, item['count']));
+          _SectorchartData.add(_SectorChartData(trimmedDate, item['count']));
+        }
       }
-    }
-     } catch (e) {
+    } catch (e) {
       //
     }
   }
@@ -988,9 +988,10 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
                                                                       context)
                                                                   .push(
                                                                 MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          const Location_Verify_Map(),
+                                                                  builder: (context) =>
+                                                                      Location_Verify_Map(
+                                                                          secId:
+                                                                              secId),
                                                                   //builder: (context) => const MapScreen(),
                                                                 ),
                                                               );

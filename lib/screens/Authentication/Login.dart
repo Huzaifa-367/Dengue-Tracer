@@ -1,9 +1,8 @@
+import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Testing_Screen.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -253,7 +252,73 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 30,
                   ),
                   GestureDetector(
-                    onLongPress: () {},
+                    onTap: () {
+                      ipcontroller.text = ip;
+                      DraggableMenu.open(
+                        context,
+                        DraggableMenu(
+                          color: tbtnColor,
+                          uiType: DraggableMenuUiType.softModern,
+                          expandable: true,
+                          fastDrag: true,
+                          minimizeBeforeFastDrag: true,
+                          expandedHeight:
+                              MediaQuery.of(context).size.height * 0.72,
+                          maxHeight: MediaQuery.of(context).size.height * 0.36,
+                          child: Scaffold(
+                            backgroundColor: ScfColor,
+                            body: Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextWidget(
+                                      title: "Ip Address",
+                                      txtSize: 25,
+                                      txtColor: txtColor,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    MyTextField(
+                                      maxlines: 1,
+                                      //siconn: Icons.email,
+                                      controller: ipcontroller,
+                                      hintText: "Ip Address",
+                                      obscureText: false,
+                                      prefixIcon: const Icon(
+                                        Icons
+                                            .signal_wifi_statusbar_connected_no_internet_4_sharp,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                      width: 300,
+                                      child: ButtonWidget(
+                                        btnText: "Save",
+                                        onPress: () {
+                                          if (ipcontroller.text.isNotEmpty) {
+                                            setState(() {
+                                              ip = ipcontroller.text.trim();
+                                            });
+                                            Navigator.pop(context);
+                                          }
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        barrier: true,
+                      );
+                    },
                     child: CircleAvatar(
                       radius: 70,
                       backgroundColor: Colors.transparent,

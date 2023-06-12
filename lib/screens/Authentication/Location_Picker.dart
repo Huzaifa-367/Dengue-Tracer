@@ -19,7 +19,7 @@ final CustomInfoWindowController _customInfoWindowController =
     CustomInfoWindowController();
 void dispose() {
   _customInfoWindowController.dispose();
-  //super.dispose();
+  //super.dispose(); 
 }
 
 class _PickLocationState extends State<PickLocation> {
