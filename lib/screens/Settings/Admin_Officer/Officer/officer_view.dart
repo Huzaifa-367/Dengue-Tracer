@@ -3,7 +3,6 @@ import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class OfficersListScreen extends StatefulWidget {
   const OfficersListScreen({Key? key}) : super(key: key);
@@ -58,29 +57,33 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
   }
 
   void _fetchwithsectors() async {
-    //final response = await http.get(Uri.parse('$api/Getofficers'));
-    final response = await http.get(Uri.parse('$api/GetOfficerSectors'));
+    try {
+      //final response = await http.get(Uri.parse('$api/Getofficers'));
+      final response = await http.get(Uri.parse('$api/GetOfficerSectors'));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
 
-      final List<PlutoRow> rows = data.map<PlutoRow>((item) {
-        return PlutoRow(
-          cells: {
-            'user_id': PlutoCell(value: item['user_id']),
-            'name': PlutoCell(value: item['name']),
-            'email': PlutoCell(value: item['email']),
-            'phone_number': PlutoCell(value: item['phone_number']),
-            'role': PlutoCell(value: item['role']),
-            'sec_name': PlutoCell(value: item['sector']['sec_name']),
-          },
-        );
-      }).toList();
+        final List<PlutoRow> rows = data.map<PlutoRow>((item) {
+          return PlutoRow(
+            cells: {
+              'user_id': PlutoCell(value: item['user_id']),
+              'name': PlutoCell(value: item['name']),
+              'email': PlutoCell(value: item['email']),
+              'phone_number': PlutoCell(value: item['phone_number']),
+              'role': PlutoCell(value: item['role']),
+              'sec_name': PlutoCell(value: item['sector']['sec_name']),
+            },
+          );
+        }).toList();
 
-      setState(() {
-        _rows.clear();
-        _rows.addAll(rows);
-      });
+        setState(() {
+          _rows.clear();
+          _rows.addAll(rows);
+        });
+      }
+    } catch (e) {
+      //
     }
   }
 

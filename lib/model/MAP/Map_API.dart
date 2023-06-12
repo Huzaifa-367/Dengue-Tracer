@@ -7,28 +7,32 @@ import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart' as loc;
 
 getDengueUsers() async {
-  var response = await Dio().get('$api/GetDengueUsers');
+  try {
+    var response = await Dio().get('$api/GetDengueUsers');
 
-  if (response.statusCode == 200) {
-    final List<dynamic> data = jsonDecode(response.data);
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.data);
 
-    markers = data.map((item) {
-      final LatLng latLng = LatLng(item['lat_long'][0], item['lat_long'][1]);
-      final String userid = item['user_id'];
-      final String title = item['name'];
-      final String snippet = item['email'];
+      markers = data.map((item) {
+        final LatLng latLng = LatLng(item['lat_long'][0], item['lat_long'][1]);
+        final String userid = item['user_id'];
+        final String title = item['name'];
+        final String snippet = item['email'];
 
-      return Marker(
-        markerId: MarkerId(title),
-        position: latLng,
-        infoWindow: InfoWindow(
-          title: title,
-          snippet: snippet,
-        ),
-      );
-    }).toList();
-  } else {
-    throw Exception('Failed to fetch dengue users.');
+        return Marker(
+          markerId: MarkerId(title),
+          position: latLng,
+          infoWindow: InfoWindow(
+            title: title,
+            snippet: snippet,
+          ),
+        );
+      }).toList();
+    } else {
+      throw Exception('Failed to fetch dengue users.');
+    }
+  } catch (e) {
+    //
   }
 }
 

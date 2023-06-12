@@ -115,15 +115,19 @@ class _PickLocationState extends State<PickLocation> {
   }
 
   String checkSectorLocation(String latLong, Set<Polygon> polygons) {
-    final List<String> latLongList = latLong.split(',');
-    final double latitude = double.parse(latLongList[0]);
-    final double longitude = double.parse(latLongList[1]);
+    try {
+      final List<String> latLongList = latLong.split(',');
+      final double latitude = double.parse(latLongList[0]);
+      final double longitude = double.parse(latLongList[1]);
 
-    for (Polygon polygon in polygons) {
-      if (isPointInPolygon(polygon.points, latitude, longitude)) {
-        // Use the polygon ID as the sector ID
-        return polygon.polygonId.value;
+      for (Polygon polygon in polygons) {
+        if (isPointInPolygon(polygon.points, latitude, longitude)) {
+          // Use the polygon ID as the sector ID
+          return polygon.polygonId.value;
+        }
       }
+    } catch (e) {
+      //
     }
 
     return 'You,re not in our Sectors.';

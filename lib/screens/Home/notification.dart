@@ -194,7 +194,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           ),
                                         ),
                                         trailing: notifitems![index].type! ==
-                                                true
+                                                    true &&
+                                                loggedInUser!.role == "officer"
                                             ? TextButton(
                                                 onPressed: () {
                                                   Navigator.of(context).push(

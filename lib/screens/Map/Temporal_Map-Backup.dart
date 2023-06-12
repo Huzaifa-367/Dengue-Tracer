@@ -4,17 +4,18 @@ import 'package:dengue_tracing_application/Global/Packages_Path.dart';
 import 'package:dengue_tracing_application/model/MAP/Temp_Map_Api.dart';
 import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
+import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/Location_Verify_Map.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
 
-class DengueMap extends StatefulWidget {
-  const DengueMap({Key? key}) : super(key: key);
+class Temporal_Map_Backup extends StatefulWidget {
+  const Temporal_Map_Backup({Key? key}) : super(key: key);
 
   @override
-  _DengueMapState createState() => _DengueMapState();
+  _Temporal_Map_BackupState createState() => _Temporal_Map_BackupState();
 }
 
 final CustomInfoWindowController _customInfoWindowController =
@@ -37,7 +38,7 @@ class _SectorChartData {
   final int casess;
 }
 
-class _DengueMapState extends State<DengueMap> {
+class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
   @override
   void initState() {
     super.initState();
@@ -83,29 +84,25 @@ class _DengueMapState extends State<DengueMap> {
   ];
 
   void _getChartData() async {
-    try {
-      _chartData.clear();
-      var response = await Dio().get('$api/GetDengueCasesByDate');
-      if (response.statusCode == 200) {
-        var data = response.data['cases'];
-        maxCaseValue = response.data['maxValue'] - 3;
-        for (var item in data) {
-          // Trimming the time part from the date
+    _chartData.clear();
+    var response = await Dio().get('$api/GetDengueCasesByDate');
+    if (response.statusCode == 200) {
+      var data = response.data['cases'];
+      maxCaseValue = response.data['maxValue'] - 3;
+      for (var item in data) {
+        // Trimming the time part from the date
 
-          //var trimmedDate = item['date'].toString().split('T')[0];
+        //var trimmedDate = item['date'].toString().split('T')[0];
 
-          var all = item['date'].toString().split('T')[0];
-          //var year = all.split('-')[0];
-          var month = all.split('-')[1];
-          var date = all.split('-')[2];
-          var trimmedDate = "$date-$month";
-          // var trimmedDate = date;
-          _chartData.add(_ChartData(trimmedDate, item['count']));
-        }
-        //  setState(() {});
+        var all = item['date'].toString().split('T')[0];
+        //var year = all.split('-')[0];
+        var month = all.split('-')[1];
+        var date = all.split('-')[2];
+        var trimmedDate = "$date-$month";
+        // var trimmedDate = date;
+        _chartData.add(_ChartData(trimmedDate, item['count']));
       }
-    } catch (e) {
-      //
+      //  setState(() {});
     }
   }
 
@@ -614,20 +611,20 @@ class _DengueMapState extends State<DengueMap> {
   late TooltipBehavior _tooltip2;
   int maxCaseValuesec = 0;
   _getSectorChartData(int secId) async {
-    try {
-      var response =
-          await Dio().get('$api/GetDengueCasesBySectorDate?sec_id=$secId');
-      if (response.statusCode == 200) {
-        var data = response.data['cases'];
-        maxCaseValuesec = response.data['maxValue'];
-        for (var item in data) {
-          // Trimming the time part from the date
-          var trimmedDate = item['date'].toString().split('T')[0];
+    try{
+    var response =
+        await Dio().get('$api/GetDengueCasesBySectorDate?sec_id=$secId');
+    if (response.statusCode == 200) {
+      var data = response.data['cases'];
+      maxCaseValuesec = response.data['maxValue'];
+      for (var item in data) {
+        // Trimming the time part from the date
+        var trimmedDate = item['date'].toString().split('T')[0];
 
-          _SectorchartData.add(_SectorChartData(trimmedDate, item['count']));
-        }
+        _SectorchartData.add(_SectorChartData(trimmedDate, item['count']));
       }
-    } catch (e) {
+    }
+     } catch (e) {
       //
     }
   }
@@ -966,13 +963,41 @@ class _DengueMapState extends State<DengueMap> {
                                               thickness: 2,
                                               color: btnColor,
                                             ),
-                                            const Text(
-                                              "Actions Takekn",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w800,
-                                                color: grey,
-                                                fontSize: 15,
-                                              ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Text(
+                                                  "Actions Takekn",
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w800,
+                                                    color: grey,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                                const Spacer(),
+                                                loggedInUser!.role == "officer"
+                                                    ? SizedBox(
+                                                        width: 150,
+                                                        child: ButtonWidget(
+                                                            btnText:
+                                                                "Take Action",
+                                                            onPress: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .push(
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          const Location_Verify_Map(),
+                                                                  //builder: (context) => const MapScreen(),
+                                                                ),
+                                                              );
+                                                            }),
+                                                      )
+                                                    : const SizedBox(),
+                                              ],
                                             ),
                                             const SizedBox(
                                               height: 10,

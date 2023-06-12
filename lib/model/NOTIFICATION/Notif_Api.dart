@@ -52,6 +52,7 @@ fetchNotifications(int userId, int radius) async {
 }
 
 void scheduleNotifications(List<ItemLists> notifitems) async {
+  try{
   for (var item in notifitems) {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -69,4 +70,7 @@ void scheduleNotifications(List<ItemLists> notifitems) async {
       ),
     );
   }
+   } catch (e) {
+      //
+    }
 }

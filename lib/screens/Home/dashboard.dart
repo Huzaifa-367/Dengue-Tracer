@@ -1,6 +1,7 @@
 import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
+import 'package:dengue_tracing_application/screens/Map/Temporal_Map-Backup.dart';
 import 'package:dengue_tracing_application/screens/Map/Temporal_Map.dart';
 
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
@@ -44,7 +45,8 @@ class _DashBoardState extends State<DashBoard> {
   int selectedindex = 0;
   List<Widget> screens = [
     //const CasesMap(),
-    const DengueMap(),
+    //const DengueMap(),
+    const Temporal_Map_Backup(),
     loggedInUser!.role == "user"
         ? const Stats_Main_Screen()
         : const Stats_All_admin_officer(),

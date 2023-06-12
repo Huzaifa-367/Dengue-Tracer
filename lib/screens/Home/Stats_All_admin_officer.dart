@@ -33,44 +33,50 @@ class _Stats_All_admin_officerState extends State<Stats_All_admin_officer> {
   }
 
   void _getChartData() async {
-    var response = await Dio().get('$api/GetDengueCasesByDate');
-    if (response.statusCode == 200) {
-      var data = response.data['cases'];
-      maxCaseValue = response.data['maxValue'];
-      for (var item in data) {
-        // Trimming the time part from the date
-        var trimmedDate = item['date'].toString().split('T')[0];
+    try {
+      _chartData.clear();
+      var response = await Dio().get('$api/GetDengueCasesByDate');
+      if (response.statusCode == 200) {
+        var data = response.data['cases'];
+        maxCaseValue = response.data['maxValue'];
+        for (var item in data) {
+          // Trimming the time part from the date
+          var trimmedDate = item['date'].toString().split('T')[0];
 
-        _chartData.add(_ChartData(trimmedDate, item['count']));
+          _chartData.add(_ChartData(trimmedDate, item['count']));
+        }
+
+        setState(() {});
       }
-
-      setState(() {});
+    } catch (e) {
+      //
     }
   }
 
-  void getChartDatabyrange(
-    DateTime? From,
-    DateTime? To,
-  ) async {
-    if (FromDate == null || ToDate == null) {
-      return;
-    }
-
-    var from = FromDate!.toIso8601String().split('T')[0];
-    var to = ToDate!.toIso8601String().split('T')[0];
-    var response =
-        await Dio().get('$api/GetDengueCasesByDateRange?from=$to&to=$from');
-    if (response.statusCode == 200) {
-      var data = response.data['cases'];
-      maxCaseValue = response.data['maxValue'];
-      for (var item in data) {
-        // Trimming the time part from the date
-        var trimmedDate = item['date'].toString().split('T')[0];
-
-        _chartData.add(_ChartData(trimmedDate, item['count']));
+  void getChartDatabyrange(DateTime? FromDate, DateTime? ToDate) async {
+    try {
+      if (FromDate == null || ToDate == null) {
+        return;
       }
+      _chartData.clear();
+      var from = FromDate.toIso8601String().split('T')[0];
+      var to = ToDate.toIso8601String().split('T')[0];
+      var response =
+          await Dio().get('$api/GetDengueCasesByDateRange?from=$to&to=$from');
+      if (response.statusCode == 200) {
+        var data = response.data['cases'];
+        maxCaseValue = response.data['maxValue'];
+        for (var item in data) {
+          // Trimming the time part from the date
+          var trimmedDate = item['date'].toString().split('T')[0];
 
-      setState(() {});
+          _chartData.add(_ChartData(trimmedDate, item['count']));
+        }
+
+        setState(() {});
+      }
+    } catch (e) {
+      //
     }
   }
 

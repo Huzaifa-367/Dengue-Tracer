@@ -44,12 +44,12 @@ Color greenopcN = const Color.fromARGB(255, 74, 216, 192);
 
 //GLOBAL
 //Xperia 5 II
-const String ip = "192.168.232.34";
+const String ip = "192.168.229.34";
 //
 //Ahsan Mobile
 //const String ip = "192.168.184.34";
 // PTCL-5G
-//const String ip = "192.168.10.86";
+//const String ip = "192.168.10.12";
 //
 String api = 'http://$ip/FYP_Api/API/SERVER';
 String imgpath = 'http://$ip//FYP_Api/Images/';

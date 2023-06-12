@@ -30,20 +30,24 @@ class _MonthlyDataState extends State<MonthlyData> {
 
   int maxCaseValue = 0;
   void _getChartData() async {
-    var response = await Dio().get('$api/GetDengueCasesByMonth');
-    if (response.statusCode == 200) {
-      var data = response.data['cases'];
-      maxCaseValue = response.data['maxValue'];
-      for (var item in data) {
-        // Trimming the time part from the date
-        var all = item['date'].toString().split('T')[0];
-        var year = all.split('-')[0];
-        var month = all.split('-')[1];
-        var trimmedDate = "$year-$month";
-        _chartData.add(_ChartData(trimmedDate, item['count']));
-      }
+    try {
+      var response = await Dio().get('$api/GetDengueCasesByMonth');
+      if (response.statusCode == 200) {
+        var data = response.data['cases'];
+        maxCaseValue = response.data['maxValue'];
+        for (var item in data) {
+          // Trimming the time part from the date
+          var all = item['date'].toString().split('T')[0];
+          var year = all.split('-')[0];
+          var month = all.split('-')[1];
+          var trimmedDate = "$year-$month";
+          _chartData.add(_ChartData(trimmedDate, item['count']));
+        }
 
-      setState(() {});
+        setState(() {});
+      }
+    } catch (e) {
+      //
     }
   }
 

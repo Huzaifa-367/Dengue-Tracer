@@ -165,6 +165,12 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
                   strokeWidth: 1,
                   fillColor: getfillColor(threshold, totalCases),
                   onTap: () {
+                    if (isWithinSector!) {
+                      TakeAction(sectorId, context);
+                      //snackBar(context, "You are in your sector.");
+                    } else {
+                      snackBar(context, "You need to be in your sector.");
+                    }
                     //
                     //
                   });
@@ -385,14 +391,14 @@ class _Location_Verify_MapState extends State<Location_Verify_Map> {
                       controller: homeLoccont,
                       hintText: "Location",
 
-                      sufixIconPress: () {
-                        if (isWithinSector!) {
-                          TakeAction(sectorId, context);
-                          //snackBar(context, "You are in your sector.");
-                        } else {
-                          snackBar(context, "You need to be in your sector.");
-                        }
-                      },
+                      // sufixIconPress: () {
+                      //   if (isWithinSector!) {
+                      //     TakeAction(sectorId, context);
+                      //     //snackBar(context, "You are in your sector.");
+                      //   } else {
+                      //     snackBar(context, "You need to be in your sector.");
+                      //   }
+                      // },
 
                       //prefixIcon: const Icon(Icons.map),
                       sufixIcon: CupertinoIcons.shield,

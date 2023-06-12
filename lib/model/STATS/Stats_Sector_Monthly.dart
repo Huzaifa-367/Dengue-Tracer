@@ -30,19 +30,23 @@ class _Stats_Sector_MonthlyState extends State<Stats_Sector_Monthly> {
 
   int maxCaseValue = 0;
   void _getChartData() async {
-    var response = await Dio()
-        .get('$api/GetDengueCasesBySectorMonth?sec_id=${loggedInUser!.sec_id}');
-    if (response.statusCode == 200) {
-      var data = response.data['cases'];
-      maxCaseValue = response.data['maxValue'];
-      for (var item in data) {
-        // Trimming the time part from the date
-        var trimmedDate = item['date'].toString().split('T')[0];
+    try {
+      var response = await Dio().get(
+          '$api/GetDengueCasesBySectorMonth?sec_id=${loggedInUser!.sec_id}');
+      if (response.statusCode == 200) {
+        var data = response.data['cases'];
+        maxCaseValue = response.data['maxValue'];
+        for (var item in data) {
+          // Trimming the time part from the date
+          var trimmedDate = item['date'].toString().split('T')[0];
 
-        _chartData.add(_ChartData(trimmedDate, item['count']));
+          _chartData.add(_ChartData(trimmedDate, item['count']));
+        }
+
+        setState(() {});
       }
-
-      setState(() {});
+    } catch (e) {
+      //
     }
   }
 
