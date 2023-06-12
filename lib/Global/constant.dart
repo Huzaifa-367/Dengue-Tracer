@@ -76,7 +76,8 @@ String mapapikey = "AIzaSyCvhbfvGx_1tXHprSZ4RTUfxySdtM9u0uo";
 PredictionModel? prediction;
 //Temporal MAP
 List<ActionLists>? Actionitems = [];
-
+//Profile
+double currentSliderValue = 1.0;
 //RESET
 String? otp;
 int? range;

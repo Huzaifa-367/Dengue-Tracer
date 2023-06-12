@@ -5,8 +5,8 @@ import 'package:dengue_tracing_application/model/MAP/Temp_Map_Api.dart';
 import 'package:dengue_tracing_application/model/NOTIFICATION/Notif_Api.dart';
 import 'package:dengue_tracing_application/model/USER/User_API.dart';
 import 'package:dengue_tracing_application/screens/Settings/Admin_Officer/Officer/Location_Verify_Map.dart';
-import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
@@ -47,10 +47,10 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
     _getChartData();
     getGeoLocationPosition();
     _fetchPolygons();
-    _getDengueUsers();
-    fetchNotifications(loggedInUser!.user_id, 2);
+    _getDengueUsers(loggedInUser!.sec_id);
+    fetchNotifications(loggedInUser!.user_id, currentSliderValue.toInt());
     Timer.periodic(const Duration(minutes: 30), (Timer timer) {
-      fetchNotifications(loggedInUser!.user_id, 2);
+      fetchNotifications(loggedInUser!.user_id, currentSliderValue.toInt());
     });
     // loadDengueCases();
   }
@@ -182,10 +182,11 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
   //   }
   // }
 
-  Future<void> _getDengueUsers() async {
+  Future<void> _getDengueUsers(int? secId) async {
     try {
-      final String apiUrl = '$api/GetDengueUsers';
-      final response = await http.get(Uri.parse(apiUrl));
+      final String apiUrl = '$api/GetDengueUsersSameSector?sec_id=$secId';
+      final response =
+          await http.get(Uri.parse('$api/GetDengueUsersSameSectorOfficer'));
 
       if (response.statusCode == 200) {
         setState(() {
@@ -218,6 +219,44 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
       //
     }
   }
+
+// ...
+
+  // Future<void> _getDengueUsers(int? secId) async {
+  //   try {
+  //     //final String apiUrl = '$api/GetDengueUsersSameSector?sec_id=$secId';
+  //     final response =
+  //         await Dio().get('$api/GetDengueUsersSameSector?sec_id=$secId');
+  //     //final response = await Dio().get('$api/GetDengueUsersSameSectorOfficer');
+
+  //     if (response.statusCode == 200) {
+  //       setState(() {
+  //         _users = json.decode(response.data);
+  //         _markers = Set<Marker>.from(
+  //           _users.map(
+  //             (user) => Marker(
+  //               markerId: MarkerId(user['name']),
+  //               position: LatLng(
+  //                 double.parse(user['home_location'].split(',')[0]),
+  //                 double.parse(user['home_location'].split(',')[1]),
+  //               ),
+  //               infoWindow: InfoWindow(title: user['name']),
+  //               icon: user['user_id'] == loggedInUser!.user_id
+  //                   ? BitmapDescriptor.defaultMarkerWithHue(
+  //                       BitmapDescriptor.hueAzure)
+  //                   : BitmapDescriptor.defaultMarkerWithHue(
+  //                       BitmapDescriptor.hueRed),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  //     } else {
+  //       throw Exception('Failed to fetch dengue users.');
+  //     }
+  //   } catch (e) {
+  //     // Handle exception
+  //   }
+  // }
 
   double _currentSliderValue = 1.0;
   String? selectedDate;
