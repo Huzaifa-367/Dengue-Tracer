@@ -3,16 +3,19 @@ import 'package:dengue_tracing_application/Test_Screens/Json_Viewer_Screen.dart'
 import 'package:dengue_tracing_application/Test_Screens/Notify_screen.dart';
 import 'package:dengue_tracing_application/Test_Screens/Place_Picker.dart';
 import 'package:dengue_tracing_application/Test_Screens/Slide_UP_Panel_Screen.dart';
+import 'package:dengue_tracing_application/Test_Screens/Polygon_Name.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 
 import 'Test_Screens/Card_Styles_Screen.dart';
+import 'Test_Screens/ClusterWork.dart';
 import 'Test_Screens/Dragable_Navigation_Bar.dart';
 import 'Test_Screens/ExpandAble_Manu_Screen.dart';
 import 'package:dengue_tracing_application/Test_Screens/lib/flutter_staggered_animations.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 
+import 'Test_Screens/Search_DropDown_Screen.dart';
 import 'Test_Screens/Stats_MultiAxis.dart';
 
 class Testings_Screen extends StatefulWidget {
@@ -184,12 +187,62 @@ class _Testings_ScreenState extends State<Testings_Screen> {
                   },
                 ),
                 ButtonWidget(
-                  btnText: "MapLocPicker",
+                  btnText: "Polyogn_Name",
+                  onPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Polyogn_Name_Screen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ButtonWidget(
+                  btnText: "Cluster Map",
+                  onPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ClusterMap(),
+                      ),
+                    );
+                  },
+                ),
+                ButtonWidget(
+                  btnText: "Pdf File Edit",
+                  onPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Card_Styles_Screen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ButtonWidget(
+                  btnText: "Search_DropDown_Screen",
+                  onPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Search_DropDown_Screen(),
+                      ),
+                    );
+                  },
+                ),
+                ButtonWidget(
+                  btnText: "//",
                   onPress: () {
                     // Navigator.of(context).push(
                     //   MaterialPageRoute(
-                    //     builder: (context) => const MapLocPicker(),
-                    //  ),
+                    //     builder: (context) => const Card_Styles_Screen(),
+                    //   ),
                     // );
                   },
                 ),

@@ -1,6 +1,7 @@
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
 import 'package:dengue_tracing_application/Global/Packages_Path.dart';
+import 'package:dengue_tracing_application/Test_Screens/ClusterWork.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -25,7 +26,6 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
       field: 'name',
       type: PlutoColumnType.text(),
     ),
-
     PlutoColumn(
       title: 'Sector',
       field: 'sec_name',
@@ -36,17 +36,6 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
       field: 'email',
       type: PlutoColumnType.text(),
     ),
-    PlutoColumn(
-      title: 'Phone Number',
-      field: 'phone_number',
-      type: PlutoColumnType.text(),
-    ),
-
-    // PlutoColumn(
-    //   title: 'Role',
-    //   field: 'role',
-    //   type: PlutoColumnType.text(),
-    // ),
   ];
 
   @override
@@ -209,12 +198,12 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
                     color: ScfColor,
                     height: 600,
                     child: PlutoGrid(
+                      mode: PlutoGridMode.readOnly,
                       configuration: PlutoGridConfiguration(
                         style: PlutoGridStyleConfig(
                           borderColor: bkColor,
                           gridBorderColor: btnColor,
                           gridBorderRadius: BorderRadius.circular(12),
-                          //rowColor: btnColor,
                           columnTextStyle:
                               const TextStyle(fontWeight: FontWeight.w900),
                           cellTextStyle:
@@ -229,6 +218,23 @@ class _OfficersListScreenState extends State<OfficersListScreen> {
                       onLoaded: (PlutoGridOnLoadedEvent event) {
                         stateManager = event.stateManager;
                         stateManager.setShowColumnFilter(true);
+                      },
+                      onRowDoubleTap: (event) {
+                        final selectedCell = event.cell;
+                        final selectedValue = selectedCell.value ?? '';
+
+                        // Navigate to ClusterMap if a cell is selected
+                        if (selectedValue != null) {
+                          setState(() {
+                            snackBar(context, "Selected Value: $selectedValue");
+                          });
+
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => ClusterMap(),
+                          //   ),
+                          // );
+                        }
                       },
                     ),
                   ),

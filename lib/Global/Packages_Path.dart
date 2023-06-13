@@ -10,6 +10,8 @@ export 'package:geolocator/geolocator.dart';
 export 'package:map_picker/map_picker.dart';
 export 'package:google_maps_flutter/google_maps_flutter.dart';
 export 'package:custom_info_window/custom_info_window.dart';
+export 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
+
 //
 export 'package:awesome_place_search/awesome_place_search.dart';
 //

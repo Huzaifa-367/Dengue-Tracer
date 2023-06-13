@@ -52,6 +52,7 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
     Timer.periodic(const Duration(minutes: 30), (Timer timer) {
       fetchNotifications(loggedInUser!.user_id, currentSliderValue.toInt());
     });
+
     // loadDengueCases();
   }
 
@@ -220,6 +221,10 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
     }
   }
 
+//
+//
+
+//
 // ...
 
   // Future<void> _getDengueUsers(int? secId) async {
@@ -318,6 +323,8 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
               ),
             ),
           );
+          // Inside your existing code where you add markers
+
           setState(() {});
         } else {
           throw Exception('Invalid API response');
@@ -1282,6 +1289,14 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
   //     ),
   //   );
   // }
+  ////
+  ///
+  ///
+  ///
+  ///
+//Cluster Work
+
+  late ClusterManager _manager;
 
   bool? ismoving = false;
   @override
@@ -1328,6 +1343,10 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
                     _control = controller;
                     _customInfoWindowController.googleMapController =
                         controller;
+                    ////
+                    ///
+                    ///Cluster Work
+                    _manager.setMapId(controller.mapId);
                   },
 
                   onCameraMoveStarted: () {
@@ -1340,11 +1359,25 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
                     });
                   },
                   onCameraMove: (cameraPosition) {
+                    ////
+                    ///
+                    ///Cluster Work
+                    _manager.onCameraMove(cameraPosition);
+                    ////
+                    ///
+                    ///Cluster Work end
                     this.cameraPosition = cameraPosition;
                     _customInfoWindowController.onCameraMove!();
                   },
 
                   onCameraIdle: () async {
+                    ////
+                    ///
+                    ///Cluster Work
+                    _manager.updateMap();
+                    ////
+                    ///
+                    ///
                     // notify map stopped moving
                     mapPickerController.mapFinishedMoving!();
                     //get address name from camera position

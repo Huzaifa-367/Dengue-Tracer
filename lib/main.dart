@@ -1,7 +1,10 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:provider/provider.dart';
 import 'package:starlight_notification/starlight_notification.dart';
 import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/Global/Screen_Paths.dart';
+
+import 'Test_Screens/DropDownController.dart';
 
 Future<void> main() async {
   //notification testing
@@ -29,20 +32,23 @@ Future<void> main() async {
             channelGroupName: 'Group 1')
       ],
       debug: true);
-  runApp(
-    const DengueProject(),
-  );
-  //
   // runApp(
-  //   MultiProvider(
-  //     providers: const [
-  //       // ChangeNotifierProvider(
-  //       //   create: (_) => authController(),
-  //       // ),
-  //     ],
-  //     child: const DengueProject(),
-  //   ),
+  //   const DengueProject(),
   // );
+  //
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => DropDownController(),
+        ),
+        // ChangeNotifierProvider(
+        //   create: (_) => authController(),
+        // ),
+      ],
+      child: const DengueProject(),
+    ),
+  );
 }
 
 class DengueProject extends StatelessWidget {

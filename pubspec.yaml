@@ -85,6 +85,11 @@ dependencies:
   draggable_customized_btn_navy_bar: ^1.0.1+2
   awesome_notifications: ^0.6.19
   awesome_place_search: ^1.0.8
+  google_maps_cluster_manager: ^3.0.0+1
+  nb_utils: ^5.0.8
+  select2dot1: ^2.0.7
+
+  #syncfusion_flutter_pdf: ^20.4.54
   
   #awesome_place_search: ^1.0.8
 
