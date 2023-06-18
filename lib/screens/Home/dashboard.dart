@@ -4,6 +4,7 @@ import 'package:dengue_tracing_application/Global/Widgets_Paths.dart';
 import 'package:dengue_tracing_application/screens/Map/Temporal_Map-Backup.dart';
 
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:dengue_tracing_application/screens/Map/Temporal_Map.dart';
 
 const List<TabItem> items = [
   TabItem(

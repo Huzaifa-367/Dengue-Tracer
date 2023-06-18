@@ -46,7 +46,7 @@ TextEditingController ipcontroller = TextEditingController();
 //GLOBAL
 //Xperia 5 II
 
-String ip = "192.168.229.34";
+String ip = "192.168.183.34";
 //
 //Ahsan Mobile
 //const String ip = "192.168.184.34";

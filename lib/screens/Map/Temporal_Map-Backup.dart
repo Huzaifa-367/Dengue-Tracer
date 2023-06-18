@@ -10,6 +10,11 @@ import 'package:http/http.dart' as http;
 
 import 'package:dengue_tracing_application/model/MAP/Map_API.dart';
 import 'package:dengue_tracing_application/model/MAP/map_style.dart';
+import 'dart:ui';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Temporal_Map_Backup extends StatefulWidget {
   const Temporal_Map_Backup({Key? key}) : super(key: key);
@@ -47,6 +52,7 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
     _getChartData();
     getGeoLocationPosition();
     _fetchPolygons();
+    getMarkers();
     _getDengueUsers(loggedInUser!.sec_id);
     fetchNotifications(loggedInUser!.user_id, currentSliderValue.toInt());
     Timer.periodic(const Duration(minutes: 30), (Timer timer) {
@@ -57,6 +63,7 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
   }
 
   Set<Marker> _markers = {};
+  Set<Marker> _markers2 = {};
   final List<_ChartData> _chartData = [];
 
   int maxCaseValue = 0;
@@ -185,9 +192,11 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
 
   Future<void> _getDengueUsers(int? secId) async {
     try {
-      final String apiUrl = '$api/GetDengueUsersSameSector?sec_id=$secId';
-      final response =
-          await http.get(Uri.parse('$api/GetDengueUsersSameSectorOfficer'));
+      //final String apiUrl = '$api/GetDengueUsersSameSector?sec_id=$secId';
+      //Admin
+      final response = await http.get(Uri.parse('$api/GetUserSectors'));
+      //User
+      //final response = await http.get(Uri.parse('$api/GetUserSectors'));
 
       if (response.statusCode == 200) {
         setState(() {
@@ -291,6 +300,86 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
   //     throw Exception('Failed to fetch dengue cases.');
   //   }
   // }
+
+  final List<LatLng> polygonCoordinates = [
+    const LatLng(33.6643581410751, 73.0663669109344),
+    const LatLng(33.666642693275, 73.0765985324979),
+    const LatLng(33.6610795198859, 73.0802631005645),
+    const LatLng(33.6563219622754, 73.0709746107459),
+  ];
+
+  final Map<String, LatLng> polygonNames = {
+    'Polygon 1': const LatLng(33.6643581410751, 73.0663669109344),
+    'Polygon 2': const LatLng(33.666642693275, 73.0765985324979),
+    'Polygon 3': const LatLng(33.6610795198859, 73.0802631005645),
+    'Polygon 4': const LatLng(33.6563219622754, 73.0709746107459),
+  };
+
+  Future<void> getMarkers() async {
+    markers.clear();
+    polygonNames.entries.forEach((entry) async {
+      Marker m = Marker(
+        markerId: MarkerId(entry.key),
+        position: _calculatePolygonCentroid(entry.value),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        // icon: await _getMarkerBitmap(205, text: entry.key),
+        infoWindow: InfoWindow(title: entry.key),
+      );
+      markers.add(m);
+      setState(() {});
+    });
+  }
+
+  LatLng _calculatePolygonCentroid(LatLng polygon) {
+    double latitudeSum = 0.0;
+    double longitudeSum = 0.0;
+    int pointCount = polygonCoordinates.length;
+
+    for (var point in polygonCoordinates) {
+      latitudeSum += point.latitude;
+      longitudeSum += point.longitude;
+    }
+
+    return LatLng(
+      latitudeSum / pointCount,
+      longitudeSum / pointCount,
+    );
+  }
+
+  Future<BitmapDescriptor> _getMarkerBitmap(int size, {String? text}) async {
+    if (kIsWeb) size = (size / 2).floor();
+
+    final PictureRecorder pictureRecorder = PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint1 = Paint()..color = Colors.blue;
+    final Paint paint2 = Paint()..color = Colors.white;
+
+    canvas.drawCircle(Offset(size / 2, size / 2), size / 2.0, paint1);
+    canvas.drawCircle(Offset(size / 2, size / 2), size / 2.2, paint2);
+    canvas.drawCircle(Offset(size / 2, size / 2), size / 2.8, paint1);
+
+    if (text != null) {
+      TextPainter painter = TextPainter(textDirection: null);
+      painter.text = TextSpan(
+        text: text,
+        style: const TextStyle(
+          fontSize: 10,
+          color: Colors.white,
+          fontWeight: FontWeight.normal,
+        ),
+      );
+      painter.layout();
+      painter.paint(
+        canvas,
+        Offset(size / 2 - painter.width / 2, size / 2 - painter.height / 2),
+      );
+    }
+
+    final img = await pictureRecorder.endRecording().toImage(size, size);
+    final data = await img.toByteData(format: ImageByteFormat.png) as ByteData;
+
+    return BitmapDescriptor.fromBytes(data.buffer.asUint8List());
+  }
 
   Future<void> _getDengueCasesByDate(int daysToSubtract) async {
     try {
@@ -682,7 +771,8 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
           ? '$api/GetOfficerSectors'
           : loggedInUser!.role == "user"
               ? '$api/GetUserSectors'
-              : '$api/GetallSectors');
+              : "$api/GetAllSectors3?tilldays=60");
+      //: '$api/GetallSectors');
       final body = response.data;
       if (body is List<dynamic>) {
         final data = body.map((item) => item as Map<String, dynamic>).toList();
@@ -712,7 +802,7 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
                     double.parse(e.split(',')[1]),
                   ))
               .toList();
-
+          //final Map<String, LatLng> polyname = {secId.toString(): latLngs};
           final userId =
               loggedInUser!.role == "admin" ? 1 : item['user_id'] as int;
           // final name = item['name'] as String;
@@ -1201,6 +1291,107 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
                 //     : btnColor.withOpacity(
               );
               setState(() {
+                // polygonNames.clear();
+                // polygonNames.addAll(polyname);
+                // //polygon for centerpoint
+                // polygonCoordinates.add(latLngs);
+                //
+                _polygons.add(polygon);
+              });
+            }
+          }
+        }
+      }
+    } catch (error) {
+      print('Failed to fetch polygons: $error');
+    }
+  }
+
+  Future<void> _fetchPolygonstask(int? tilldate) async {
+    try {
+      final response = await Dio().get(loggedInUser!.role == "officer"
+          ? '$api/GetOfficerSectors'
+          : loggedInUser!.role == "user"
+              ? '$api/GetUserSectors'
+              : "$api/GetAllSectors3?tilldays=$tilldate");
+      //: '$api/GetallSectors');
+      final body = response.data;
+      if (body is List<dynamic>) {
+        final data = body.map((item) => item as Map<String, dynamic>).toList();
+        // Now you can access the properties of each item in the list
+        for (final item in data) {
+          final secId = loggedInUser!.role == "admin"
+              ? item['sec_id']
+              : item['sector']['sec_id'] as int;
+          final secName = loggedInUser!.role == "admin"
+              ? item['sec_name']
+              : item['sector']['sec_name'] as String;
+          final threshold = loggedInUser!.role == "admin"
+              ? item['threshold']
+              : item['sector']['threshold'] as int;
+          final description = loggedInUser!.role == "admin"
+              ? item['description']
+              : item['sector']['description'] as String;
+          final totalCases = loggedInUser!.role == "admin"
+              ? item['total_cases']
+              : item['sector']['total_cases'] as int;
+          // final latLongs = item['sector']['latLongs'] as List<dynamic>;
+          var latLngs = (loggedInUser!.role == "admin"
+                  ? item['latLongs']
+                  : item['sector']['latLongs'] as List<dynamic>)
+              .map((e) => LatLng(
+                    double.parse(e.split(',')[0]),
+                    double.parse(e.split(',')[1]),
+                  ))
+              .toList();
+          //final Map<String, LatLng> polyname = {secId.toString(): latLngs};
+          final userId =
+              loggedInUser!.role == "admin" ? 1 : item['user_id'] as int;
+          // final name = item['name'] as String;
+          // final email = item['email'] as String;
+          // final phoneNumber = item['phone_number'] as String;
+          final role =
+              loggedInUser!.role == "admin" ? "admin" : item['role'] as String;
+          // final homeLocation = item['home_location'] as String;
+          // final officeLocation = item['office_location'] as String;
+
+          if (latLngs.isNotEmpty) {
+            // Only add the polygon if the user is an admin or if the polygon is assigned to the user
+            if (
+                // loggedInUser!.role == "admin" ||
+                userId == loggedInUser!.user_id) {
+              percentage = (totalCases / threshold) * 100;
+              final polygon = Polygon(
+                visible: true,
+                consumeTapEvents: true,
+                onTap: loggedInUser!.role != "user"
+                    ? () {
+                        _SectorchartData.clear();
+
+                      }
+                    : () {},
+                polygonId: PolygonId(secId.toString()),
+                points: List<LatLng>.from(latLngs), // Fix type error here
+                //points: latLngs,
+                strokeColor: getstrokeColor(threshold, totalCases),
+                //loggedInUser!.role == "admin" ||
+                // userId == loggedInUser!.user_id
+                //     ? const Color.fromARGB(255, 74, 216, 192)
+                //     : btnColor, // Change stroke color for logged-in user's polygon
+                strokeWidth: 1,
+                fillColor: getfillColor(threshold, totalCases),
+                // loggedInUser!.role == "admin" ||
+                // userId == loggedInUser!.user_id
+                //     ? const Color.fromARGB(255, 74, 216, 192)
+                //         .withOpacity(0.2)
+                //     : btnColor.withOpacity(
+              );
+              setState(() {
+                // polygonNames.clear();
+                // polygonNames.addAll(polyname);
+                // //polygon for centerpoint
+                // polygonCoordinates.add(latLngs);
+                //
                 _polygons.add(polygon);
               });
             }
@@ -1297,10 +1488,11 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
 //Cluster Work
 
   late ClusterManager _manager;
-
+  bool? ispins = false;
   bool? ismoving = false;
   @override
   Widget build(BuildContext context) {
+    final key = GlobalObjectKey<ExpandableFabState>(context);
     return Container(
       color: ScfColor,
       child: SafeArea(
@@ -1332,7 +1524,7 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
                   //trafficEnabled: true,
                   mapType: MapType.normal,
 
-                  markers: _markers,
+                  markers: ispins! ? _markers : _markers2,
                   //polygons: getPolygons(context),
                   polygons: _polygons,
 
@@ -1520,7 +1712,7 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
               //Theme Selection Button
               ismoving == false
                   ? Positioned(
-                      bottom: 30,
+                      bottom: 90,
                       right: 15,
                       child: Container(
                         width: 35,
@@ -1889,6 +2081,104 @@ class _Temporal_Map_BackupState extends State<Temporal_Map_Backup> {
                     ),
                   ],
                 ),
+              ),
+            ],
+          ),
+          floatingActionButtonLocation: ExpandableFab.location,
+          floatingActionButton: ExpandableFab(
+            key: key,
+            // duration: const Duration(seconds: 1),
+            distance: 120.0,
+            type: ExpandableFabType.fan,
+            // fanAngle: 70,
+            //child: const Icon(Icons.account_box),
+            foregroundColor: ScfColor,
+            backgroundColor: btnColor,
+            closeButtonStyle: ExpandableFabCloseButtonStyle(
+              //child: Icon(Icons.abc),
+              foregroundColor: ScfColor,
+              backgroundColor: btnColor,
+            ),
+            overlayStyle: ExpandableFabOverlayStyle(
+              //color: Colors.black.withOpacity(0.5),
+              blur: 5,
+            ),
+            onOpen: () {
+              debugPrint('onOpen');
+            },
+            afterOpen: () {
+              debugPrint('afterOpen');
+            },
+            onClose: () {
+              debugPrint('onClose');
+            },
+            afterClose: () {
+              debugPrint('afterClose');
+            },
+            children: [
+              FloatingActionButton.small(
+                tooltip: "Show Pins",
+                backgroundColor: btnColor,
+                foregroundColor: ScfColor,
+                heroTag: null,
+                child: const Icon(Icons.edit),
+                onPressed: () {
+                  ispins == false
+                      ? setState(() {
+                          ispins = true;
+                        })
+                      : setState(() {
+                          ispins = false;
+                        });
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: ((context) => const Officer_Edit_Screen()),
+                  //   ),
+                  // );
+                },
+              ),
+              FloatingActionButton.small(
+                tooltip: "Number in each Sector",
+                backgroundColor: btnColor,
+                foregroundColor: ScfColor,
+                heroTag: null,
+                child: const Icon(Icons.add_box_rounded),
+                onPressed: () {
+                  _fetchPolygonstask(0);
+                },
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: ((context) => const OfficerAddScreen()),
+                //   ),
+                // );
+                // },
+              ),
+              FloatingActionButton.small(
+                tooltip: "Numbers Last Week",
+                backgroundColor: btnColor,
+                foregroundColor: ScfColor,
+                heroTag: null,
+                child: const Icon(Icons.add_box_rounded),
+                onPressed: () => _fetchPolygonstask(7),
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: ((context) => const OfficerAddScreen()),
+                //   ),
+                // );
+              ),
+              FloatingActionButton.small(
+                tooltip: "Numbers Last Month",
+                backgroundColor: btnColor,
+                foregroundColor: ScfColor,
+                heroTag: null,
+                child: const Icon(Icons.add_box_rounded),
+                onPressed: () => _fetchPolygonstask(30),
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: ((context) => const OfficerAddScreen()),
+                //   ),
+                // );
+                //},
               ),
             ],
           ),

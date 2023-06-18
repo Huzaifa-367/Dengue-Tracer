@@ -19,7 +19,7 @@ final CustomInfoWindowController _customInfoWindowController =
     CustomInfoWindowController();
 void dispose() {
   _customInfoWindowController.dispose();
-  //super.dispose(); 
+  //super.dispose();
 }
 
 class _PickLocationState extends State<PickLocation> {
@@ -390,7 +390,7 @@ class _PickLocationState extends State<PickLocation> {
                 left: 15,
                 child: Container(
                     width: 35,
-                    height: 105,
+                    height: 155,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: btnColor,
@@ -418,7 +418,24 @@ class _PickLocationState extends State<PickLocation> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(Icons.remove, size: 25),
-                        )
+                        ),
+                        MaterialButton(
+                          onPressed: () {
+                            setState(() {
+                              //Recall Mapp Screen
+                              // proceedToDashboard(context);
+                            });
+                          },
+                          padding: const EdgeInsets.all(0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.restore,
+                            size: 25,
+                            color: ScfColor,
+                          ),
+                        ),
                       ],
                     )),
               ),
